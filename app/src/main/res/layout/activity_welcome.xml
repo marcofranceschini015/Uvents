@@ -5,7 +5,7 @@
     android:id="@+id/welcomeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity"
+    tools:context=".ui.WelcomeActivity"
     android:background="#336699">
 
     <LinearLayout
@@ -56,11 +56,13 @@
             android:layout_marginTop="20dp">
 
             <Button
+                android:id="@+id/insertCityBtn"
                 android:layout_width="130dp"
                 android:layout_height="100dp"
                 android:background="@drawable/button_city_bg"
                 android:layout_marginEnd="78dp" />
             <Button
+                android:id="@+id/useLocationBtn"
                 android:layout_width="130dp"
                 android:layout_height="100dp"
                 android:background="@drawable/button_location_bg" />
@@ -172,5 +174,4 @@
             android:layout_marginTop="70dp"/>
 
     </RelativeLayout>
-    
 </RelativeLayout>
