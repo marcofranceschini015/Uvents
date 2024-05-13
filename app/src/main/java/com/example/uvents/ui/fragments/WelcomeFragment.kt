@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
 
-class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
+class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
 
     private lateinit var insertCityButton: Button
     private lateinit var useLocationButton: Button
     private lateinit var linearLayoutSignButton: LinearLayout
     private lateinit var linearLayoutInsertCity: LinearLayout
-
+    private lateinit var btnSignIn: Button
     /**
      * All that is done when the view is created
      */
@@ -30,11 +31,17 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
             useLocationButton = v.findViewById(R.id.useLocationBtn)
             linearLayoutInsertCity = v.findViewById(R.id.linearLayoutInsertCity)
             linearLayoutSignButton = v.findViewById(R.id.linearLayoutSignButton)
+            btnSignIn = v.findViewById(R.id.btnSignIn)
         }
 
         insertCityButton.setOnClickListener {
             linearLayoutSignButton.visibility = View.GONE
             linearLayoutInsertCity.visibility = View.VISIBLE
+        }
+
+
+        btnSignIn.setOnClickListener {
+            ctrl.switchFragment(Fragment()) //todo
         }
 
         return v

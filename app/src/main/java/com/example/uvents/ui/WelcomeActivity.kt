@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
 import com.example.uvents.ui.fragments.WelcomeFragment
 
 class WelcomeActivity : AppCompatActivity() {
+
+    private lateinit var welcomeController: WelcomeController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,15 +24,18 @@ class WelcomeActivity : AppCompatActivity() {
             insets
         }
 
+        // controller to access the view and be between the model and the view
+        welcomeController = WelcomeController(this)
+
         // put welcome fragment as first fragment
-        replaceFragment(WelcomeFragment())
+        replaceFragment(WelcomeFragment(welcomeController))
     }
 
 
     /**
      * Function that replace the fragment in the activity
      */
-    private fun replaceFragment(fragment: Fragment){
+    fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgContainer, fragment)
