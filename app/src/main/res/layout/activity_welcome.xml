@@ -2,29 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/welcomeLayout"
+    android:id="@+id/welcome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.WelcomeActivity"
     android:background="#336699">
 
-    <LinearLayout
-        android:id="@+id/mainLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-
         <ImageView
             android:id="@+id/logo"
             android:layout_width="160dp"
             android:layout_height="210dp"
-            android:src="@drawable/logo_uv"
+            android:src="@drawable/logo"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:contentDescription="App logo" />
+            android:layout_centerHorizontal="true"/>
 
         <TextView
+            android:id="@+id/txtLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -33,145 +27,14 @@
             android:text="Uvents"
             android:textColor="#DAF7DC"
             android:textSize="42sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_below="@id/logo"
+            android:layout_centerHorizontal="true"/>
 
-        <TextView
-            android:layout_width="283dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="6dp"
-            android:fontFamily="@font/lato"
-            android:gravity="center"
-            android:text="Where do you want to search events?"
-            android:textColor="#DAF7DC"
-            android:textSize="24sp"
-            app:lineHeight="16dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="20dp">
-
-            <Button
-                android:id="@+id/insertCityBtn"
-                android:layout_width="130dp"
-                android:layout_height="100dp"
-                android:background="@drawable/button_city_bg"
-                android:layout_marginEnd="78dp" />
-            <Button
-                android:id="@+id/useLocationBtn"
-                android:layout_width="130dp"
-                android:layout_height="100dp"
-                android:background="@drawable/button_location_bg" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Type a city"
-                android:textColor="#DAF7DC"
-                android:textSize="24sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/lato"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Use localization"
-                android:textColor="#DAF7DC"
-                android:textSize="24sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/lato"
-                android:gravity="center"/>
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <RelativeLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/frgContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/signBtnLayout"
-        android:layout_below="@id/mainLayout">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtLogo" />
 
-        <Button
-            android:id="@+id/btnSignIn"
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
-            android:text="Sign-In"
-            android:textAllCaps="false"
-            android:fontFamily="@font/lato"
-            android:textSize="24sp"
-            android:textColor="#DAF7DC"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/button_sign_bg"
-            android:layout_marginTop="70dp" />
-
-        <Button
-            android:id="@+id/btnSignUp"
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
-            android:text="Sign-Up"
-            android:textAllCaps="false"
-            android:fontFamily="@font/lato"
-            android:textSize="24sp"
-            android:textColor="#DAF7DC"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/btnSignIn"
-            android:background="@drawable/button_sign_bg"
-            android:layout_marginTop="15dp"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/insertCityLayout"
-        android:layout_below="@id/mainLayout"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/etInputCity"
-            android:layout_width="340dp"
-            android:layout_height="48dp"
-            android:text="Insert a city"
-            android:paddingStart="20dp"
-            android:fontFamily="@font/lato"
-            android:textSize="24sp"
-            android:textColor="#DAF7DC"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/insert_city_et_bg"
-            android:layout_marginTop="10dp"/>
-
-
-        <Button
-            android:id="@+id/btnInputCity"
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
-            android:text="Insert"
-            android:textAllCaps="false"
-            android:fontFamily="@font/lato"
-            android:textSize="24sp"
-            android:textColor="#DAF7DC"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/etInputCity"
-            android:background="@drawable/button_sign_bg"
-            android:layout_marginTop="70dp"/>
-
-    </RelativeLayout>
 </RelativeLayout>
