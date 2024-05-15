@@ -97,7 +97,8 @@
             android:layout_height="match_parent"
             android:layout_below="@id/linearLayoutText"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/btnSignIn"
@@ -140,7 +141,9 @@
 
             <EditText
                 android:id="@+id/etInputCity"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="48dp"
                 android:hint="Insert a city"
                 android:textColorHint="#DAF7DC"
@@ -154,7 +157,9 @@
 
             <Button
                 android:id="@+id/btnInputCity"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="wrap_content"
                 android:text="Insert"
                 android:textAllCaps="false"

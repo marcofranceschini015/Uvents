@@ -30,7 +30,6 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        context?.theme?.applyStyle(R.style.Theme_Uvents, true)
         val v: View? = inflater.inflate(R.layout.fragment_welcome, container, false)
         if (v != null) {
             insertCityButton = v.findViewById(R.id.insertCityBtn)
