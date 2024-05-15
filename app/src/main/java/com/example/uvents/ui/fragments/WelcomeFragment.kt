@@ -17,6 +17,9 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
     private lateinit var linearLayoutSignButton: LinearLayout
     private lateinit var linearLayoutInsertCity: LinearLayout
     private lateinit var btnSignIn: Button
+    private lateinit var btnSignUp: Button
+
+
     /**
      * All that is done when the view is created
      */
@@ -39,8 +42,15 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
             linearLayoutInsertCity.visibility = View.VISIBLE
         }
 
+        useLocationButton.setOnClickListener {
+            //todo
+        }
 
         btnSignIn.setOnClickListener {
+            ctrl.switchFragment(Fragment()) //todo
+        }
+
+        btnSignUp.setOnClickListener {
             ctrl.switchFragment(Fragment()) //todo
         }
 
