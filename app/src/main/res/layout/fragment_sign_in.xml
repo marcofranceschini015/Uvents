@@ -22,7 +22,9 @@
             android:layout_marginTop="20dp">
 
             <TextView
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="48dp"
                 android:gravity="bottom"
                 android:fontFamily="@font/lato"
@@ -33,7 +35,9 @@
 
             <EditText
                 android:id="@+id/etInputEmailSi"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/insert_city_et_bg"
@@ -47,7 +51,9 @@
 
             <TextView
                 android:layout_marginTop="20dp"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="48dp"
                 android:gravity="bottom"
                 android:fontFamily="@font/lato"
@@ -57,7 +63,9 @@
 
             <EditText
                 android:id="@+id/etInputPasswordSi"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="48dp"
                 android:hint="Password"
                 android:textColorHint="#DAF7DC"
@@ -82,7 +90,9 @@
 
             <Button
                 android:id="@+id/btnSignIn"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="wrap_content"
                 android:text="Sign-In"
                 android:textAllCaps="false"
@@ -94,7 +104,9 @@
 
             <Button
                 android:id="@+id/btnSignUp"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_height="wrap_content"
                 android:text="Sign-Up"
                 android:textAllCaps="false"

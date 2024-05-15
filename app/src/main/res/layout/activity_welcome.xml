@@ -8,14 +8,14 @@
     tools:context=".ui.WelcomeActivity"
     android:background="#336699">
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="160dp"
-            android:layout_height="210dp"
-            android:src="@drawable/logo"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="160dp"
+        android:layout_height="210dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/logo" />
 
         <TextView
             android:id="@+id/txtLogo"
@@ -35,7 +35,7 @@
         android:id="@+id/frgContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtLogo"
-        tools:layout="@layout/fragment_sign_in" />
+        android:layout_below="@id/txtLogo" />
+        <!--tools:layout="@layout/fragment_sign_in" />-->
 
 </RelativeLayout>
