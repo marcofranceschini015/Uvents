@@ -1,6 +1,8 @@
 package com.example.uvents.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +30,7 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        context?.theme?.applyStyle(R.style.Theme_Uvents, true)
         val v: View? = inflater.inflate(R.layout.fragment_welcome, container, false)
         if (v != null) {
             insertCityButton = v.findViewById(R.id.insertCityBtn)
