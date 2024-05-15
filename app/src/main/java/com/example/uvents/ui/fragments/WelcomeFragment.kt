@@ -46,8 +46,10 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
             //todo
         }
 
+        // when button sign in clicked
+        // pass through the sign in fragment
         btnSignIn.setOnClickListener {
-            ctrl.switchFragment(Fragment()) //todo
+            ctrl.switchFragment(SignInFragment(ctrl))
         }
 
         btnSignUp.setOnClickListener {

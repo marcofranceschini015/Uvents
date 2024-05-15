@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signInFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.WelcomeFragment"
+    android:background="#336699">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSignInEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="340dp"
+                android:layout_height="48dp"
+                android:gravity="bottom"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:text="Email"/>
+
+
+            <EditText
+                android:id="@+id/etInputEmailSi"
+                android:layout_width="340dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/insert_city_et_bg"
+                android:fontFamily="@font/inter"
+                android:hint="Email"
+                android:paddingStart="20dp"
+                android:textColor="#DAF7DC"
+                android:textColorHint="#DAF7DC"
+                android:textSize="20sp" />
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="340dp"
+                android:layout_height="48dp"
+                android:gravity="bottom"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:text="Password"/>
+
+            <EditText
+                android:id="@+id/etInputPasswordSi"
+                android:layout_width="340dp"
+                android:layout_height="48dp"
+                android:hint="Password"
+                android:textColorHint="#DAF7DC"
+                android:paddingStart="20dp"
+                android:fontFamily="@font/inter"
+                android:textSize="20sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/insert_city_et_bg"
+                android:layout_marginTop="10dp"/>
+            
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSignButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/linearLayoutSignInEt"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="50dp">
+
+            <Button
+                android:id="@+id/btnSignIn"
+                android:layout_width="340dp"
+                android:layout_height="wrap_content"
+                android:text="Sign-In"
+                android:textAllCaps="false"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/button_sign_bg"
+ />
+
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="340dp"
+                android:layout_height="wrap_content"
+                android:text="Sign-Up"
+                android:textAllCaps="false"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/button_sign_bg"
+                android:layout_marginTop="15dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutInsertCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/linearLayoutText"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/etInputCity"
+                android:layout_width="340dp"
+                android:layout_height="48dp"
+                android:hint="Insert a city"
+                android:textColorHint="#DAF7DC"
+                android:paddingStart="20dp"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/insert_city_et_bg"
+                android:layout_marginTop="10dp"/>
+
+
+            <Button
+                android:id="@+id/btnInputCity"
+                android:layout_width="340dp"
+                android:layout_height="wrap_content"
+                android:text="Insert"
+                android:textAllCaps="false"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/button_sign_bg"
+                android:layout_marginTop="70dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>
