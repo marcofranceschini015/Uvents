@@ -35,6 +35,7 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
             linearLayoutInsertCity = v.findViewById(R.id.linearLayoutInsertCity)
             linearLayoutSignButton = v.findViewById(R.id.linearLayoutSignButton)
             btnSignIn = v.findViewById(R.id.btnSignIn)
+            btnSignUp = v.findViewById(R.id.btnSignUp)
         }
 
         insertCityButton.setOnClickListener {
