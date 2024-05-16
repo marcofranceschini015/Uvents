@@ -1,6 +1,7 @@
 package com.example.uvents.ui.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +12,25 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.WelcomeController
+import com.example.uvents.ui.WelcomeActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
 
     private lateinit var btnSignIn: Button
+    private lateinit var btnSignUp: Button
     private lateinit var tvUsername: TextView
     private lateinit var etInputUsername: EditText
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: EditText
+
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var switchOrganizer: Switch
 
@@ -34,10 +45,20 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             etInputUsername = v.findViewById(R.id.etInputUsername)
             tvUsername = v.findViewById(R.id.tvUsername)
             switchOrganizer = v.findViewById(R.id.switchOrganizer)
+            btnSignUp = v.findViewById(R.id.btnSignUp)
+            etEmail = v.findViewById(R.id.etInputEmail)
+            etPassword = v.findViewById(R.id.etInputPassword)
         }
 
         btnSignIn.setOnClickListener {
             ctrl.switchFragment(SignInFragment(ctrl))
+        }
+
+        btnSignUp.setOnClickListener {
+            val name = etInputUsername.text.toString()
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
+            ctrl.signUp(name, email, password, switchOrganizer.isChecked)
         }
 
         switchOrganizer.setOnClickListener {
