@@ -28,7 +28,10 @@ class WelcomeActivity : AppCompatActivity() {
         welcomeController = WelcomeController(this)
 
         // put welcome fragment as first fragment
-        replaceFragment(WelcomeFragment(welcomeController))
+        // no possibility to come back
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frgContainer, WelcomeFragment(welcomeController))
+        fragmentTransaction.commit()
     }
 
 
@@ -39,6 +42,7 @@ class WelcomeActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgContainer, fragment)
+        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 }
