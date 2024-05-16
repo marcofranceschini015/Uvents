@@ -37,7 +37,7 @@
             android:layout_marginTop="20dp"
             android:layout_below="@id/txtQuestion">
         <Button
-            android:id="@+id/insertCityBtn"
+            android:id="@+id/typeCityBtn"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="100dp"

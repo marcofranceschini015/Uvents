@@ -14,9 +14,8 @@ import com.example.uvents.R
 
 class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
 
-    private lateinit var insertCityButton: Button
+    private lateinit var typeCityButton: Button
     private lateinit var useLocationButton: Button
-    private lateinit var linearLayoutSignButton: LinearLayout
     private lateinit var btnSignIn: Button
     private lateinit var btnSignUp: Button
 
@@ -31,14 +30,13 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
     ): View? {
         val v: View? = inflater.inflate(R.layout.fragment_welcome, container, false)
         if (v != null) {
-            insertCityButton = v.findViewById(R.id.insertCityBtn)
+            typeCityButton = v.findViewById(R.id.typeCityBtn)
             useLocationButton = v.findViewById(R.id.useLocationBtn)
-            linearLayoutSignButton = v.findViewById(R.id.linearLayoutSignButton)
             btnSignIn = v.findViewById(R.id.btnSignIn)
             btnSignUp = v.findViewById(R.id.btnSignUp)
         }
 
-        insertCityButton.setOnClickListener {
+        typeCityButton.setOnClickListener {
             ctrl.switchFragment(CityFragment(ctrl))
         }
 
@@ -53,7 +51,7 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
         }
 
         btnSignUp.setOnClickListener {
-            ctrl.switchFragment(Fragment()) //todo
+            //todo
         }
 
         return v
