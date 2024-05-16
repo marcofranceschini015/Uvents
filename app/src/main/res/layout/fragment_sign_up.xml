@@ -119,14 +119,12 @@
                     android:textColor="#DAF7DC"
                     android:text="Organizer" />
 
-                <RadioButton
-                    android:id="@+id/radioAdmin"
+                <Switch
+                    android:id="@+id/switchOrganizer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="40dp"
-                    android:layout_marginTop="10dp"
-                    android:buttonTint="#DAF7DC" />
+                    android:layout_marginEnd="30dp"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             </RadioGroup>
         </LinearLayout>
