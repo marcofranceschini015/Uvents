@@ -28,6 +28,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         logo = findViewById(R.id.logo)
 
+        // logo like home -> onclick come back to welcome fragment
         logo.setOnClickListener {
             replaceFragment(WelcomeFragment(welcomeController))
         }

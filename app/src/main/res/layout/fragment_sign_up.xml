@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_height="48dp"
+                android:layout_height="40dp"
                 android:gravity="bottom"
                 android:fontFamily="@font/lato"
                 android:textSize="24sp"
@@ -48,10 +48,11 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/tvUsername"
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_height="48dp"
+                android:layout_height="40dp"
                 android:gravity="bottom"
                 android:fontFamily="@font/lato"
                 android:textSize="24sp"
@@ -62,10 +63,10 @@
             <EditText
                 android:id="@+id/etInputUsername"
                 android:layout_width="match_parent"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_height="48dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
                 android:background="@drawable/insert_city_et_bg"
                 android:fontFamily="@font/inter"
                 android:hint="Username"
@@ -74,12 +75,11 @@
                 android:textColorHint="#DAF7DC"
                 android:textSize="20sp" />
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_height="48dp"
+                android:layout_height="40dp"
                 android:gravity="bottom"
                 android:fontFamily="@font/lato"
                 android:textSize="24sp"
@@ -101,6 +101,34 @@
                 android:background="@drawable/insert_city_et_bg"
                 android:layout_marginTop="10dp"/>
 
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="30dp"
+                    android:gravity="top"
+                    android:fontFamily="@font/lato"
+                    android:textSize="24sp"
+                    android:textColor="#DAF7DC"
+                    android:text="Organizer" />
+
+                <RadioButton
+                    android:id="@+id/radioAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="10dp"
+                    android:buttonTint="#DAF7DC" />
+
+            </RadioGroup>
         </LinearLayout>
 
 
@@ -111,7 +139,7 @@
             android:layout_below="@id/linearLayoutSignInEt"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="0dp">
 
             <Button
                 android:id="@+id/btnSignIn"
@@ -141,42 +169,6 @@
                 android:background="@drawable/button_sign_bg"
                 android:layout_marginTop="15dp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutInsertCity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_below="@id/linearLayoutText"
-            android:gravity="center_horizontal"
-            android:visibility="gone">
-
-            <EditText
-                android:id="@+id/etInputCity"
-                android:layout_width="340dp"
-                android:layout_height="48dp"
-                android:hint="Insert a city"
-                android:textColorHint="#DAF7DC"
-                android:paddingStart="20dp"
-                android:fontFamily="@font/lato"
-                android:textSize="24sp"
-                android:textColor="#DAF7DC"
-                android:background="@drawable/insert_city_et_bg"
-                android:layout_marginTop="10dp"/>
-
-
-            <Button
-                android:id="@+id/btnInputCity"
-                android:layout_width="340dp"
-                android:layout_height="wrap_content"
-                android:text="Insert"
-                android:textAllCaps="false"
-                android:fontFamily="@font/lato"
-                android:textSize="24sp"
-                android:textColor="#DAF7DC"
-                android:background="@drawable/button_sign_bg"
-                android:layout_marginTop="70dp"/>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>
