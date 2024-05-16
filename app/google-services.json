@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1027538091168",
+    "project_id": "uvents-d3c3a",
+    "storage_bucket": "uvents-d3c3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027538091168:android:6acfdc4ef7f9a8de185dc5",
+        "android_client_info": {
+          "package_name": "com.example.uvents"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyTOHDtSL4Y7UdtMlvqEXXwd8YOJV-ADk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
