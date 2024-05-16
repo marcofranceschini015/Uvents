@@ -111,7 +111,7 @@
                 android:textSize="24sp"
                 android:textColor="#DAF7DC"
                 android:background="@drawable/button_sign_bg"
-                android:layout_marginTop="70dp" />
+                android:layout_marginTop="90dp" />
 
             <Button
                 android:id="@+id/btnSignUp"

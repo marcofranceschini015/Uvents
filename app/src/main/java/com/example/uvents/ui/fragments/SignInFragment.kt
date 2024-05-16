@@ -33,6 +33,10 @@ class SignInFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fr
             btnSignIn = v.findViewById(R.id.btnSignIn)
         }
 
+        btnSignUp.setOnClickListener {
+            ctrl.switchFragment(SignUpFragment(ctrl))
+        }
+
         return v
     }
 

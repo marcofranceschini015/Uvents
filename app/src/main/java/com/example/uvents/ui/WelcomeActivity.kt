@@ -1,6 +1,7 @@
 package com.example.uvents.ui
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,6 +14,7 @@ import com.example.uvents.ui.fragments.WelcomeFragment
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var welcomeController: WelcomeController
+    private lateinit var logo: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +26,18 @@ class WelcomeActivity : AppCompatActivity() {
             insets
         }
 
+        logo = findViewById(R.id.logo)
+
+        logo.setOnClickListener {
+            replaceFragment(WelcomeFragment(welcomeController))
+        }
+
         // controller to access the view and be between the model and the view
         welcomeController = WelcomeController(this)
 
         // put welcome fragment as first fragment
         // no possibility to come back
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frgContainer, WelcomeFragment(welcomeController))
-        fragmentTransaction.commit()
+        replaceFragment(WelcomeFragment(welcomeController))
     }
 
 
@@ -42,7 +48,6 @@ class WelcomeActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgContainer, fragment)
-        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 }

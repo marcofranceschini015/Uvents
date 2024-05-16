@@ -51,7 +51,7 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
         }
 
         btnSignUp.setOnClickListener {
-            //todo
+            ctrl.switchFragment(SignUpFragment(ctrl))
         }
 
         return v

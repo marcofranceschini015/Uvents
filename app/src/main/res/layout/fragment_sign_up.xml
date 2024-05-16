@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/signInFragment"
+    android:id="@+id/signUpFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.WelcomeFragment"
@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+            android:gravity="center_horizontal">
 
             <TextView
                 android:layout_width="match_parent"
@@ -34,7 +33,7 @@
 
 
             <EditText
-                android:id="@+id/etInputEmailSi"
+                android:id="@+id/etInputEmail"
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
@@ -48,9 +47,35 @@
                 android:textColorHint="#DAF7DC"
                 android:textSize="20sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="48dp"
+                android:gravity="bottom"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:text="Username"/>
+
+
+            <EditText
+                android:id="@+id/etInputUsername"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/insert_city_et_bg"
+                android:fontFamily="@font/inter"
+                android:hint="Username"
+                android:paddingStart="20dp"
+                android:textColor="#DAF7DC"
+                android:textColorHint="#DAF7DC"
+                android:textSize="20sp" />
+
 
             <TextView
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
@@ -75,7 +100,7 @@
                 android:textColor="#DAF7DC"
                 android:background="@drawable/insert_city_et_bg"
                 android:layout_marginTop="10dp"/>
-            
+
         </LinearLayout>
 
 
@@ -86,7 +111,7 @@
             android:layout_below="@id/linearLayoutSignInEt"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="70dp">
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/btnSignIn"
@@ -100,7 +125,7 @@
                 android:textSize="24sp"
                 android:textColor="#DAF7DC"
                 android:background="@drawable/button_sign_bg"
- />
+                />
 
             <Button
                 android:id="@+id/btnSignUp"
