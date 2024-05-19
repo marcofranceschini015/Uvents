@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
+import com.example.uvents.MapActivity
 import com.example.uvents.model.User
 import com.example.uvents.ui.WelcomeActivity
 import com.example.uvents.ui.fragments.SignUpFragment
@@ -61,7 +62,12 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
 //                val textLongitude = "Longitude: "+it.longitude.toString()
 //                latitude.text = textLatitude
 //                longitude.text = textLongitude
-                Toast.makeText(welcomeActivity, "successful", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(welcomeActivity, "successful", Toast.LENGTH_SHORT).show()
+                val intent = Intent(welcomeActivity, MapActivity::class.java)
+                intent.putExtra("Latitude", it.latitude.toString())
+                intent.putExtra("Longitude", it.longitude.toString())
+                welcomeActivity.startActivity(intent)
+                welcomeActivity.finish()
             } else {
                 Toast.makeText(welcomeActivity, "problem", Toast.LENGTH_SHORT).show()
             }
