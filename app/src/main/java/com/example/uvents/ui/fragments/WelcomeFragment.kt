@@ -1,23 +1,23 @@
 package com.example.uvents.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
+import com.example.uvents.ui.WelcomeActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
 
     private lateinit var typeCityButton: Button
-    private lateinit var useLocationButton: Button
     private lateinit var btnSignIn: Button
     private lateinit var btnSignUp: Button
+    private lateinit var btnLocation: Button
 
 
     /**
@@ -31,17 +31,17 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
         val v: View? = inflater.inflate(R.layout.fragment_welcome, container, false)
         if (v != null) {
             typeCityButton = v.findViewById(R.id.typeCityBtn)
-            useLocationButton = v.findViewById(R.id.useLocationBtn)
             btnSignIn = v.findViewById(R.id.btnSignIn)
             btnSignUp = v.findViewById(R.id.btnSignUp)
+            btnLocation = v.findViewById(R.id.useLocationBtn)
         }
 
         typeCityButton.setOnClickListener {
             ctrl.switchFragment(CityFragment(ctrl))
         }
 
-        useLocationButton.setOnClickListener {
-            //todo
+        btnLocation.setOnClickListener {
+            ctrl.getLocation()
         }
 
         // when button sign in clicked
@@ -53,6 +53,8 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
         btnSignUp.setOnClickListener {
             ctrl.switchFragment(SignUpFragment(ctrl))
         }
+
+
 
         return v
     }
