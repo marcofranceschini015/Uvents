@@ -11,8 +11,11 @@ import com.example.uvents.ui.fragments.WelcomeFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class WelcomeController(private val welcomeActivity: WelcomeActivity) {
 
@@ -38,6 +41,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                     addUserToDatabase(name, email, auth.currentUser?.uid!!)
                     Toast.makeText(welcomeActivity, "User added", Toast.LENGTH_SHORT).show()
                     welcomeActivity.replaceFragment(WelcomeFragment(this, true))
+                    showViewWelcomeSignIn(name)
                 } else {
                     Toast.makeText(welcomeActivity, "Problems during sign-up", Toast.LENGTH_SHORT).show()
                 }
@@ -53,17 +57,40 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
         mDbRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 
+
+    /**
+     * Sign in function and set username in the text view
+     *
+     * @param isOrganizer different sign in if is one organizer
+     */
     fun signIn(email: String, password: String, isOrganizer: Boolean) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(welcomeActivity) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(welcomeActivity, "Sign-in successful", Toast.LENGTH_SHORT).show()
                     welcomeActivity.replaceFragment(WelcomeFragment(this, true))
+
+                    // Set username in the view
+                    mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
+                    mDbRef.child("user").child(auth.currentUser?.uid!!).addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            // Get User object and use the values to update the UI
+                            val user = dataSnapshot.getValue(User::class.java)
+                            if (user != null) {
+                                showViewWelcomeSignIn(user.name!!)
+                            }
+                        }
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
                 } else {
                     Toast.makeText(welcomeActivity, "Problems during sign-in", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 
     /**
      * get the location of a client and then switch the activity
@@ -76,7 +103,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
             return
         }
 
-        var location = fusedLocationProviderClient.lastLocation
+        val location = fusedLocationProviderClient.lastLocation
         location.addOnSuccessListener {
             if (it != null) {
                 welcomeActivity.goToMap(it.latitude.toString(), it.longitude.toString())
@@ -84,6 +111,13 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                 Toast.makeText(welcomeActivity, "problem", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    /**
+     * Modify view to show the username
+     */
+    private fun showViewWelcomeSignIn(username: String){
+        welcomeActivity.showUsername(username)
     }
 
 }

@@ -31,7 +31,7 @@ class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned:
             btnSignIn = v.findViewById(R.id.btnSignIn)
             btnSignUp = v.findViewById(R.id.btnSignUp)
             btnLocation = v.findViewById(R.id.useLocationBtn)
-            if(isSigned == true) {
+            if(isSigned) {
                 btnSignIn.visibility = View.GONE
                 btnSignUp.visibility = View.GONE
             }

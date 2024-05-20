@@ -2,7 +2,9 @@ package com.example.uvents.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,7 +17,9 @@ import com.example.uvents.ui.fragments.WelcomeFragment
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var welcomeController: WelcomeController
-    private lateinit var logo: ImageView
+    private lateinit var ivArrow: ImageView
+    private lateinit var ivPerson: ImageView
+    private lateinit var tvShowUsername: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +31,15 @@ class WelcomeActivity : AppCompatActivity() {
             insets
         }
 
-        logo = findViewById(R.id.logo)
+        ivPerson = findViewById(R.id.ivPerson)
+        tvShowUsername = findViewById(R.id.tvShowUsername)
+        ivPerson.visibility = View.GONE
+        tvShowUsername.visibility = View.GONE
+
+        ivArrow = findViewById(R.id.ivArrow)
 
         // logo like home -> onclick come back to welcome fragment
-        logo.setOnClickListener {
+        ivArrow.setOnClickListener {
             replaceFragment(WelcomeFragment(welcomeController, false))
         }
 
@@ -62,5 +71,16 @@ class WelcomeActivity : AppCompatActivity() {
         intent.putExtra("Longitude", long)
         startActivity(intent)
         finish()
+    }
+
+    fun showUsername(username: String){
+        ivPerson.visibility = View.VISIBLE
+        tvShowUsername.visibility = View.VISIBLE
+        tvShowUsername.text = username
+
+        // change back home with sign user
+        ivArrow.setOnClickListener {
+            replaceFragment(WelcomeFragment(welcomeController, true))
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.uvents.model
 
+import com.google.firebase.database.Exclude
+
 class User {
 
     var name: String? = null

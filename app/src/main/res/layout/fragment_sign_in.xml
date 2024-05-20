@@ -86,7 +86,7 @@
             android:layout_below="@id/linearLayoutSignInEt"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="70dp">
+            android:layout_marginTop="60dp">
 
             <Button
                 android:id="@+id/btnSignIn"
