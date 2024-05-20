@@ -5,7 +5,7 @@
     android:id="@+id/welcomeFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.WelcomeFragment"
+    tools:context=".ui.user.fragments.WelcomeFragment"
     android:background="#336699">
 
     <RelativeLayout

@@ -1,4 +1,4 @@
-package com.example.uvents.ui
+package com.example.uvents.ui.user
 
 import android.os.Bundle
 import android.widget.TextView

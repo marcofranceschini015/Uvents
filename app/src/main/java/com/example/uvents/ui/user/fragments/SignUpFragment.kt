@@ -1,26 +1,17 @@
-package com.example.uvents.ui.fragments
+package com.example.uvents.ui.user.fragments
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.WelcomeController
-import com.example.uvents.ui.WelcomeActivity
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 
 class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
 

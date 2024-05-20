@@ -1,4 +1,4 @@
-package com.example.uvents.ui
+package com.example.uvents.ui.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
-import com.example.uvents.ui.fragments.WelcomeFragment
+import com.example.uvents.ui.user.fragments.WelcomeFragment
 
 class WelcomeActivity : AppCompatActivity() {
 

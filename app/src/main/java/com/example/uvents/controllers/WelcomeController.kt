@@ -1,13 +1,12 @@
 package com.example.uvents.controllers
 
 import android.content.pm.PackageManager
-import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.model.User
-import com.example.uvents.ui.WelcomeActivity
-import com.example.uvents.ui.fragments.WelcomeFragment
+import com.example.uvents.ui.user.WelcomeActivity
+import com.example.uvents.ui.user.fragments.WelcomeFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
