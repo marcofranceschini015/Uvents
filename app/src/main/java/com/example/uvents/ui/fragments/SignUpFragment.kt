@@ -24,7 +24,6 @@ import com.google.firebase.auth.auth
 
 class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
 
-    private lateinit var btnSignIn: Button
     private lateinit var btnSignUp: Button
     private lateinit var tvUsername: TextView
     private lateinit var etInputUsername: EditText
@@ -41,17 +40,12 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
         // Inflate the layout for this fragment
         val v: View? = inflater.inflate(R.layout.fragment_sign_up, container, false)
         if (v != null) {
-            btnSignIn = v.findViewById(R.id.btnSignIn)
             etInputUsername = v.findViewById(R.id.etInputUsername)
             tvUsername = v.findViewById(R.id.tvUsername)
             switchOrganizer = v.findViewById(R.id.switchOrganizer)
             btnSignUp = v.findViewById(R.id.btnSignUp)
             etEmail = v.findViewById(R.id.etInputEmail)
             etPassword = v.findViewById(R.id.etInputPassword)
-        }
-
-        btnSignIn.setOnClickListener {
-            ctrl.switchFragment(SignInFragment(ctrl))
         }
 
         btnSignUp.setOnClickListener {
