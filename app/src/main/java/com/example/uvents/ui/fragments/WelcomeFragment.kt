@@ -8,9 +8,6 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
-import com.example.uvents.ui.WelcomeActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 
 class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
 

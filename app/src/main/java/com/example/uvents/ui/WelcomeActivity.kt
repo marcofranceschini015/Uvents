@@ -1,5 +1,6 @@
 package com.example.uvents.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
@@ -50,5 +51,16 @@ class WelcomeActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgContainer, fragment)
         fragmentTransaction.commit()
+    }
+
+    /**
+     * Function that from WelcomeActivity go to MapActivity
+     */
+    fun goToMap(lat: String, long: String){
+        val intent = Intent(this, MapActivity::class.java)
+        intent.putExtra("Latitude", lat)
+        intent.putExtra("Longitude", long)
+        startActivity(intent)
+        finish()
     }
 }

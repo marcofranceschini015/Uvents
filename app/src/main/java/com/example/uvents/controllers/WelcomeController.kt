@@ -1,15 +1,11 @@
 package com.example.uvents.controllers
 
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
-import com.example.uvents.MapActivity
 import com.example.uvents.model.User
 import com.example.uvents.ui.WelcomeActivity
-import com.example.uvents.ui.fragments.SignUpFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +26,9 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
     }
 
 
+    /**
+     * Function to signUp and create the User then added to a db
+     */
     fun signUp(name: String, email: String, password: String, isOrganizer: Boolean){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(welcomeActivity) { task ->
@@ -43,12 +42,19 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
     }
 
 
+    /**
+     * Add the user to db
+     */
     private fun addUserToDatabase(name: String, email: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
         mDbRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 
+    /**
+     * get the location of a client and then switch the activity
+     */
     fun getLocation() {
+        // check permission
         if (ActivityCompat.checkSelfPermission(welcomeActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(welcomeActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(welcomeActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
@@ -58,22 +64,11 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
         var location = fusedLocationProviderClient.lastLocation
         location.addOnSuccessListener {
             if (it != null) {
-//                val textLatitude = "Latitude: "+it.latitude.toString()
-//                val textLongitude = "Longitude: "+it.longitude.toString()
-//                latitude.text = textLatitude
-//                longitude.text = textLongitude
-//                Toast.makeText(welcomeActivity, "successful", Toast.LENGTH_SHORT).show()
-                val intent = Intent(welcomeActivity, MapActivity::class.java)
-                intent.putExtra("Latitude", it.latitude.toString())
-                intent.putExtra("Longitude", it.longitude.toString())
-                welcomeActivity.startActivity(intent)
-                welcomeActivity.finish()
+                welcomeActivity.goToMap(it.latitude.toString(), it.longitude.toString())
             } else {
                 Toast.makeText(welcomeActivity, "problem", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
 }
