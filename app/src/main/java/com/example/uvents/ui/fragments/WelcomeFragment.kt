@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
 
-class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
+class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned: Boolean) : Fragment(R.layout.fragment_welcome) {
 
     private lateinit var typeCityButton: Button
     private lateinit var btnSignIn: Button
@@ -31,6 +31,10 @@ class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.f
             btnSignIn = v.findViewById(R.id.btnSignIn)
             btnSignUp = v.findViewById(R.id.btnSignUp)
             btnLocation = v.findViewById(R.id.useLocationBtn)
+            if(isSigned == true) {
+                btnSignIn.visibility = View.GONE
+                btnSignUp.visibility = View.GONE
+            }
         }
 
         typeCityButton.setOnClickListener {

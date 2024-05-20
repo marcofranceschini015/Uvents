@@ -31,7 +31,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         // logo like home -> onclick come back to welcome fragment
         logo.setOnClickListener {
-            replaceFragment(WelcomeFragment(welcomeController))
+            replaceFragment(WelcomeFragment(welcomeController, false))
         }
 
         // controller to access the view and be between the model and the view
@@ -39,7 +39,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         // put welcome fragment as first fragment
         // no possibility to come back
-        replaceFragment(WelcomeFragment(welcomeController))
+        replaceFragment(WelcomeFragment(welcomeController, false))
     }
 
 

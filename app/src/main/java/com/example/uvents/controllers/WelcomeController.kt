@@ -1,11 +1,13 @@
 package com.example.uvents.controllers
 
 import android.content.pm.PackageManager
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.model.User
 import com.example.uvents.ui.WelcomeActivity
+import com.example.uvents.ui.fragments.WelcomeFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
@@ -35,8 +37,9 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                 if (task.isSuccessful) {
                     addUserToDatabase(name, email, auth.currentUser?.uid!!)
                     Toast.makeText(welcomeActivity, "User added", Toast.LENGTH_SHORT).show()
+                    welcomeActivity.replaceFragment(WelcomeFragment(this, true))
                 } else {
-                    Toast.makeText(welcomeActivity, "Some problems occurred", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(welcomeActivity, "Problems during sign-up", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -48,6 +51,18 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
     private fun addUserToDatabase(name: String, email: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
         mDbRef.child("user").child(uid).setValue(User(name, email, uid))
+    }
+
+    fun signIn(email: String, password: String, isOrganizer: Boolean) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(welcomeActivity) { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(welcomeActivity, "Sign-in successful", Toast.LENGTH_SHORT).show()
+                    welcomeActivity.replaceFragment(WelcomeFragment(this, true))
+                } else {
+                    Toast.makeText(welcomeActivity, "Problems during sign-in", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     /**
