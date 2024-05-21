@@ -50,7 +50,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                         addUserToDatabase(name, email, auth.currentUser?.uid!!)
                         Toast.makeText(welcomeActivity, "User added", Toast.LENGTH_SHORT).show()
                         welcomeActivity.replaceFragment(WelcomeFragment(this, true))
-                        showViewWelcomeSignIn(name)
+                        welcomeActivity.showUsername(name)
                     }
                 } else {
                     Toast.makeText(welcomeActivity, "Problems during sign-up", Toast.LENGTH_SHORT).show()
@@ -78,19 +78,16 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
 
 
     /**
-     * Sign in function and set username in the text view
-     *
-     * @param isOrganizer different sign in if is one organizer
+     * Sign in function
+     * If is organizer go to organizer view
+     * If is user go to welcome and set username in the text view
      */
-    fun signIn(email: String, password: String, isOrganizer: Boolean) {
+    fun signIn(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(welcomeActivity) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(welcomeActivity, "Sign-in successful", Toast.LENGTH_SHORT).show()
-                    welcomeActivity.replaceFragment(WelcomeFragment(this, true))
-                    // todo check if is organizer or not
-                    // Set username in the view
-                    showViewWelcomeWithUid()
+                    switchedSignIn()
                 } else {
                     Toast.makeText(welcomeActivity, "Problems during sign-in", Toast.LENGTH_SHORT).show()
                 }
@@ -121,29 +118,26 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
 
 
     /**
-     * Modify view to show the username
+     * Go after the sign in page differently if is organizer or not
      */
-    private fun showViewWelcomeSignIn(username: String){
-        welcomeActivity.showUsername(username)
-    }
-
-
-    /**
-     * Modify view to show the username, based on uid
-     */
-    private fun showViewWelcomeWithUid(){
+    private fun switchedSignIn(){
         mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
         mDbRef.child("user").child(auth.currentUser?.uid!!).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get User object and use the values to update the UI
-                val user = dataSnapshot.getValue(User::class.java)
-                if (user != null) {
-                    showViewWelcomeSignIn(user.name!!)
+                // if read an user with that uid
+                if (dataSnapshot.exists()){
+                    welcomeActivity.replaceFragment(WelcomeFragment(this@WelcomeController, true))
+                    // show username
+                    val user = dataSnapshot.getValue(User::class.java)
+                    if (user != null) {
+                        welcomeActivity.showUsername(user.name!!)
+                    }
+                } else { // else is an organizer
+                    welcomeActivity.goToOrganizerView()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
     }

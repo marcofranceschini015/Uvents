@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
+import com.google.firebase.database.ValueEventListener
 
 class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned: Boolean) : Fragment(R.layout.fragment_welcome) {
 
