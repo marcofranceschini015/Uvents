@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.uvents.model.Organizer
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.WelcomeActivity
 import com.example.uvents.ui.user.fragments.WelcomeFragment
@@ -48,7 +49,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                             if (isOrganizer){
                                 addOrganizerToDatabase(name, email, auth.currentUser?.uid!!)
                                 Toast.makeText(welcomeActivity, "Organizer added", Toast.LENGTH_SHORT).show()
-                                welcomeActivity.goToOrganizerView()
+                                welcomeActivity.goToOrganizerView(email, name)
                             } else {
                                 addUserToDatabase(name, email, auth.currentUser?.uid!!)
                                 Toast.makeText(welcomeActivity, "User added", Toast.LENGTH_SHORT).show()
@@ -69,7 +70,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
      */
     private fun addOrganizerToDatabase(name: String, email: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
-        mDbRef.child("organizer").child(uid).setValue(User(name, email, uid))
+        mDbRef.child("organizer").child(uid).setValue(Organizer(name, email, uid))
     }
 
 
@@ -139,7 +140,8 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                         welcomeActivity.showUsername(user.name!!)
                     }
                 } else { // else is an organizer
-                    welcomeActivity.goToOrganizerView()
+                    checkOrganizer()
+                    //welcomeActivity.goToOrganizerView()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -147,6 +149,22 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
         })
     }
 
+
+    /**
+     * Check the organizer in a way to get back the Organizer instance
+     */
+    private fun checkOrganizer() {
+        mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
+        mDbRef.child("organizer").child(auth.currentUser?.uid!!).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val organizer = dataSnapshot.getValue(Organizer::class.java)
+                welcomeActivity.goToOrganizerView(organizer?.email, organizer?.companyName)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+    }
 
     /**
      * Function to check if an email already exists in the entire database

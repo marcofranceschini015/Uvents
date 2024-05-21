@@ -86,8 +86,10 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
 
-    fun goToOrganizerView(){
+    fun goToOrganizerView(email: String?, companyName: String?){
         val intent = Intent(this, DashboardOrganizerActivity::class.java)
+        intent.putExtra("EMAIL", email)
+        intent.putExtra("NAME", companyName)
         startActivity(intent)
         finish()
     }
