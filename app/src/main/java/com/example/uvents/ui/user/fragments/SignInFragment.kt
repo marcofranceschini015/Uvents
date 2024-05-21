@@ -40,7 +40,7 @@ class SignInFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fr
         btnSignIn.setOnClickListener {
             val email = etInputEmailSi.text.toString()
             val password = etInputPasswordSi.text.toString()
-            ctrl.signIn(email, password, false)
+            ctrl.signIn(email, password)
         }
 
         return v

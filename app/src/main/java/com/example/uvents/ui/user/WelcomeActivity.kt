@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
+import com.example.uvents.ui.organizer.DashboardOrganizerActivity
 import com.example.uvents.ui.user.fragments.WelcomeFragment
 
 class WelcomeActivity : AppCompatActivity() {
@@ -82,5 +83,12 @@ class WelcomeActivity : AppCompatActivity() {
         ivArrow.setOnClickListener {
             replaceFragment(WelcomeFragment(welcomeController, true))
         }
+    }
+
+
+    fun goToOrganizerView(){
+        val intent = Intent(this, DashboardOrganizerActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -9,9 +9,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.WelcomeController
+import com.example.uvents.ui.user.WelcomeActivity
 
 class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
 
@@ -43,7 +45,10 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             val name = etInputUsername.text.toString()
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
-            ctrl.signUp(name, email, password, switchOrganizer.isChecked)
+            if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty())
+                ctrl.signUp(name, email, password, switchOrganizer.isChecked)
+            else
+                Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
         }
 
         switchOrganizer.setOnClickListener {
