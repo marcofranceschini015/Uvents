@@ -94,7 +94,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                     Toast.makeText(welcomeActivity, "Sign-in successful", Toast.LENGTH_SHORT).show()
                     switchedSignIn()
                 } else {
-                    Toast.makeText(welcomeActivity, "Problems during sign-in", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(welcomeActivity, "Wrong email or password", Toast.LENGTH_SHORT).show()
                 }
             }
     }
