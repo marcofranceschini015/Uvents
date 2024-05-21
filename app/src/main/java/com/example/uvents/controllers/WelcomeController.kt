@@ -21,7 +21,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var mDbRef: DatabaseReference
     private var fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(welcomeActivity)
-
+    private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
 
     /**
      * Communicate with the welcome activity to switch fragment
@@ -37,25 +37,30 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
      * @param isOrganizer if true sign up an organizer and go to his view
      */
     fun signUp(name: String, email: String, password: String, isOrganizer: Boolean){
-        // todo check email already exist
-
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(welcomeActivity) { task ->
-                if (task.isSuccessful) {
-                    if (isOrganizer){
-                        addOrganizerToDatabase(name, email, auth.currentUser?.uid!!)
-                        Toast.makeText(welcomeActivity, "Organizer added", Toast.LENGTH_SHORT).show()
-                        welcomeActivity.goToOrganizerView()
-                    } else {
-                        addUserToDatabase(name, email, auth.currentUser?.uid!!)
-                        Toast.makeText(welcomeActivity, "User added", Toast.LENGTH_SHORT).show()
-                        welcomeActivity.replaceFragment(WelcomeFragment(this, true))
-                        welcomeActivity.showUsername(name)
+        // first check if the email already exists
+        emailExistsInBoth(email) { exists ->
+            if (exists) {
+                Toast.makeText(welcomeActivity, "This email already exists", Toast.LENGTH_SHORT).show()
+            } else { // if free to use continue with the signup
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(welcomeActivity) { task ->
+                        if (task.isSuccessful) {
+                            if (isOrganizer){
+                                addOrganizerToDatabase(name, email, auth.currentUser?.uid!!)
+                                Toast.makeText(welcomeActivity, "Organizer added", Toast.LENGTH_SHORT).show()
+                                welcomeActivity.goToOrganizerView()
+                            } else {
+                                addUserToDatabase(name, email, auth.currentUser?.uid!!)
+                                Toast.makeText(welcomeActivity, "User added", Toast.LENGTH_SHORT).show()
+                                welcomeActivity.replaceFragment(WelcomeFragment(this, true))
+                                welcomeActivity.showUsername(name)
+                            }
+                        } else {
+                            Toast.makeText(welcomeActivity, "Wrong email or password too short", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                } else {
-                    Toast.makeText(welcomeActivity, "Problems during sign-up", Toast.LENGTH_SHORT).show()
-                }
             }
+        }
     }
 
 
@@ -63,7 +68,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
      * Add a new organizer to a database
      */
     private fun addOrganizerToDatabase(name: String, email: String, uid: String) {
-        mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("organizer").child(uid).setValue(User(name, email, uid))
     }
 
@@ -72,7 +77,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
      * Add the user to db
      */
     private fun addUserToDatabase(name: String, email: String, uid: String) {
-        mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 
@@ -140,6 +145,45 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+
+    /**
+     * Function to check if an email already exists in the entire database
+     */
+    private fun emailExistsInBoth(email: String, callback: (exists: Boolean) -> Unit) {
+        val database = FirebaseDatabase.getInstance(dbUrl)
+        val userRef = database.getReference("user")
+        val organizerRef = database.getReference("organizer")
+
+        // Helper function to query a node
+        fun queryNode(ref: DatabaseReference, onCompleted: (Boolean) -> Unit) {
+            ref.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    onCompleted(snapshot.exists())
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    println("Database error: ${error.message}")
+                    onCompleted(false)
+                }
+            })
+        }
+
+        // Query both nodes and aggregate the results
+        var checkCount = 0
+        var emailFound = false
+
+        val handleResult: (Boolean) -> Unit = { exists ->
+            if (exists) emailFound = true
+            checkCount++
+            if (checkCount == 2) { // Ensure both queries have completed
+                callback(emailFound)
+            }
+        }
+
+        queryNode(userRef, handleResult)
+        queryNode(organizerRef, handleResult)
     }
 
 }
