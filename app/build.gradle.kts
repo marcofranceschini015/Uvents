@@ -50,4 +50,5 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.mapbox.maps:android:11.3.0")
 }

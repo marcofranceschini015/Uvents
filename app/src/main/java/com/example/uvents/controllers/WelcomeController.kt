@@ -1,11 +1,14 @@
 package com.example.uvents.controllers
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.example.uvents.model.Organizer
 import com.example.uvents.model.User
+import com.example.uvents.ui.user.MapActivity
 import com.example.uvents.ui.user.WelcomeActivity
 import com.example.uvents.ui.user.fragments.WelcomeFragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -104,22 +107,30 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
     /**
      * get the location of a client and then switch the activity
      */
-    fun getLocation() {
-        // check permission
-        if (ActivityCompat.checkSelfPermission(welcomeActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(welcomeActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(welcomeActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
-            return
-        }
+//    fun getLocation() {
+//        // check permission
+//        if (ActivityCompat.checkSelfPermission(welcomeActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//            ActivityCompat.checkSelfPermission(welcomeActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(welcomeActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
+//            return
+//        }
+//
+//        val location = fusedLocationProviderClient.lastLocation
+//        location.addOnSuccessListener {
+//            if (it != null) {
+//                welcomeActivity.goToMap(it.latitude.toString(), it.longitude.toString())
+//            } else {
+//                Toast.makeText(welcomeActivity, "problem", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
-        val location = fusedLocationProviderClient.lastLocation
-        location.addOnSuccessListener {
-            if (it != null) {
-                welcomeActivity.goToMap(it.latitude.toString(), it.longitude.toString())
-            } else {
-                Toast.makeText(welcomeActivity, "problem", Toast.LENGTH_SHORT).show()
-            }
-        }
+    fun getLocalitiationMap(){
+        welcomeActivity.goToYourLocalitiationMap()
+    }
+
+    fun getCityMap(city: String){
+        welcomeActivity.goToCityMap(city)
     }
 
 

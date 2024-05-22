@@ -43,7 +43,7 @@ class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned:
         }
 
         btnLocation.setOnClickListener {
-            ctrl.getLocation()
+            ctrl.getLocalitiationMap()
         }
 
         // when button sign in clicked
@@ -55,8 +55,6 @@ class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned:
         btnSignUp.setOnClickListener {
             ctrl.switchFragment(SignUpFragment(ctrl))
         }
-
-
 
         return v
     }

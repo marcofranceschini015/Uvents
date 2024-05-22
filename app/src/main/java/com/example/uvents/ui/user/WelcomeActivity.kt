@@ -66,10 +66,17 @@ class WelcomeActivity : AppCompatActivity() {
     /**
      * Function that from WelcomeActivity go to MapActivity
      */
-    fun goToMap(lat: String, long: String){
+    fun goToYourLocalitiationMap(){
         val intent = Intent(this, MapActivity::class.java)
-        intent.putExtra("Latitude", lat)
-        intent.putExtra("Longitude", long)
+        intent.putExtra("btnLocalitation", true)
+        startActivity(intent)
+        finish()
+    }
+
+    fun goToCityMap(city: String){
+        val intent = Intent(this, MapActivity::class.java)
+        intent.putExtra("btnLocalitation", false)
+        intent.putExtra("city", city)
         startActivity(intent)
         finish()
     }

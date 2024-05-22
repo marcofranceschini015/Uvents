@@ -8,30 +8,13 @@
     tools:context=".ui.user.MapActivity"
     android:background="#336699">
 
-    <TextView
-        android:id="@+id/tvLatitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Latitude"
-        android:textSize="25dp"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="10dp" />
-
-    <TextView
-        android:id="@+id/tvLongitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Longitude"
-        android:textSize="25dp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="@id/tvLatitude"
-        app:layout_constraintEnd_toEndOf="@id/tvLatitude"
-        app:layout_constraintTop_toBottomOf="@id/tvLatitude"
-        android:layout_marginTop="30dp" />
+    <com.mapbox.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:mapbox_cameraTargetLat = "0"
+        app:mapbox_cameraTargetLng = "0"
+        app:mapbox_cameraZoom = "14.0" />
 
 
 

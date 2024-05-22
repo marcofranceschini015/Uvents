@@ -30,6 +30,11 @@ class CityFragment(private val ctrl: WelcomeController) : Fragment() {
             etInputCity = v.findViewById(R.id.etInputCity)
             insertCityButton = v.findViewById(R.id.btnInsertCity)
         }
+
+        insertCityButton.setOnClickListener {
+            ctrl.getCityMap(etInputCity.text.toString())
+        }
+
         return v
     }
 }
