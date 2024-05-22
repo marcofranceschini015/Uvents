@@ -1,33 +1,20 @@
 package com.example.uvents.ui.user
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.location.Geocoder
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.ActivityCompat
-import androidx.core.location.LocationManagerCompat.getCurrentLocation
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.mapbox.geojson.Point
-import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
-import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import java.util.Locale
 
 
@@ -35,11 +22,10 @@ class MapActivity : AppCompatActivity() {
 
     private lateinit var mapController: MapController
     lateinit var mapView: MapView
-//    private var latitude: Double = 0.0
-//    private var longitude: Double = 0.0
 //  private lateinit var mPointsList: ArrayList<OtherPoints>
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,17 +44,21 @@ class MapActivity : AppCompatActivity() {
         setContentView(mapView)
 
         if(intent.getBooleanExtra("btnLocalitation", true)) {
-            //getCurrentLocation()
+
             mapController.getCurrentLocation(fusedLocationProviderClient, mapView)
+
         } else {
             val geocoder = Geocoder(this, Locale.getDefault())
             val addresses = intent.getStringExtra("city")
                 ?.let { geocoder.getFromLocationName(it, 1) }
-            val address = addresses!![0]
-            var longitude = address.longitude
-            var latitude = address.latitude
-            //getCityLocation()
-            mapController.getCityLocation(mapView, latitude, longitude)
+            if (addresses!!.isEmpty()) {
+                Toast.makeText(this, "Location inexistent or not found", Toast.LENGTH_LONG).show()
+            } else {
+                val address = addresses!![0]
+                val longitude = address.longitude
+                val latitude = address.latitude
+                mapController.getCityLocation(mapView, latitude, longitude)
+            }
         }
     }
 
