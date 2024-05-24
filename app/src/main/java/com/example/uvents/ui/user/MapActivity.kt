@@ -39,7 +39,9 @@ class MapActivity : AppCompatActivity() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         mapController = MapController(this)
 
+//        replaceFragment(MapFragment())
         mapView = MapView(this)
+//        mapView = findViewById(R.id.mapView)
         mapView.mapboxMap.loadStyle(Style.MAPBOX_STREETS)
         setContentView(mapView)
 
@@ -61,5 +63,15 @@ class MapActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**
+     * Function that replace the fragment in the activity
+     */
+//    fun replaceFragment(fragment: Fragment){
+//        val fragmentManager = supportFragmentManager
+//        val fragmentTransaction = fragmentManager.beginTransaction()
+//        fragmentTransaction.replace(R.id.frgContainerMap, fragment)
+//        fragmentTransaction.commit()
+//    }
 
 }
