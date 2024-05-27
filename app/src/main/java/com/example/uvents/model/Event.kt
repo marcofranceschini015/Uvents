@@ -6,7 +6,7 @@ class Event {
 //    var organizer: Organizer? = null
     var organizer: String? = null
     var category: String? = null
-    var descruption: String? = null
+    var description: String? = null
     var address: String? = null
 
     constructor() {}
@@ -15,7 +15,7 @@ class Event {
         this.name = name
         this.organizer = organizer
         this.category = category
-        this.descruption = description
+        this.description = description
         this.address = address
     }
 }
