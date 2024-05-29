@@ -73,12 +73,7 @@ class WelcomeController(private val welcomeActivity: WelcomeActivity) {
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             // if read an user with that uid
-                            switchFragment(WelcomeFragment(this@WelcomeController))
-                            // show username
-                            val user = dataSnapshot.getValue(User::class.java)
-                            if (user != null) {
-                                welcomeActivity.showUsername(user.name!!)
-                            }
+                            welcomeActivity.goToYourLocalitiationMap()
                         }
                         override fun onCancelled(error: DatabaseError) {
                         }
