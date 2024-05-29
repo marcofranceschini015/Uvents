@@ -18,8 +18,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var welcomeController: WelcomeController
     private lateinit var ivArrow: ImageView
-    private lateinit var ivPerson: ImageView
-    private lateinit var tvShowUsername: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +28,6 @@ class WelcomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        ivPerson = findViewById(R.id.ivPerson)
-        tvShowUsername = findViewById(R.id.tvShowUsername)
-        ivPerson.visibility = View.GONE
-        tvShowUsername.visibility = View.GONE
 
         ivArrow = findViewById(R.id.ivArrow)
 
@@ -72,22 +65,12 @@ class WelcomeActivity : AppCompatActivity() {
         finish()
     }
 
-    fun goToCityMap(city: String){
-        val intent = Intent(this, MapActivity::class.java)
-        intent.putExtra("btnLocalitation", false)
-        intent.putExtra("city", city)
-        startActivity(intent)
-        finish()
-    }
-
-    fun showUsername(username: String){
-        ivPerson.visibility = View.VISIBLE
-        tvShowUsername.visibility = View.VISIBLE
-        tvShowUsername.text = username
-        // change back home with sign user
-        ivArrow.setOnClickListener {
-            replaceFragment(WelcomeFragment(welcomeController))
-        }
+    /**
+     * Hide the back arrow when you are into the
+     * category choice phase
+     */
+    fun hideBack(){
+        ivArrow.visibility = View.GONE
     }
 
 }

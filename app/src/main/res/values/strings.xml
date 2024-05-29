@@ -3,4 +3,23 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZGFyaW9kMjAiLCJhIjoiY2x3YWNybmJ5MGMzejJsczJkcG5reWNwOSJ9.JjOaoKLQTzBahy9sbvvU9g</string>
+    <string-array name="category_array">
+        <item>Lily</item>
+        <item>Poppy</item>
+        <item>Sunflower</item>
+        <item>Freesia</item>
+        <item>Daisy</item>
+        <item>Rose</item>
+        <item>Daffodil</item>
+        <item>Lavender</item>
+        <item>Peony</item>
+        <item>Lilac</item>
+        <item>Dahlia</item>
+        <item>Tulip</item>
+        <item>Dandelion</item>
+        <item>Geranium</item>
+        <item>Gardenia</item>
+        <item>Rhododendron</item>
+        <item>Azalea</item>
+    </string-array>
 </resources>

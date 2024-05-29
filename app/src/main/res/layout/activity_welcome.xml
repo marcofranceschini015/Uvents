@@ -23,27 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="290dp" />
 
-        <TextView
-            android:id="@+id/tvShowUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Prova"
-            android:fontFamily="@font/lato"
-            android:textColor="#DAF7DC"
-            android:textSize="20sp"
-            android:gravity="center"
-            app:layout_constraintEnd_toStartOf="@id/ivPerson"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="5dp"/>
-
-        <ImageView
-            android:id="@+id/ivPerson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_person_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/categorySelectionFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.user.fragments.CategorySelectionFragment"
+    android:background="#336699">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="48dp"
+                android:gravity="bottom"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:text="Which events do you like?"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewCat"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/insert_city_et_bg"
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSignButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/linearLayoutCategories"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="70dp">
+
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="wrap_content"
+                android:text="Sign-Up"
+                android:textAllCaps="false"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/button_sign_bg" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>
