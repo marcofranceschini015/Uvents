@@ -10,7 +10,7 @@ import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
 import com.google.firebase.database.ValueEventListener
 
-class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned: Boolean) : Fragment(R.layout.fragment_welcome) {
+class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
 
     private lateinit var btnSignIn: Button
     private lateinit var btnSignUp: Button

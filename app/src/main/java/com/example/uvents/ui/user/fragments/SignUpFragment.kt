@@ -41,7 +41,7 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty())
-                ctrl.signUp(name, email, password, false)
+                ctrl.signUp(name, email, password)
             else
                 Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
         }

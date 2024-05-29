@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
-import com.example.uvents.ui.organizer.DashboardOrganizerActivity
 import com.example.uvents.ui.user.fragments.WelcomeFragment
 
 class WelcomeActivity : AppCompatActivity() {
@@ -41,7 +40,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         // logo like home -> onclick come back to welcome fragment
         ivArrow.setOnClickListener {
-            replaceFragment(WelcomeFragment(welcomeController, false))
+            replaceFragment(WelcomeFragment(welcomeController))
         }
 
         // controller to access the view and be between the model and the view
@@ -49,7 +48,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         // put welcome fragment as first fragment
         // no possibility to come back
-        replaceFragment(WelcomeFragment(welcomeController, false))
+        replaceFragment(WelcomeFragment(welcomeController))
     }
 
 
@@ -85,19 +84,10 @@ class WelcomeActivity : AppCompatActivity() {
         ivPerson.visibility = View.VISIBLE
         tvShowUsername.visibility = View.VISIBLE
         tvShowUsername.text = username
-
         // change back home with sign user
         ivArrow.setOnClickListener {
-            replaceFragment(WelcomeFragment(welcomeController, true))
+            replaceFragment(WelcomeFragment(welcomeController))
         }
     }
 
-
-    fun goToOrganizerView(email: String?, companyName: String?){
-        val intent = Intent(this, DashboardOrganizerActivity::class.java)
-        intent.putExtra("EMAIL", email)
-        intent.putExtra("NAME", companyName)
-        startActivity(intent)
-        finish()
-    }
 }
