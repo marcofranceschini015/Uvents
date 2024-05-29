@@ -72,9 +72,9 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/frgContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtLogo" />
-        <!--tools:layout="@layout/fragment_sign_in" />-->
+        android:layout_below="@id/txtLogo"
+        tools:layout="@layout/fragment_welcome" />
 
 </RelativeLayout>
