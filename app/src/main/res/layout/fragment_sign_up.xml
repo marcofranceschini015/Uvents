@@ -100,36 +100,7 @@
                 android:textColor="#DAF7DC"
                 android:background="@drawable/insert_city_et_bg"
                 android:layout_marginTop="10dp"/>
-
-
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_height="30dp"
-                    android:gravity="top"
-                    android:fontFamily="@font/lato"
-                    android:textSize="24sp"
-                    android:textColor="#DAF7DC"
-                    android:text="Organizer" />
-
-                <Switch
-                    android:id="@+id/switchOrganizer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            </RadioGroup>
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/linearLayoutSignButton"
@@ -138,7 +109,7 @@
             android:layout_below="@id/linearLayoutSignInEt"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="40dp">
 
 
             <Button

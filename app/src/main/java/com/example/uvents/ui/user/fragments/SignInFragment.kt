@@ -14,7 +14,6 @@ import com.example.uvents.controllers.WelcomeController
 class SignInFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_sign_in) {
 
     private lateinit var btnSignIn: Button
-    private lateinit var btnSignUp: Button
     private lateinit var etInputEmailSi: EditText
     private lateinit var etInputPasswordSi: EditText
 
@@ -23,18 +22,12 @@ class SignInFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val v: View? = inflater.inflate(R.layout.fragment_sign_in, container, false)
 
         if (v != null) {
             etInputEmailSi = v.findViewById(R.id.etInputEmailSi)
             etInputPasswordSi = v.findViewById(R.id.etInputPasswordSi)
-            btnSignUp = v.findViewById(R.id.btnSignUp)
             btnSignIn = v.findViewById(R.id.btnSignIn)
-        }
-
-        btnSignUp.setOnClickListener {
-            ctrl.switchFragment(SignUpFragment(ctrl))
         }
 
         btnSignIn.setOnClickListener {
