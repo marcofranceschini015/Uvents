@@ -10,19 +10,22 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
+import com.example.uvents.controllers.MapController
 import com.example.uvents.ui.user.fragments.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
+/**
+ * Activity with the map and every events on it
+ */
 class MapActivity : AppCompatActivity() {
 
-//    private lateinit var mapController: MapController
-//    lateinit var mapView: MapView
-////  private lateinit var mPointsList: ArrayList<OtherPoints>
-//    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
+    private lateinit var mapController: MapController
     private lateinit var bottomNavigation: BottomNavigationView
 
+    /**
+     * On creation create a mapController and recover the user in it
+     * then launch the fragment with the map, by filling it
+     */
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,39 +37,14 @@ class MapActivity : AppCompatActivity() {
             insets
         }
 
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-//        mapController = MapController(this)
-
         bottomNavigation = findViewById(R.id.bottomNav)
+        mapController = MapController(this)
+        mapController.setUser(intent.getStringExtra("uid"))
 
-        replaceFragment(MapFragment(this))
-
+        replaceFragment(MapFragment(this, mapController))
         bottomNavigation.visibility = View.VISIBLE
-
-//        mapView = findViewById(R.id.mapView)
-
-//        mapView = MapView(this)
-//        mapView.mapboxMap.loadStyle(Style.MAPBOX_STREETS)
-//        setContentView(mapView)
-//
-//        if(intent.getBooleanExtra("btnLocalitation", true)) {
-//
-//            mapController.getCurrentLocation(fusedLocationProviderClient, mapView)
-//
-//        } else {
-//            val geocoder = Geocoder(this, Locale.getDefault())
-//            val addresses = intent.getStringExtra("city")
-//                ?.let { geocoder.getFromLocationName(it, 1) }
-//            if (addresses!!.isEmpty()) {
-//                Toast.makeText(this, "Location inexistent or not found", Toast.LENGTH_LONG).show()
-//            } else {
-//                val address = addresses!![0]
-//                val longitude = address.longitude
-//                val latitude = address.latitude
-//                mapController.getCityLocation(mapView, latitude, longitude)
-//            }
-//        }
     }
+
 
     /**
      * Function that replace the fragment in the activity
@@ -77,5 +55,4 @@ class MapActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frgMapContainer, fragment)
         fragmentTransaction.commit()
     }
-
 }

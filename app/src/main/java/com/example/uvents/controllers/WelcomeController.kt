@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.WelcomeActivity
 import com.example.uvents.ui.user.fragments.CategorySelectionFragment
+import com.google.android.play.integrity.internal.m
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -59,6 +60,7 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
         user.categories = categories
         addUserToDatabase()
         Toast.makeText(welcomeActivity, "User added", Toast.LENGTH_SHORT).show()
+        welcomeActivity.goToYourLocalizationMap(user.uid)
     }
 
 
@@ -79,12 +81,12 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
             .addOnCompleteListener(welcomeActivity) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(welcomeActivity, "Sign-in successful", Toast.LENGTH_SHORT).show()
-                    mDbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference()
+                    mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
                     mDbRef.child("user").child(auth.currentUser?.uid!!).addListenerForSingleValueEvent(object :
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            user = dataSnapshot.getValue(User::class.java)!!
-                            //welcomeActivity.goToYourLocalitiationMap() //pass user in some way
+                            user = dataSnapshot.getValue(User::class.java)!! // set user
+                            welcomeActivity.goToYourLocalizationMap(user.uid)
                         }
                         override fun onCancelled(error: DatabaseError) {
                         }

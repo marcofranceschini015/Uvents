@@ -18,10 +18,9 @@ import com.mapbox.maps.Style
 import java.util.Locale
 
 
-class MapFragment(private val mapActivity: MapActivity) : Fragment() {
+class MapFragment(private val mapActivity: MapActivity, private val mapController: MapController) : Fragment() {
 
-    private lateinit var mapController: MapController
-    lateinit var mapView: MapView
+    private lateinit var mapView: MapView
     private lateinit var events: ArrayList<Event>
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -36,9 +35,9 @@ class MapFragment(private val mapActivity: MapActivity) : Fragment() {
         val v: View? = inflater.inflate(R.layout.fragment_map, container, false)
         if (v != null) {
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mapActivity)
-            mapController = MapController(mapActivity)
             mapView = MapView(mapActivity)
 
+            ///// Try some events
             events = ArrayList()
             val event1 = Event("Festa universitaria", "Unibs", "Party", "Prova", "Via Branze, 38, 25123 Brescia BS")
             val event2 = Event("Mostra di Picasso", "Belle Arti Brescia", "Mostra d'arte", "Prova prova", "Piazza della Vittoria, Brescia BS")
@@ -62,7 +61,7 @@ class MapFragment(private val mapActivity: MapActivity) : Fragment() {
             if (addresses!!.isEmpty()) {
                 Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG).show()
             } else {
-                val address = addresses!![0]
+                val address = addresses[0]
                 val cityLongitude = address.longitude
                 val cityLatitude = address.latitude
                 mapController.getCityLocation(mapView, cityLatitude, cityLongitude, events)
