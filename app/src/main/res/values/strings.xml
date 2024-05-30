@@ -3,4 +3,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZGFyaW9kMjAiLCJhIjoiY2x3YWNybmJ5MGMzejJsczJkcG5reWNwOSJ9.JjOaoKLQTzBahy9sbvvU9g</string>
+    <string-array name="category_array">
+        <item>Concert</item>
+        <item>Theater</item>
+        <item>Disco</item>
+        <item>Party</item>
+        <item>Exhibition</item>
+        <item>Cultural</item>
+        <item>Charity</item>
+        <item>Cinema</item>
+        <item>Exposition</item>
+        <item>Conference</item>
+        <item>Seminary</item>
+    </string-array>
 </resources>

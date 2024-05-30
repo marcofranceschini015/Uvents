@@ -10,13 +10,10 @@ import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
 import com.google.firebase.database.ValueEventListener
 
-class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned: Boolean) : Fragment(R.layout.fragment_welcome) {
+class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
 
-    private lateinit var typeCityButton: Button
     private lateinit var btnSignIn: Button
     private lateinit var btnSignUp: Button
-    private lateinit var btnLocation: Button
-
 
     /**
      * All that is done when the view is created
@@ -28,22 +25,8 @@ class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned:
     ): View? {
         val v: View? = inflater.inflate(R.layout.fragment_welcome, container, false)
         if (v != null) {
-            typeCityButton = v.findViewById(R.id.typeCityBtn)
             btnSignIn = v.findViewById(R.id.btnSignIn)
             btnSignUp = v.findViewById(R.id.btnSignUp)
-            btnLocation = v.findViewById(R.id.useLocationBtn)
-            if(isSigned) {
-                btnSignIn.visibility = View.GONE
-                btnSignUp.visibility = View.GONE
-            }
-        }
-
-        typeCityButton.setOnClickListener {
-            ctrl.switchFragment(CityFragment(ctrl))
-        }
-
-        btnLocation.setOnClickListener {
-            ctrl.getLocalitiationMap()
         }
 
         // when button sign in clicked
@@ -52,6 +35,8 @@ class WelcomeFragment(private val ctrl: WelcomeController, private val isSigned:
             ctrl.switchFragment(SignInFragment(ctrl))
         }
 
+        // when button sign in clicked
+        // pass through the sign up fragment
         btnSignUp.setOnClickListener {
             ctrl.switchFragment(SignUpFragment(ctrl))
         }

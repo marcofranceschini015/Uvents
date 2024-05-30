@@ -2,10 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/signInFragment"
+    android:id="@+id/categorySelectionFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.user.fragments.WelcomeFragment"
+    tools:context=".ui.user.fragments.CategorySelectionFragment"
     android:background="#336699">
 
     <RelativeLayout
@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayoutSignInEt"
+            android:id="@+id/linearLayoutCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -30,52 +30,19 @@
                 android:fontFamily="@font/lato"
                 android:textSize="24sp"
                 android:textColor="#DAF7DC"
-                android:text="Email"/>
+                android:text="Which events do you like?"/>
 
-
-            <EditText
-                android:id="@+id/etInputEmailSi"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewCat"
                 android:layout_width="match_parent"
+                android:layout_height="240dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_height="48dp"
+                android:background="@drawable/insert_city_et_bg"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/insert_city_et_bg"
-                android:fontFamily="@font/inter"
-                android:hint="Email"
-                android:paddingStart="20dp"
-                android:textColor="#DAF7DC"
-                android:textColorHint="#DAF7DC"
-                android:textSize="20sp" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_height="48dp"
-                android:gravity="bottom"
-                android:fontFamily="@font/lato"
-                android:textSize="24sp"
-                android:textColor="#DAF7DC"
-                android:text="Password"/>
-
-            <EditText
-                android:id="@+id/etInputPasswordSi"
-                android:layout_width="match_parent"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_height="48dp"
-                android:hint="Password"
-                android:textColorHint="#DAF7DC"
-                android:paddingStart="20dp"
-                android:fontFamily="@font/inter"
-                android:textSize="20sp"
-                android:textColor="#DAF7DC"
-                android:background="@drawable/insert_city_et_bg"
-                android:layout_marginTop="10dp"/>
-            
         </LinearLayout>
 
 
@@ -83,18 +50,18 @@
             android:id="@+id/linearLayoutSignButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/linearLayoutSignInEt"
+            android:layout_below="@id/linearLayoutCategories"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="70dp">
 
             <Button
-                android:id="@+id/btnSignIn"
+                android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:layout_height="wrap_content"
-                android:text="Sign-In"
+                android:text="Sign-Up"
                 android:textAllCaps="false"
                 android:fontFamily="@font/lato"
                 android:textSize="24sp"

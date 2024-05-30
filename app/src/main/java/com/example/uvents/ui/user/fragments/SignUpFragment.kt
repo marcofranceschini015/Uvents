@@ -23,19 +23,14 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
 
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private lateinit var switchOrganizer: Switch
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val v: View? = inflater.inflate(R.layout.fragment_sign_up, container, false)
         if (v != null) {
             etInputUsername = v.findViewById(R.id.etInputUsername)
             tvUsername = v.findViewById(R.id.tvUsername)
-            switchOrganizer = v.findViewById(R.id.switchOrganizer)
             btnSignUp = v.findViewById(R.id.btnSignUp)
             etEmail = v.findViewById(R.id.etInputEmail)
             etPassword = v.findViewById(R.id.etInputPassword)
@@ -46,21 +41,10 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty())
-                ctrl.signUp(name, email, password, switchOrganizer.isChecked)
+                ctrl.signUp(name, email, password)
             else
                 Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
         }
-
-        switchOrganizer.setOnClickListener {
-            if (switchOrganizer.isChecked){
-               tvUsername.text = "Company name"
-               etInputUsername.hint = "Company name"
-            } else {
-                tvUsername.text = "Username"
-                etInputUsername.hint = "Username"
-            }
-        }
-
 
         return v
     }

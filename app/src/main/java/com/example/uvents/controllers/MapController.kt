@@ -16,9 +16,16 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import com.example.uvents.R
 import com.example.uvents.model.Event
+import com.example.uvents.model.User
 import com.example.uvents.ui.user.EventActivity
 import com.example.uvents.ui.user.MapActivity
+import com.example.uvents.ui.user.WelcomeActivity
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
@@ -31,13 +38,14 @@ import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
 
-class MapController(private val mapActivity: MapActivity) {
+class MapController(private var mapActivity: MapActivity) {
 
-//    fun switchFragment(f: Fragment){
-//        mapActivity.replaceFragment(f)
-//    }
+    private lateinit var user: User
+    private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
+    private lateinit var mDbRef: DatabaseReference
 
-    public fun getCityLocation(mapView: MapView, cityLatitude: Double, cityLongitude: Double, events: ArrayList<Event>) {
+
+    fun getCityLocation(mapView: MapView, cityLatitude: Double, cityLongitude: Double, events: ArrayList<Event>) {
         if (ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mapActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
@@ -49,7 +57,8 @@ class MapController(private val mapActivity: MapActivity) {
         addAnnotationToMap(mapView, null, null, events)
     }
 
-    public fun getCurrentLocation(fusedLocationProviderClient: FusedLocationProviderClient, mapView: MapView, events: ArrayList<Event>) {
+
+    fun getCurrentLocation(fusedLocationProviderClient: FusedLocationProviderClient, mapView: MapView, events: ArrayList<Event>) {
         if (ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mapActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
@@ -73,6 +82,7 @@ class MapController(private val mapActivity: MapActivity) {
             }
         }
     }
+
 
     private fun addAnnotationToMap(mapView: MapView, myLatitude: Double?, myLongitude: Double?, events: ArrayList<Event>) {
 // Create an instance of the Annotation API and get the PointAnnotationManager.
@@ -159,8 +169,10 @@ class MapController(private val mapActivity: MapActivity) {
         }
     }
 
+
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
         convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
+
 
     private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
         if (sourceDrawable == null) {
@@ -181,6 +193,23 @@ class MapController(private val mapActivity: MapActivity) {
             drawable.draw(canvas)
             bitmap
         }
+    }
+
+
+    /**
+     * Recover in the database the user from its uid
+     */
+    fun setUser(uid: String?) {
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        mDbRef.child("user").child(uid!!).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // recover the User by uid passed
+                user = dataSnapshot.getValue(User::class.java)!!
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
     }
 
 }
