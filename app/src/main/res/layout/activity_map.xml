@@ -5,39 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.user.MapActivity">
-
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll1"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
-
-<!--                <SearchView-->
-<!--                    android:id="@+id/searchView"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="8"-->
-<!--                    android:background="@color/white"-->
-<!--                    android:iconifiedByDefault="false"-->
-<!--                    android:queryHint="Search a city"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:layout_marginStart="10dp" />-->
-
-<!--                <Button-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="2"-->
-<!--                    android:background="@drawable/button_filtered_search_bg"-->
-<!--                    android:layout_marginEnd="10dp" />-->
-
-<!--        </LinearLayout>-->
+    tools:context=".ui.user.MapActivity"
+    android:fitsSystemWindows="true">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/frgMapContainer"
-            android:layout_width="0dp"
-            android:layout_height="675dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,16 +19,13 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frgMapContainer"
             app:itemBackground="@color/dark_blue"
             app:itemTextColor="@color/white"
-            app:labelVisibilityMode="unlabeled"
             app:itemIconTint="@color/white"
+            app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

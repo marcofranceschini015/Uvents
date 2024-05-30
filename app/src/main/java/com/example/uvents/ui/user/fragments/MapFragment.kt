@@ -18,10 +18,10 @@ import com.mapbox.maps.Style
 import java.util.Locale
 
 
-class MapFragment(private val mapActivity: MapActivity, private val mapController: MapController) : Fragment() {
+class MapFragment(private val mapController: MapController) : Fragment() {
 
-    private lateinit var mapView: MapView
-    private lateinit var events: ArrayList<Event>
+    //private lateinit var mapView: MapView
+    //private lateinit var events: ArrayList<Event>
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     /**
@@ -31,44 +31,53 @@ class MapFragment(private val mapActivity: MapActivity, private val mapControlle
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v: View? = inflater.inflate(R.layout.fragment_map, container, false)
-        if (v != null) {
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mapActivity)
-            mapView = MapView(mapActivity)
+    ): View {
+        // Inflate the layout for this fragment
+        val view: View = inflater.inflate(R.layout.fragment_map, container, false)
 
-            ///// Try some events
-            events = ArrayList()
-            val event1 = Event("Festa universitaria", "Unibs", "Party", "Prova", "Via Branze, 38, 25123 Brescia BS")
-            val event2 = Event("Mostra di Picasso", "Belle Arti Brescia", "Mostra d'arte", "Prova prova", "Piazza della Vittoria, Brescia BS")
-            val event3 = Event("Eras Tour Taylor Swift", "San Siro Concerts", "Concerto", "Prova prova prova", "Piazzale Angelo Moratti, 20151 Milano MI")
-            events.add(event1)
-            events.add(event2)
-            events.add(event3)
+        // Get the MapView from the inflated layout
+        val mapView: MapView = view.findViewById(R.id.mapView)
+
+        // Initialize the Mapbox map within this MapView
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS) {
+            // You can perform additional map setups here after the style has loaded
         }
 
-        mapView.mapboxMap.loadStyle(Style.MAPBOX_STREETS)
-        mapActivity.setContentView(mapView)
+        // Set up location services and event handling
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        if(mapActivity.intent.getBooleanExtra("btnLocalitation", true)) {
+        // Dummy data for events, consider retrieving this from a ViewModel or similar component
+        val events = arrayListOf(
+            Event("Festa universitaria", "Unibs", "Party", "Prova", "Via Branze, 38, 25123 Brescia BS"),
+            Event("Mostra di Picasso", "Belle Arti Brescia", "Mostra d'arte", "Prova prova", "Piazza della Vittoria, Brescia BS"),
+            Event("Eras Tour Taylor Swift", "San Siro Concerts", "Concerto", "Prova prova prova", "Piazzale Angelo Moratti, 20151 Milano MI")
+        )
 
+        // Example of handling location logic based on intent extras
+        if(requireActivity().intent.getBooleanExtra("btnLocalitation", true)) {
+            // Assuming mapController is properly initialized and handles obtaining the current location
             mapController.getCurrentLocation(fusedLocationProviderClient, mapView, events)
-
         } else {
-            val geocoder = Geocoder(mapActivity, Locale.getDefault())
-            val addresses = mapActivity.intent.getStringExtra("city")
-                ?.let { geocoder.getFromLocationName(it, 1) }
-            if (addresses!!.isEmpty()) {
-                Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG).show()
-            } else {
-                val address = addresses[0]
-                val cityLongitude = address.longitude
-                val cityLatitude = address.latitude
-                mapController.getCityLocation(mapView, cityLatitude, cityLongitude, events)
+            val geocoder = Geocoder(requireActivity(), Locale.getDefault())
+            val addressName = requireActivity().intent.getStringExtra("city")
+            addressName?.let {
+                val addresses = geocoder.getFromLocationName(it, 1)
+                if (addresses != null) {
+                    if (addresses.isNotEmpty()) {
+                        val address = addresses[0]
+                        val cityLongitude = address.longitude
+                        val cityLatitude = address.latitude
+                        mapController.getCityLocation(mapView, cityLatitude, cityLongitude, events)
+                    } else {
+                        Toast.makeText(requireActivity(), "Location inexistent or not found", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
 
-        return v
+        // Return the fully set-up view
+        return view
     }
+
 
 }

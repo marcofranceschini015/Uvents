@@ -41,7 +41,7 @@ class MapActivity : AppCompatActivity() {
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
-        replaceFragment(MapFragment(this, mapController))
+        replaceFragment(MapFragment(mapController))
         bottomNavigation.visibility = View.VISIBLE
     }
 
