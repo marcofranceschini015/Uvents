@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#86BBD8"
+    tools:context=".ui.user.menu.PersonalPageFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:src="@drawable/baseline_person_pin_24"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="Username"
+                android:fontFamily="@font/lato"
+                android:textSize="46sp"
+                android:textStyle="bold"
+                android:textColor="#2F4858"
+                android:gravity="center"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:src="@drawable/baseline_notifications_active_24"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_below="@id/linearLayoutUsername"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:fontFamily="@font/lato"
+                android:textSize="24dp"
+                android:textColor="#2F4858"
+                android:layout_marginStart="40dp"/>
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/personal_page_textview_bg"
+                android:fontFamily="@font/inter"
+                android:text="Email"
+                android:paddingStart="20dp"
+                android:textColor="#2F4858"
+                android:textColorHint="#2F4858"
+                android:textSize="20sp"
+                android:translationZ="5dp"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.ui.user.fragments.MapFragment
+import com.example.uvents.ui.user.menu.PersonalPageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
@@ -41,8 +42,37 @@ class MapActivity : AppCompatActivity() {
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
-        replaceFragment(MapFragment(mapController))
-        bottomNavigation.visibility = View.VISIBLE
+        val mapFragment = MapFragment(mapController)
+
+        replaceFragment(mapFragment)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    // todo switch background color
+                    replaceFragment(mapFragment)
+                    true
+                }
+
+                R.id.ticket -> {
+                    // Handle "Booked" action
+                    true
+                }
+
+                R.id.chat -> {
+                    // Handle "Chat" action
+                    true
+                }
+
+                R.id.profile -> {
+                    // todo 1: switch background color
+                    // todo 2: the controller has to switch, by passing the info to the view
+                    replaceFragment(PersonalPageFragment())
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
 
