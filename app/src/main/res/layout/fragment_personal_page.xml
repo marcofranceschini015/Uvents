@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
 
             <ImageView
@@ -26,6 +26,7 @@
                 android:src="@drawable/baseline_person_pin_24"/>
 
             <TextView
+                android:id="@+id/tvUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
@@ -44,13 +45,19 @@
 
         </LinearLayout>
 
+
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="480dp"
+            android:layout_below="@id/linearLayoutUsername"
+            android:layout_marginTop="20dp">
+
         <LinearLayout
             android:id="@+id/linearLayoutContent"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_below="@id/linearLayoutUsername"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:layout_height="480dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,7 +99,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_categories"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="130dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:background="@drawable/personal_page_textview_bg"
@@ -115,7 +122,29 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_events"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/personal_page_textview_bg"
+                android:paddingStart="20dp"
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:translationZ="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Followed"
+                android:fontFamily="@font/lato"
+                android:textSize="24dp"
+                android:textColor="#2F4858"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="40dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_followed"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:background="@drawable/personal_page_textview_bg"
@@ -126,11 +155,11 @@
 
 
         </LinearLayout>
-
+    </ScrollView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/linearLayoutContent"
+            android:layout_below="@id/scrollview"
             android:orientation="vertical">
 
             <Button
@@ -138,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_marginTop="5dp"
                 android:text="Publish Event"
                 android:textAllCaps="false"
@@ -156,7 +185,7 @@
                     android:id="@+id/btnSave"
                     android:layout_width="match_parent"
                     android:layout_marginStart="40dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38dp"
                     android:layout_marginTop="5dp"
                     android:text="Save"
                     android:textAllCaps="false"
@@ -172,7 +201,7 @@
                     android:layout_width="match_parent"
                     android:layout_weight="0.5"
                     android:layout_marginEnd="40dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38dp"
                     android:layout_marginTop="5dp"
                     android:text="Logout"
                     android:textAllCaps="false"
@@ -185,6 +214,8 @@
             </LinearLayout>
 
         </LinearLayout>
+
+
 
     </RelativeLayout>
 

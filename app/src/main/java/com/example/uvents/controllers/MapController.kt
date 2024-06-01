@@ -20,6 +20,7 @@ import com.example.uvents.model.User
 import com.example.uvents.ui.user.EventActivity
 import com.example.uvents.ui.user.MapActivity
 import com.example.uvents.ui.user.WelcomeActivity
+import com.example.uvents.ui.user.menu.PersonalPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -210,6 +211,14 @@ class MapController(private var mapActivity: MapActivity) {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+
+    /**
+     * Set up the personal page with all information in the view
+     */
+    fun setPersonalPage() {
+        mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventsPublished()))
     }
 
 }

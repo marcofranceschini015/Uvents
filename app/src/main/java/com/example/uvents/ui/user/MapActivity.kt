@@ -66,7 +66,8 @@ class MapActivity : AppCompatActivity() {
                 R.id.profile -> {
                     // todo 1: switch background color
                     // todo 2: the controller has to switch, by passing the info to the view
-                    replaceFragment(PersonalPageFragment())
+                    //replaceFragment(PersonalPageFragment())
+                    mapController.setPersonalPage()
                     true
                 }
 
