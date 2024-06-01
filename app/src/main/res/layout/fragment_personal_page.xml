@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#86BBD8"
     tools:context=".ui.user.menu.PersonalPageFragment">
 
@@ -15,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
 
 
             <ImageView
@@ -44,6 +45,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutContent"
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:layout_below="@id/linearLayoutUsername"
@@ -76,6 +78,111 @@
                 android:textSize="20sp"
                 android:translationZ="5dp"/>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Liked categories"
+                android:fontFamily="@font/lato"
+                android:textSize="24dp"
+                android:textColor="#2F4858"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="40dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/personal_page_textview_bg"
+                android:paddingStart="20dp"
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:translationZ="5dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Events published"
+                android:fontFamily="@font/lato"
+                android:textSize="24dp"
+                android:textColor="#2F4858"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="40dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_events"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/personal_page_textview_bg"
+                android:paddingStart="20dp"
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:translationZ="5dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/linearLayoutContent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnPublish"
+                android:layout_width="match_parent"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Publish Event"
+                android:textAllCaps="false"
+                android:fontFamily="@font/lato"
+                android:textSize="24sp"
+                android:textColor="#2F4858"
+                android:background="@drawable/button_personal_page_bg"
+                android:translationZ="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/lato"
+                    android:textSize="24sp"
+                    android:textColor="#2F4858"
+                    android:background="@drawable/button_personal_page_bg"
+                    android:layout_weight="0.5"
+                    android:translationZ="5dp"/>
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_marginEnd="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Logout"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/lato"
+                    android:textSize="24sp"
+                    android:textColor="#2F4858"
+                    android:background="@drawable/button_personal_page_bg"
+                    android:translationZ="5dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
