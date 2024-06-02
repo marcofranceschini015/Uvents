@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
+import com.example.uvents.controllers.adapter.CategoryPersonalAdapter
 
 
 class PersonalPageFragment(private val mapController: MapController,
@@ -26,6 +27,8 @@ class PersonalPageFragment(private val mapController: MapController,
     private lateinit var btnPublish: Button
     private lateinit var btnSave: Button
     private lateinit var btnLogout: Button
+    private lateinit var adapter: CategoryPersonalAdapter
+    private lateinit var copyCategories: MutableList<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +38,7 @@ class PersonalPageFragment(private val mapController: MapController,
         val v: View? = inflater.inflate(R.layout.fragment_personal_page, container, false)
 
         if (v != null) {
+            // link view
             tvUsername = v.findViewById(R.id.tvUsername)
             tvEmail = v.findViewById(R.id.tv_email)
             rvCategories = v.findViewById(R.id.rv_categories)
@@ -43,6 +47,15 @@ class PersonalPageFragment(private val mapController: MapController,
             btnPublish = v.findViewById(R.id.btnPublish)
             btnSave = v.findViewById(R.id.btnSave)
             btnLogout = v.findViewById(R.id.btnLogout)
+
+            // recycler view categories
+            copyCategories = categories.toMutableList()
+            adapter = CategoryPersonalAdapter(copyCategories) { position ->
+                adapter.removeItem(position)
+            }
+            rvCategories.adapter = adapter
+
+
         }
 
         tvUsername.text = username
@@ -50,6 +63,12 @@ class PersonalPageFragment(private val mapController: MapController,
 
         // todo set le recycler view
         // todo clicklistener dei bottoni
+
+        btnSave.setOnClickListener {
+            // update the user changes
+            val remainingCategories = copyCategories.toList()
+            mapController.updateUser(remainingCategories)
+        }
 
         return v
     }

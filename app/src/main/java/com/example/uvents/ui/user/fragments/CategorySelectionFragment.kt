@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
-import com.example.uvents.controllers.CategoryAdapter
+import com.example.uvents.controllers.adapter.CategoryAdapter
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.model.CategorySource
 

@@ -221,4 +221,31 @@ class MapController(private var mapActivity: MapActivity) {
         mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventsPublished()))
     }
 
+
+    fun updateUser (categories: List<String>) {
+        user.categories = categories
+        updateDatabase(categories)
+    }
+
+    private fun updateDatabase(categories: List<String>) {
+        // Reference to the specific user's node
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        val userRef = mDbRef.child("user").child(user.uid)
+
+        // Map of data to update
+        val updates = hashMapOf<String, Any>(
+            "categories" to categories
+        )
+
+        // Update children of the user node
+        userRef.updateChildren(updates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(mapActivity, "Updated", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(mapActivity, "Some problems occured", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
 }
