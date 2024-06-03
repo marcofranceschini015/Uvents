@@ -10,13 +10,22 @@
     android:fitsSystemWindows="true">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/frgMapContainer"
+            android:id="@+id/frgSearchBarContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNav" />
+            app:layout_constraintBottom_toTopOf="@id/frgMapContainer" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/frgMapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frgSearchBarContainer" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
