@@ -1,4 +1,4 @@
-package com.example.uvents.controllers
+package com.example.uvents.controllers.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
-import com.mapbox.maps.plugin.attribution.createAttributionPlugin
 
 class CategoryAdapter(private val categories: Array<String>): RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
 

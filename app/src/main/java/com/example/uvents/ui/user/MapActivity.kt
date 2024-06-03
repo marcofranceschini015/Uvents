@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.ui.user.fragments.MapFragment
+import com.example.uvents.ui.user.menu.PersonalPageFragment
 import com.example.uvents.ui.user.fragments.SearchMapBarFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mapbox.search.ApiType
@@ -66,100 +67,38 @@ class MapActivity : AppCompatActivity() {
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
+        val mapFragment = MapFragment(mapController)
+
+        replaceFragment(mapFragment)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    // todo switch background color
+                    replaceFragment(mapFragment)
+                    true
+                }
+
+                R.id.ticket -> {
+                    // Handle "Booked" action
+                    true
+                }
+
+                R.id.chat -> {
+                    // Handle "Chat" action
+                    true
+                }
+
+                R.id.profile -> {
+                    // todo switch background color
+                    mapController.setPersonalPage()
+                    true
+                }
+
+                else -> false
+            }
+        }
         replaceSearchBarFragment(SearchMapBarFragment(this))
-        replaceFragment(MapFragment(mapController))
-        bottomNavigation.visibility = View.VISIBLE
 
-
-
-//        val accessToken = getString(R.string.mapbox_access_token)
-//
-//        val queryEditText = findViewById<EditText>(R.id.query_edit_text)
-//        val searchResultsView = findViewById<SearchResultsView>(R.id.search_results_view)
-//        searchResultsView.initialize(
-//            SearchResultsView.Configuration(
-//                commonConfiguration = CommonSearchViewConfiguration(DistanceUnitType.IMPERIAL)
-//            )
-//        )
-//
-//        val searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
-//            apiType = ApiType.GEOCODING,
-//            settings = SearchEngineSettings(accessToken)
-//        )
-//
-//        val offlineSearchEngine = OfflineSearchEngine.create(
-//            OfflineSearchEngineSettings(accessToken)
-//        )
-//
-//        val searchEngineUiAdapter = SearchEngineUiAdapter(
-//            view = searchResultsView,
-//            searchEngine = searchEngine,
-//            offlineSearchEngine = offlineSearchEngine,
-//        )
-//
-//        searchEngineUiAdapter.addSearchListener(object : SearchEngineUiAdapter.SearchListener {
-//
-//            private fun showToast(message: String) {
-//                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
-//            }
-//
-//            override fun onSuggestionsShown(suggestions: List<SearchSuggestion>, responseInfo: ResponseInfo) {
-//                // not implemented
-//            }
-//
-//            override fun onSearchResultsShown(
-//                suggestion: SearchSuggestion,
-//                results: List<SearchResult>,
-//                responseInfo: ResponseInfo
-//            ) {
-//                // not implemented
-//            }
-//
-//            override fun onOfflineSearchResultsShown(results: List<OfflineSearchResult>, responseInfo: OfflineResponseInfo) {
-//                // not implemented
-//            }
-//
-//            override fun onSuggestionSelected(searchSuggestion: SearchSuggestion): Boolean {
-//                return false
-//            }
-//
-//            override fun onSearchResultSelected(searchResult: SearchResult, responseInfo: ResponseInfo) {
-//                showToast("SearchResult clicked: ${searchResult.name}")
-//            }
-//
-//            override fun onOfflineSearchResultSelected(searchResult: OfflineSearchResult, responseInfo: OfflineResponseInfo) {
-//                showToast("OfflineSearchResult clicked: ${searchResult.name}")
-//            }
-//
-//            override fun onError(e: Exception) {
-//                showToast("Error happened: $e")
-//            }
-//
-//            override fun onHistoryItemClick(historyRecord: HistoryRecord) {
-//                showToast("HistoryRecord clicked: ${historyRecord.name}")
-//            }
-//
-//            override fun onPopulateQueryClick(suggestion: SearchSuggestion, responseInfo: ResponseInfo) {
-//                queryEditText.setText(suggestion.name)
-//            }
-//
-//            override fun onFeedbackItemClick(responseInfo: ResponseInfo) {
-//                // not implemented
-//            }
-//        })
-//
-//        queryEditText.addTextChangedListener(object : TextWatcher {
-//
-//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, after: Int) {
-//                searchResultsView.search(s.toString())
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-//                // not implemented
-//            }
-//
-//            override fun afterTextChanged(e: Editable) { /* not implemented */ }
-//        })
 
         if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(
@@ -168,7 +107,6 @@ class MapActivity : AppCompatActivity() {
                 PERMISSIONS_REQUEST_LOCATION
             )
         }
-
     }
 
 
