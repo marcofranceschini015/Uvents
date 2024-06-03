@@ -45,6 +45,7 @@ class SearchMapBarFragment(private val mapActivity: MapActivity) : Fragment() {
         // Inflate the layout for this fragment
         val v: View? = inflater.inflate(R.layout.fragment_search_map_bar, container, false)
 
+        /*
         val accessToken = getString(R.string.mapbox_access_token)
 //        Plugin.Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
         if (v != null) {
@@ -146,7 +147,7 @@ class SearchMapBarFragment(private val mapActivity: MapActivity) : Fragment() {
 //            )
 //        }
 
-
+*/
         return v
     }
 

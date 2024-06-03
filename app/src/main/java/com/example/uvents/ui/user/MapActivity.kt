@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentContainerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.ui.user.fragments.MapFragment
@@ -47,6 +49,7 @@ class MapActivity : AppCompatActivity() {
 
     private lateinit var mapController: MapController
     private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var frgSearchBarContainer: FragmentContainerView
 
     /**
      * On creation create a mapController and recover the user in it
@@ -66,6 +69,7 @@ class MapActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.bottomNav)
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
+        frgSearchBarContainer = findViewById(R.id.frgSearchBarContainer)
 
         val mapFragment = MapFragment(mapController)
 
@@ -75,6 +79,7 @@ class MapActivity : AppCompatActivity() {
                 R.id.home -> {
                     // todo switch background color
                     replaceFragment(mapFragment)
+                    frgSearchBarContainer.visibility = View.VISIBLE
                     true
                 }
 
@@ -91,6 +96,7 @@ class MapActivity : AppCompatActivity() {
                 R.id.profile -> {
                     // todo switch background color
                     mapController.setPersonalPage()
+                    frgSearchBarContainer.visibility = View.GONE
                     true
                 }
 
