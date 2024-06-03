@@ -1,31 +1,13 @@
 package com.example.uvents.ui.user.fragments
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.ui.user.MapActivity
-import com.mapbox.maps.plugin.Plugin
-import com.mapbox.search.ApiType
-import com.mapbox.search.ResponseInfo
-import com.mapbox.search.SearchEngine
-import com.mapbox.search.SearchEngineSettings
-import com.mapbox.search.offline.OfflineResponseInfo
-import com.mapbox.search.offline.OfflineSearchEngine
-import com.mapbox.search.offline.OfflineSearchEngineSettings
-import com.mapbox.search.offline.OfflineSearchResult
-import com.mapbox.search.record.HistoryRecord
-import com.mapbox.search.result.SearchResult
-import com.mapbox.search.result.SearchSuggestion
-import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter
-import com.mapbox.search.ui.view.CommonSearchViewConfiguration
-import com.mapbox.search.ui.view.DistanceUnitType
 import com.mapbox.search.ui.view.SearchResultsView
 
 /**
