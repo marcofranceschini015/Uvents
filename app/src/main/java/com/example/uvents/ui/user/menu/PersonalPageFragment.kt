@@ -10,14 +10,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
-import com.example.uvents.controllers.adapter.CategoryPersonalAdapter
+import com.example.uvents.controllers.adapter.PersonalPageAdapter
 
 
-class PersonalPageFragment(private val mapController: MapController,
-                           private val username: String,
-                           private val email:String,
-                           private val categories: List<String>,
-                           private val events: List<String>) : Fragment() {
+class PersonalPageFragment(
+    private val mapController: MapController,
+    private val username: String,
+    private val email:String,
+    private val categories: List<String>,
+    private val events: List<String>,
+    private val followed: List<String>
+) : Fragment() {
 
     private lateinit var tvUsername: TextView
     private lateinit var tvEmail: TextView
@@ -27,9 +30,23 @@ class PersonalPageFragment(private val mapController: MapController,
     private lateinit var btnPublish: Button
     private lateinit var btnSave: Button
     private lateinit var btnLogout: Button
-    private lateinit var adapter: CategoryPersonalAdapter
+    private lateinit var tvEvents: TextView
+
+    // liked categories info
+    private lateinit var adapterCategories: PersonalPageAdapter
     private lateinit var copyCategories: MutableList<String>
 
+    // events published info
+    private lateinit var adapterEvents: PersonalPageAdapter
+    private lateinit var copyEvents: MutableList<String>
+
+    // followed organizers info
+    private lateinit var adapterFollowed: PersonalPageAdapter
+    private lateinit var copyFollowed: MutableList<String>
+
+    /*+
+    On the creation of the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +58,7 @@ class PersonalPageFragment(private val mapController: MapController,
             // link view
             tvUsername = v.findViewById(R.id.tvUsername)
             tvEmail = v.findViewById(R.id.tv_email)
+            tvEvents = v.findViewById(R.id.tvEvents)
             rvCategories = v.findViewById(R.id.rv_categories)
             rvEvents = v.findViewById(R.id.rv_events)
             rvFollowed = v.findViewById(R.id.rv_followed)
@@ -50,24 +68,56 @@ class PersonalPageFragment(private val mapController: MapController,
 
             // recycler view categories
             copyCategories = categories.toMutableList()
-            adapter = CategoryPersonalAdapter(copyCategories) { position ->
-                adapter.removeItem(position)
+            adapterCategories = PersonalPageAdapter(copyCategories) { position ->
+                adapterCategories.removeItem(position)
             }
-            rvCategories.adapter = adapter
+            rvCategories.adapter = adapterCategories
 
+            // recycler view events
+            copyEvents = events.toMutableList()
+            adapterEvents = PersonalPageAdapter(copyEvents) { position ->
+                adapterEvents.removeItem(position)
+            }
+            rvEvents.adapter = adapterEvents
+
+            // recycler view followed organizers
+            copyFollowed = followed.toMutableList()
+            adapterFollowed = PersonalPageAdapter(copyFollowed) { position ->
+                adapterFollowed.removeItem(position)
+            }
+            rvFollowed.adapter = adapterFollowed
 
         }
 
+        // set username of the user and email
         tvUsername.text = username
         tvEmail.text = email
 
-        // todo set le recycler view
-        // todo clicklistener dei bottoni
+        // if no events published don't show the events rv
+        if (events.isEmpty()){
+            rvEvents.visibility = View.GONE
+            tvEvents.visibility = View.GONE
+        }
 
+        // save the modification of
+        // the personal page
         btnSave.setOnClickListener {
             // update the user changes
-            val remainingCategories = copyCategories.toList()
-            mapController.updateUser(remainingCategories)
+            mapController.updateUser(
+                copyCategories.toList(),
+                copyEvents.toList(),
+                copyFollowed.toList()
+            )
+        }
+
+        // logout the user, go the main page
+        btnLogout.setOnClickListener {
+            // todo
+        }
+
+        // go to publish an event page
+        btnPublish.setOnClickListener {
+            // todo
         }
 
         return v

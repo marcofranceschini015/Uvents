@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 
-class CategoryPersonalAdapter(
+class PersonalPageAdapter(
     private var categories: MutableList<String>,
     private val onItemRemove: (Int) -> Unit
-): RecyclerView.Adapter<CategoryPersonalAdapter.CategoryPersonalViewHolder>(){
+): RecyclerView.Adapter<PersonalPageAdapter.CategoryPersonalViewHolder>(){
 
     class CategoryPersonalViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var catTextView: TextView = itemView.findViewById(R.id.category_text)
@@ -19,7 +19,7 @@ class CategoryPersonalAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryPersonalViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.cateogry_profile_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.profile_item, parent, false)
         return CategoryPersonalViewHolder(itemView)
     }
 

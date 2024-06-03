@@ -9,6 +9,7 @@ class User {
     lateinit var uid: String
     lateinit var categories: List<String>
     private var eventsPublished: List<Event> = listOf()
+    private var followed: List<User> = listOf()
 
     constructor() {}
 
@@ -26,6 +27,19 @@ class User {
         val list: MutableList<String> = mutableListOf()
         eventsPublished.forEach { event ->
             list.add(event.name!!)
+        }
+        return list.toList()
+    }
+
+
+    /**
+     * Return the list of followed users in string format
+     * in a way to be used in the view
+     */
+    fun getFollowed(): List<String> {
+        val list: MutableList<String> = mutableListOf()
+        followed.forEach { user ->
+            list.add(user.name)
         }
         return list.toList()
     }

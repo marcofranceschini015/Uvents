@@ -218,11 +218,13 @@ class MapController(private var mapActivity: MapActivity) {
      * Set up the personal page with all information in the view
      */
     fun setPersonalPage() {
-        mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventsPublished()))
+        mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventsPublished(), user.getFollowed()))
     }
 
 
-    fun updateUser (categories: List<String>) {
+    fun updateUser (categories: List<String>, events: List<String>, followed: List<String>) {
+        // todo special treatment for events published cancelled, has to send notification
+        // todo organizer not followed -> modify view
         user.categories = categories
         updateDatabase(categories)
     }
