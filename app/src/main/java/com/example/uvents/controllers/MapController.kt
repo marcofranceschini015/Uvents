@@ -20,6 +20,7 @@ import com.example.uvents.model.User
 import com.example.uvents.ui.user.EventActivity
 import com.example.uvents.ui.user.MapActivity
 import com.example.uvents.ui.user.WelcomeActivity
+import com.example.uvents.ui.user.menu.PersonalPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -211,5 +212,42 @@ class MapController(private var mapActivity: MapActivity) {
             }
         })
     }
+
+
+    /**
+     * Set up the personal page with all information in the view
+     */
+    fun setPersonalPage() {
+        mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventsPublished(), user.getFollowed()))
+    }
+
+
+    fun updateUser (categories: List<String>, events: List<String>, followed: List<String>) {
+        // todo special treatment for events published cancelled, has to send notification
+        // todo organizer not followed -> modify view
+        user.categories = categories
+        updateDatabase(categories)
+    }
+
+    private fun updateDatabase(categories: List<String>) {
+        // Reference to the specific user's node
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        val userRef = mDbRef.child("user").child(user.uid)
+
+        // Map of data to update
+        val updates = hashMapOf<String, Any>(
+            "categories" to categories
+        )
+
+        // Update children of the user node
+        userRef.updateChildren(updates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(mapActivity, "Updated", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(mapActivity, "Some problems occured", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
 }
