@@ -1,19 +1,17 @@
-package com.example.uvents.ui.user.fragments
+package com.example.uvents.ui.user.welcome_frgms
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.WelcomeController
-import com.example.uvents.ui.user.WelcomeActivity
 
 class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
 
@@ -22,6 +20,19 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
     private lateinit var etInputUsername: EditText
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // This callback will only be called when the Fragment is at least Started.
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle the back button event
+                ctrl.switchFragment(WelcomeFragment(ctrl))
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +46,8 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             etEmail = v.findViewById(R.id.etInputEmail)
             etPassword = v.findViewById(R.id.etInputPassword)
         }
+
+        ctrl.showBackArrow()
 
         btnSignUp.setOnClickListener {
             val name = etInputUsername.text.toString()

@@ -1,4 +1,4 @@
-package com.example.uvents.ui.user.fragments
+package com.example.uvents.ui.user.welcome_frgms
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
-import com.google.firebase.database.ValueEventListener
+import com.example.uvents.controllers.WelcomeController
 
 class WelcomeFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fragment_welcome) {
 

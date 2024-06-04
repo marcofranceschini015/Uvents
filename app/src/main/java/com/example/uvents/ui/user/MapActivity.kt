@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
-import com.example.uvents.ui.user.fragments.MapFragment
-import com.example.uvents.ui.user.fragments.SearchMapBarFragment
+import com.example.uvents.ui.user.menu_frgms.MapFragment
+import com.example.uvents.ui.user.menu_frgms.SearchMapBarFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
@@ -94,7 +94,6 @@ class MapActivity : AppCompatActivity() {
         }
     }
 
-
     /**
      * Function that replace the fragment in the activity
      */
@@ -126,5 +125,12 @@ class MapActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
+
+//    override fun onBackPressed() {
+//        val intent = Intent(this, WelcomeActivity::class.java)
+//        startActivity(intent)
+//        finish()
+//        super.onBackPressed()
+//    }
 
 }

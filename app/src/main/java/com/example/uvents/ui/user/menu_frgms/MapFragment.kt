@@ -1,4 +1,4 @@
-package com.example.uvents.ui.user.fragments
+package com.example.uvents.ui.user.menu_frgms
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -13,12 +13,13 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.MapActivity
-import com.example.uvents.ui.user.fragments.EventFragment
-import com.example.uvents.ui.user.menu.PersonalPageFragment
+import com.example.uvents.ui.user.menu_frgms.EventFragment
+import com.example.uvents.ui.user.menu_frgms.PersonalPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -43,6 +44,9 @@ class MapController(private var mapActivity: MapActivity) {
     private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
     private lateinit var mDbRef: DatabaseReference
 
+    fun switchFragment(f: Fragment){
+        mapActivity.replaceFragment(f)
+    }
 
     fun getCurrentLocation(fusedLocationProviderClient: FusedLocationProviderClient, mapView: MapView, events: ArrayList<Event>) {
         if (ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -53,12 +57,12 @@ class MapController(private var mapActivity: MapActivity) {
 
         var latitude: Double? = null
         var longitude: Double? = null
-        var location = fusedLocationProviderClient.lastLocation
+        val location = fusedLocationProviderClient.lastLocation
         location.addOnSuccessListener {
             if (it != null) {
                latitude = it.latitude
                longitude = it.longitude
-                var cameraPosition = CameraOptions.Builder().center(Point.fromLngLat(it.longitude, it.latitude)).zoom(14.0).build()
+                val cameraPosition = CameraOptions.Builder().center(Point.fromLngLat(it.longitude, it.latitude)).zoom(14.0).build()
                 mapView.mapboxMap.setCamera(cameraPosition)
 
                 addAnnotationToMap(mapView, latitude, longitude, events)
@@ -85,7 +89,7 @@ class MapController(private var mapActivity: MapActivity) {
 // Set options for the resulting symbol layer.
                 val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
 // Define a geographic coordinate.
-                    .withPoint(Point.fromLngLat(myLongitude!!, myLatitude!!))
+                    .withPoint(Point.fromLngLat(myLongitude!!, myLatitude))
 // Specify the bitmap you assigned to the point annotation
 // The bitmap will be added to map style automatically.
                     .withIconImage(it)
@@ -104,7 +108,7 @@ class MapController(private var mapActivity: MapActivity) {
             if (addresses!!.isEmpty()) {
                 Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG).show()
             } else {
-                val address = addresses!![0]
+                val address = addresses[0]
                 longitude = address.longitude
                 latitude = address.latitude
             }
@@ -121,7 +125,7 @@ class MapController(private var mapActivity: MapActivity) {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(it)
                     .withIconAnchor(IconAnchor.TOP)
-                val pointAnnotation = pointAnnotationManager?.create(pointAnnotationOptions)
+                val pointAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
 
                 val viewAnnotationManager = mapView.viewAnnotationManager
 
@@ -139,12 +143,12 @@ class MapController(private var mapActivity: MapActivity) {
 //                viewAnnotation.visibility = View.GONE
 //            }
 
-                pointAnnotationManager?.apply {
+                pointAnnotationManager.apply {
                     addClickListener(
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
                                 mapActivity.hideSearchBar()
-                                mapActivity.replaceFragment(EventFragment(event))
+                                mapActivity.replaceFragment(EventFragment(MapController(mapActivity), event))
                             } else
                                 viewAnnotation.visibility = View.VISIBLE
                             false
