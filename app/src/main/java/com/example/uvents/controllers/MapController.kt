@@ -44,19 +44,6 @@ class MapController(private var mapActivity: MapActivity) {
     private lateinit var mDbRef: DatabaseReference
 
 
-    fun getCityLocation(mapView: MapView, cityLatitude: Double, cityLongitude: Double, events: ArrayList<Event>) {
-        if (ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mapActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
-            return
-        }
-        var cameraPosition = CameraOptions.Builder().center(Point.fromLngLat(cityLongitude, cityLatitude)).zoom(14.0).build()
-        mapView.mapboxMap.setCamera(cameraPosition)
-
-        addAnnotationToMap(mapView, null, null, events)
-    }
-
-
     fun getCurrentLocation(fusedLocationProviderClient: FusedLocationProviderClient, mapView: MapView, events: ArrayList<Event>) {
         if (ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -77,7 +64,10 @@ class MapController(private var mapActivity: MapActivity) {
                 addAnnotationToMap(mapView, latitude, longitude, events)
 
             } else {
-                Toast.makeText(mapActivity, "Issue about your position (maybe it's off)", Toast.LENGTH_LONG).show()
+                val cameraPosition = CameraOptions.Builder().center(Point.fromLngLat(9.188120, 45.463619)).zoom(14.0).build()
+                mapView.mapboxMap.setCamera(cameraPosition)
+
+                addAnnotationToMap(mapView, null, null, events)
             }
         }
     }
@@ -130,7 +120,7 @@ class MapController(private var mapActivity: MapActivity) {
                 val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(it)
-                    .withIconAnchor(IconAnchor.BOTTOM)
+                    .withIconAnchor(IconAnchor.TOP)
                 val pointAnnotation = pointAnnotationManager?.create(pointAnnotationOptions)
 
                 val viewAnnotationManager = mapView.viewAnnotationManager

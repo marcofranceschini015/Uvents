@@ -112,6 +112,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/shareEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_weight="1"

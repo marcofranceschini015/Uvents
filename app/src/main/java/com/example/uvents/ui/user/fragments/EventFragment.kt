@@ -1,9 +1,11 @@
 package com.example.uvents.ui.user.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
@@ -16,6 +18,7 @@ class EventFragment(private var event: Event) : Fragment() {
     private lateinit var category: TextView
     private lateinit var description: TextView
     private lateinit var location: TextView
+    private lateinit var ivShare: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +34,7 @@ class EventFragment(private var event: Event) : Fragment() {
             category = v.findViewById(R.id.category)
             description = v.findViewById(R.id.description)
             location = v.findViewById(R.id.location)
+            ivShare = v.findViewById(R.id.shareEvent)
         }
 
         nameEvent.text = event.name
@@ -38,6 +42,18 @@ class EventFragment(private var event: Event) : Fragment() {
         category.text = event.category
         description.text = event.description
         location.text = event.address
+
+        ivShare.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                val sharedText = event.name + "\n" + event.organizer + "\n" + event.category + "\n" + event.address
+                putExtra(Intent.EXTRA_TEXT, sharedText)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
 
         return v
     }
