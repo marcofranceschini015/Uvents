@@ -27,99 +27,100 @@ class SearchMapBarFragment(private val mapActivity: MapActivity) : Fragment() {
         // Inflate the layout for this fragment
         val v: View? = inflater.inflate(R.layout.fragment_search_map_bar, container, false)
 
-        /*
-        val accessToken = getString(R.string.mapbox_access_token)
+
+//        val accessToken = getString(R.string.mapbox_access_token)
 //        Plugin.Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
-        if (v != null) {
-            queryEditText = v.findViewById<EditText>(R.id.query_edit_text)
-            searchResultsView = v.findViewById<SearchResultsView>(R.id.search_results_view)
-        }
-
-        searchResultsView.initialize(
-            SearchResultsView.Configuration(
-                commonConfiguration = CommonSearchViewConfiguration(DistanceUnitType.IMPERIAL)
-            )
-        )
-
-        val searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
-            apiType = ApiType.GEOCODING,
-            settings = SearchEngineSettings(getString(R.string.mapbox_access_token))
-        )
-
-        val offlineSearchEngine = OfflineSearchEngine.create(
-            OfflineSearchEngineSettings(accessToken)
-        )
-
-        val searchEngineUiAdapter = SearchEngineUiAdapter(
-            view = searchResultsView,
-            searchEngine = searchEngine,
-            offlineSearchEngine = offlineSearchEngine,
-        )
-
-        searchEngineUiAdapter.addSearchListener(object : SearchEngineUiAdapter.SearchListener {
-
-            private fun showToast(message: String) {
-                Toast.makeText(mapActivity.applicationContext, message, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onSuggestionsShown(suggestions: List<SearchSuggestion>, responseInfo: ResponseInfo) {
-                // not implemented
-            }
-
-            override fun onSearchResultsShown(
-                suggestion: SearchSuggestion,
-                results: List<SearchResult>,
-                responseInfo: ResponseInfo
-            ) {
-                // not implemented
-            }
-
-            override fun onOfflineSearchResultsShown(results: List<OfflineSearchResult>, responseInfo: OfflineResponseInfo) {
-                // not implemented
-            }
-
-            override fun onSuggestionSelected(searchSuggestion: SearchSuggestion): Boolean {
-                return false
-            }
-
-            override fun onSearchResultSelected(searchResult: SearchResult, responseInfo: ResponseInfo) {
-                showToast("SearchResult clicked: ${searchResult.name}")
-            }
-
-            override fun onOfflineSearchResultSelected(searchResult: OfflineSearchResult, responseInfo: OfflineResponseInfo) {
-                showToast("OfflineSearchResult clicked: ${searchResult.name}")
-            }
-
-            override fun onError(e: Exception) {
-                showToast("Error happened: $e")
-            }
-
-            override fun onHistoryItemClick(historyRecord: HistoryRecord) {
-                showToast("HistoryRecord clicked: ${historyRecord.name}")
-            }
-
-            override fun onPopulateQueryClick(suggestion: SearchSuggestion, responseInfo: ResponseInfo) {
-                queryEditText.setText(suggestion.name)
-            }
-
-            override fun onFeedbackItemClick(responseInfo: ResponseInfo) {
-                // not implemented
-            }
-        })
-
-        queryEditText.addTextChangedListener(object : TextWatcher {
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, after: Int) {
-//                searchResultsView.search(s.toString())
-                searchResultsView.focusSearch(after)
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // not implemented
-            }
-
-            override fun afterTextChanged(e: Editable) { /* not implemented */ }
-        })
+//        if (v != null) {
+//            queryEditText = v.findViewById<EditText>(R.id.query_edit_text)
+//            searchResultsView = v.findViewById<SearchResultsView>(R.id.search_results_view)
+//        }
+//
+//        searchResultsView.initialize(
+//            SearchResultsView.Configuration(
+//                commonConfiguration = CommonSearchViewConfiguration(DistanceUnitType.IMPERIAL)
+//            )
+//        )
+//
+//        val searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
+//            apiType = ApiType.GEOCODING,
+//            settings = SearchEngineSettings(getString(R.string.mapbox_access_token))
+//        )
+//
+//        val offlineSearchEngine = OfflineSearchEngine.create(
+//            OfflineSearchEngineSettings(accessToken)
+//        )
+//
+//        val searchEngineUiAdapter = SearchEngineUiAdapter(
+//            view = searchResultsView,
+//            searchEngine = searchEngine,
+//            offlineSearchEngine = offlineSearchEngine,
+//        )
+//
+//        searchEngineUiAdapter.addSearchListener(object : SearchEngineUiAdapter.SearchListener {
+//
+//            private fun showToast(message: String) {
+//                Toast.makeText(mapActivity.applicationContext, message, Toast.LENGTH_SHORT).show()
+//            }
+//
+//            override fun onSuggestionsShown(suggestions: List<SearchSuggestion>, responseInfo: ResponseInfo) {
+//                // not implemented
+//            }
+//
+//            override fun onSearchResultsShown(
+//                suggestion: SearchSuggestion,
+//                results: List<SearchResult>,
+//                responseInfo: ResponseInfo
+//            ) {
+//                // not implemented
+//            }
+//
+//            override fun onOfflineSearchResultsShown(results: List<OfflineSearchResult>, responseInfo: OfflineResponseInfo) {
+//                // not implemented
+//            }
+//
+//            override fun onSuggestionSelected(searchSuggestion: SearchSuggestion): Boolean {
+//                return false
+//            }
+//
+//            override fun onSearchResultSelected(searchResult: SearchResult, responseInfo: ResponseInfo) {
+//                showToast("SearchResult clicked: ${searchResult.name}")
+//            }
+//
+//            override fun onOfflineSearchResultSelected(searchResult: OfflineSearchResult, responseInfo: OfflineResponseInfo) {
+//                showToast("OfflineSearchResult clicked: ${searchResult.name}")
+//            }
+//
+//            override fun onError(e: Exception) {
+//                showToast("Error happened: $e")
+//            }
+//
+//            override fun onHistoryItemClick(historyRecord: HistoryRecord) {
+//                showToast("HistoryRecord clicked: ${historyRecord.name}")
+//            }
+//
+//            override fun onPopulateQueryClick(suggestion: SearchSuggestion, responseInfo: ResponseInfo) {
+//                queryEditText.setText(suggestion.name)
+//            }
+//
+//            override fun onFeedbackItemClick(responseInfo: ResponseInfo) {
+//                // not implemented
+//            }
+//        })
+//
+//        queryEditText.addTextChangedListener(object : TextWatcher {
+//
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, after: Int) {
+//                s.let {
+//                    SearchResultsView.performSearch(it.toString())
+//                }
+//            }
+//
+//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+//                // not implemented
+//            }
+//
+//            override fun afterTextChanged(e: Editable) { /* not implemented */ }
+//        })
 
 //        if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
 //            ActivityCompat.requestPermissions(
@@ -129,9 +130,29 @@ class SearchMapBarFragment(private val mapActivity: MapActivity) : Fragment() {
 //            )
 //        }
 
-*/
         return v
     }
+
+//    private fun performSearch(searchEngine: SearchEngine, query: String) {
+//        searchEngine.search(
+//            query,
+//            { suggestions ->
+//                // Handle search suggestions
+//                if (suggestions.isNotEmpty()) {
+//                    val firstSuggestion = suggestions[0]
+//                    searchEngine.select(firstSuggestion, { result ->
+//                        // Handle search result
+//                        searchResultsAdapter.updateResults(result.results)
+//                    }, { error ->
+//                        // Handle search error
+//                    })
+//                }
+//            },
+//            { error ->
+//                // Handle search error
+//            }
+//        )
+//    }
 
 //    private companion object {
 //

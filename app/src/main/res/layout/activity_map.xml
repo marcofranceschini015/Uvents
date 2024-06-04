@@ -9,6 +9,7 @@
     android:background="#336699"
     android:fitsSystemWindows="true">
 
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/frgSearchBarContainer"
             android:layout_width="match_parent"
@@ -30,7 +31,7 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:itemBackground="@color/dark_blue"
             app:itemTextColor="@color/white"

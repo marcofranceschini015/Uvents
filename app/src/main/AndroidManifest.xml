@@ -24,9 +24,6 @@
             android:name=".ui.user.CategorySelectionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.user.EventActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.organizer.DashboardOrganizerActivity"
             android:exported="false" />
         <activity

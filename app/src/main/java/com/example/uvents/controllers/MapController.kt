@@ -1,7 +1,6 @@
 package com.example.uvents.controllers
 
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -17,9 +16,8 @@ import androidx.core.app.ActivityCompat
 import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.User
-import com.example.uvents.ui.user.EventActivity
 import com.example.uvents.ui.user.MapActivity
-import com.example.uvents.ui.user.WelcomeActivity
+import com.example.uvents.ui.user.fragments.EventFragment
 import com.example.uvents.ui.user.menu.PersonalPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.database.DataSnapshot
@@ -155,11 +153,8 @@ class MapController(private var mapActivity: MapActivity) {
                     addClickListener(
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
-                                val intent = Intent(mapActivity, EventActivity::class.java)
-//                            intent.putExtra("btnLocalitation", true)
-                                mapActivity.startActivity(intent)
-                                mapActivity.finish()
-//                                mapActivity.replaceFragment(EventFragment())
+                                mapActivity.hideSearchBar()
+                                mapActivity.replaceFragment(EventFragment())
                             } else
                                 viewAnnotation.visibility = View.VISIBLE
                             false

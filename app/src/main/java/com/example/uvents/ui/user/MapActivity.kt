@@ -5,11 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -18,29 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainer
 import androidx.fragment.app.FragmentContainerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.ui.user.fragments.MapFragment
-import com.example.uvents.ui.user.menu.PersonalPageFragment
 import com.example.uvents.ui.user.fragments.SearchMapBarFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.mapbox.search.ApiType
-import com.mapbox.search.ResponseInfo
-import com.mapbox.search.SearchEngine
-import com.mapbox.search.SearchEngineSettings
-import com.mapbox.search.offline.OfflineResponseInfo
-import com.mapbox.search.offline.OfflineSearchEngine
-import com.mapbox.search.offline.OfflineSearchEngineSettings
-import com.mapbox.search.offline.OfflineSearchResult
-import com.mapbox.search.record.HistoryRecord
-import com.mapbox.search.result.SearchResult
-import com.mapbox.search.result.SearchSuggestion
-import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter
-import com.mapbox.search.ui.view.CommonSearchViewConfiguration
-import com.mapbox.search.ui.view.DistanceUnitType
-import com.mapbox.search.ui.view.SearchResultsView
 
 /**
  * Activity with the map and every events on it
@@ -131,6 +110,10 @@ class MapActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgSearchBarContainer, fragment)
         fragmentTransaction.commit()
+    }
+
+    fun hideSearchBar() {
+        frgSearchBarContainer.visibility = View.GONE
     }
 
     private companion object {
