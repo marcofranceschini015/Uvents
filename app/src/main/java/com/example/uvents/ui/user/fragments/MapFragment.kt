@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.model.Event
-import com.example.uvents.ui.user.MapActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.mapbox.maps.MapView
@@ -48,9 +47,9 @@ class MapFragment(private val mapController: MapController) : Fragment() {
 
         // Dummy data for events, consider retrieving this from a ViewModel or similar component
         val events = arrayListOf(
-            Event("Festa universitaria", "Unibs", "Party", "Prova", "Via Branze, 38, 25123 Brescia BS"),
-            Event("Mostra di Picasso", "Belle Arti Brescia", "Mostra d'arte", "Prova prova", "Piazza della Vittoria, Brescia BS"),
-            Event("Eras Tour Taylor Swift", "San Siro Concerts", "Concerto", "Prova prova prova", "Piazzale Angelo Moratti, 20151 Milano MI")
+            Event("Festa universitaria", "Unibs", "Party", "Festa di Primavera per staccare dallo stress dello studio e degli esami", "Via Branze, 38, Brescia"),
+            Event("Mostra di Picasso", "Belle Arti Brescia", "Mostra d'arte", "Vengono esposti i quadri più particolari dell'autore", "Piazza della Vittoria, Brescia"),
+            Event("Eras Tour Taylor Swift", "San Siro Concerts", "Concerto", "Concerto di 3 ore con 40 canzoni dell'artista. Occasione unica per vedere Taylor Swift in Italia.", "Stadio San Siro, Milano")
         )
 
         // Example of handling location logic based on intent extras

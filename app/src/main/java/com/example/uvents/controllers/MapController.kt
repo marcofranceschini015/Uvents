@@ -154,7 +154,7 @@ class MapController(private var mapActivity: MapActivity) {
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
                                 mapActivity.hideSearchBar()
-                                mapActivity.replaceFragment(EventFragment())
+                                mapActivity.replaceFragment(EventFragment(event))
                             } else
                                 viewAnnotation.visibility = View.VISIBLE
                             false

@@ -7,74 +7,248 @@
     tools:context=".ui.user.fragments.EventFragment"
     android:background="#86BBD8">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageEvent"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="250dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/nameEvent"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:srcCompat="@drawable/taylor_swift_concert"-->
+<!--            android:scaleType="fitXY"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/nameEvent"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:text="Event 1"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/organizerName"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/imageEvent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/organizerName"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:text="Organizer 1"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/categories"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/nameEvent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/categories"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:text="Category 1, Category 2"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/description"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/organizerName" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/description"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="145dp"-->
+<!--            android:text="Description"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/location"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/categories" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/location"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="180dp"-->
+<!--            android:text="Location"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/description"/>-->
+
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imageEvent"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="250dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/nameEvent"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             app:srcCompat="@drawable/taylor_swift_concert"
             android:scaleType="fitXY"/>
 
-        <TextView
-            android:id="@+id/nameEvent"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/llNameEvent"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Event 1"
-            app:layout_constraintBottom_toTopOf="@+id/organizerName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageEvent" />
+            android:orientation="horizontal"
+            android:layout_below="@id/imageEvent"
+            android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/organizerName"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/nameEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="9"
+                android:fontFamily="@font/brawler"
+                android:gravity="center_vertical"
+                android:text="Event 1"
+                android:textColor="#2F4858"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/share" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llOrganizerName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/llNameEvent" >
+
+            <TextView
+                android:id="@+id/organizerName"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="8"
+                android:layout_marginStart="10dp"
+                android:text="Organizer 1"
+                android:gravity="center_vertical"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="#2F4858"
+                android:fontFamily="@font/brawler"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/follow_organizer" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/chat_event" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCategory"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="Organizer 1"
-            app:layout_constraintBottom_toTopOf="@+id/categories"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameEvent" />
+            android:orientation="horizontal"
+            android:layout_below="@id/llOrganizerName" >
 
-        <TextView
-            android:id="@+id/categories"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:layout_below="@id/organizerName"
+                android:text="Category 1"
+                android:textSize="17dp"
+                android:textStyle="italic"
+                android:textColor="#2F4858"
+                android:fontFamily="@font/brawler"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                app:srcCompat="@drawable/add_category"
+                android:background="@drawable/personal_page_textview_bg"/>
+
+        </LinearLayout>
+
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/svDescription"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:fillViewport="true"
+            android:layout_below="@id/llCategory"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/squared_background"
+            >
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="1"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp">
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/llCategory"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Description"
+                    android:textSize="16dp"
+                    android:textColor="#2F4858"
+                    />
+
+            </TableLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="Category 1, Category 2"
-            app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/organizerName" />
+            android:orientation="horizontal"
+            android:layout_below="@id/svDescription"
+            android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="145dp"
-            android:text="Description"
-            app:layout_constraintBottom_toTopOf="@+id/location"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categories" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/location" />
 
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:text="Location"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description"/>
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:gravity="center_vertical"
+                android:layout_below="@id/description"
+                android:text="Location"
+                android:textSize="18dp"
+                android:textColor="#2F4858"
+                />
 
+        </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </FrameLayout>
