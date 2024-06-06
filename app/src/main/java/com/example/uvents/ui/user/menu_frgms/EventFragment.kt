@@ -66,7 +66,7 @@ class EventFragment(private val mapController: MapController, private var event:
                 type = "text/plain"
             }
 
-            val shareIntent = Intent.createChooser(sendIntent, null)
+            val shareIntent = Intent.createChooser(sendIntent, "Share via")
             startActivity(shareIntent)
         }
 

@@ -7,76 +7,6 @@
     tools:context=".ui.user.menu_frgms.EventFragment"
     android:background="#86BBD8">
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/imageEvent"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="250dp"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/nameEvent"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_gravity="center"-->
-<!--            app:srcCompat="@drawable/taylor_swift_concert"-->
-<!--            android:scaleType="fitXY"/>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/nameEvent"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:text="Event 1"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/organizerName"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/imageEvent" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/organizerName"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:text="Organizer 1"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/categories"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/nameEvent" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/categories"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:text="Category 1, Category 2"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/description"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/organizerName" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/description"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="145dp"-->
-<!--            android:text="Description"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/location"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/categories" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/location"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="180dp"-->
-<!--            android:text="Location"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/description"/>-->
-
-
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -84,7 +14,7 @@
         <ImageView
             android:id="@+id/imageEvent"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="230dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             app:srcCompat="@drawable/taylor_swift_concert"
@@ -161,7 +91,7 @@
         <LinearLayout
             android:id="@+id/llCategory"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:orientation="horizontal"
             android:layout_below="@id/llOrganizerName" >
 
@@ -188,15 +118,42 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llDate"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/llCategory">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/calendar" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:gravity="center_vertical"
+                android:text="Date"
+                android:textSize="18dp"
+                android:textColor="#2F4858"
+                />
+
+        </LinearLayout>
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/svDescription"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:fillViewport="true"
-            android:layout_below="@id/llCategory"
+            android:layout_below="@id/llDate"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/squared_background"
             >
 
@@ -223,11 +180,12 @@
         </ScrollView>
 
         <LinearLayout
+            android:id="@+id/llLocation"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_below="@id/svDescription"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="15dp">
 
             <ImageView
                 android:layout_width="30dp"
@@ -242,13 +200,27 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="5dp"
                 android:gravity="center_vertical"
-                android:layout_below="@id/description"
                 android:text="Location"
                 android:textSize="18dp"
                 android:textColor="#2F4858"
                 />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnBook"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/llLocation"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:text="Book"
+            android:textAllCaps="false"
+            android:fontFamily="@font/lato"
+            android:textSize="20sp"
+            android:textColor="#DAF7DC"
+            android:background="@drawable/button_sign_bg" />
 
     </RelativeLayout>
 
