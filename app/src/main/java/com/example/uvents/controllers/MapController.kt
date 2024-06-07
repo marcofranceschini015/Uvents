@@ -45,6 +45,10 @@ class MapController(var mapActivity: MapActivity) {
     private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
     private lateinit var mDbRef: DatabaseReference
 
+//    fun getUser(): User {
+//        return user
+//    }
+
     fun switchFragment(f: Fragment){
         mapActivity.replaceFragment(f)
     }
@@ -103,7 +107,7 @@ class MapController(var mapActivity: MapActivity) {
 
             val geocoder = Geocoder(mapActivity, Locale.getDefault())
             val addresses = event.address
-                ?.let { geocoder.getFromLocationName(it, 1) }
+                .let { geocoder.getFromLocationName(it, 1) }
             var longitude: Double = 0.0
             var latitude: Double = 0.0
             if (addresses!!.isEmpty()) {
@@ -138,7 +142,7 @@ class MapController(var mapActivity: MapActivity) {
                 )
 //            viewAnnotation.visibility = View.GONE
 
-                viewAnnotation.findViewById<TextView>(R.id.annotation).setText("${event.name}")
+                viewAnnotation.findViewById<TextView>(R.id.annotation).text = event.name
 
 //            viewAnnotation.findViewById<TextView>(R.id.annotation).setOnClickListener {
 //                viewAnnotation.visibility = View.GONE
@@ -149,7 +153,7 @@ class MapController(var mapActivity: MapActivity) {
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
 //                                mapActivity.hideSearchBar()
-                                mapActivity.replaceFragment(EventFragment(MapController(mapActivity), event))
+                                mapActivity.replaceFragment(EventFragment(MapController(mapActivity), user, event))
                             } else
                                 viewAnnotation.visibility = View.VISIBLE
                             false
@@ -220,6 +224,34 @@ class MapController(var mapActivity: MapActivity) {
         // todo organizer not followed -> modify view
         user.categories = categories
         updateDatabase(categories, user.getEventsPublished(), user.getFollowed())
+    }
+
+    fun myUpdateUser (user:User) {
+        // todo special treatment for events published cancelled, has to send notification
+        // todo organizer not followed -> modify view
+        myUpdateDatabase(user)
+    }
+
+    private fun myUpdateDatabase(user:User) {
+        // Reference to the specific user's node
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        val userRef = mDbRef.child("user").child(user.uid)
+
+        // Map of data to update
+        val updates = hashMapOf<String, Any>(
+            "categories" to user.categories,
+            "eventsPublished" to user.getEventsPublished(),
+            "followed" to user.getFollowed()
+        )
+
+        // Update children of the user node
+        userRef.updateChildren(updates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(mapActivity, "Your preferences have been updated", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(mapActivity, "Some problems occured", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 

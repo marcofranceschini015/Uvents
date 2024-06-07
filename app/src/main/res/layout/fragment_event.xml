@@ -73,6 +73,7 @@
                 />
 
             <ImageView
+                android:id="@+id/follow"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_weight="1"
@@ -80,6 +81,7 @@
                 app:srcCompat="@drawable/follow_organizer" />
 
             <ImageView
+                android:id="@+id/chat"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_weight="1"
@@ -101,7 +103,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
-                android:layout_below="@id/organizerName"
                 android:text="Category 1"
                 android:textSize="17dp"
                 android:textStyle="italic"
@@ -109,12 +110,27 @@
                 android:fontFamily="@font/brawler"
                 />
 
-            <ImageView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                app:srcCompat="@drawable/add_category"
-                android:background="@drawable/personal_page_textview_bg"/>
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/addCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/add_category"
+                    android:background="@drawable/personal_page_textview_bg"/>
+
+                <ImageView
+                    android:id="@+id/removeCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/remove_category"
+                    android:background="@drawable/personal_page_textview_bg"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 

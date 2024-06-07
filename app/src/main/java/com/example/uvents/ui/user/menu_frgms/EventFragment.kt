@@ -12,8 +12,12 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.model.Event
+import com.example.uvents.model.User
 
-class EventFragment(private val mapController: MapController, private var event: Event) : Fragment() {
+class EventFragment(
+    private val mapController: MapController,
+    private var user: User,
+    private var event: Event) : Fragment() {
 
     private lateinit var nameEvent: TextView
     private lateinit var nameOrganizer: TextView
@@ -21,6 +25,10 @@ class EventFragment(private val mapController: MapController, private var event:
     private lateinit var description: TextView
     private lateinit var location: TextView
     private lateinit var ivShare: ImageView
+    private lateinit var ivFollow: ImageView
+    private lateinit var ivChat: ImageView
+    private lateinit var ivAddCategory: ImageView
+    private lateinit var ivRemoveCategory: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +58,10 @@ class EventFragment(private val mapController: MapController, private var event:
             description = v.findViewById(R.id.description)
             location = v.findViewById(R.id.location)
             ivShare = v.findViewById(R.id.shareEvent)
+            ivFollow = v.findViewById(R.id.follow)
+            ivChat = v.findViewById(R.id.chat)
+            ivAddCategory = v.findViewById(R.id.addCategory)
+            ivRemoveCategory = v.findViewById(R.id.removeCategory)
         }
 
         nameEvent.text = event.name
@@ -57,6 +69,12 @@ class EventFragment(private val mapController: MapController, private var event:
         category.text = event.category
         description.text = event.description
         location.text = event.address
+
+        if(user.isFavouriteCategory(event.category)) {
+            ivAddCategory.visibility = View.GONE
+        } else {
+            ivRemoveCategory.visibility = View.GONE
+        }
 
         ivShare.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
@@ -68,6 +86,20 @@ class EventFragment(private val mapController: MapController, private var event:
 
             val shareIntent = Intent.createChooser(sendIntent, "Share via")
             startActivity(shareIntent)
+        }
+
+        ivAddCategory.setOnClickListener {
+            user.addCategory(event.category)
+            mapController.myUpdateUser(user)
+            ivAddCategory.visibility = View.GONE
+            ivRemoveCategory.visibility = View.VISIBLE
+        }
+
+        ivRemoveCategory.setOnClickListener {
+            user.removeCategory(event.category)
+            mapController.myUpdateUser(user)
+            ivAddCategory.visibility = View.VISIBLE
+            ivRemoveCategory.visibility = View.GONE
         }
 
         return v

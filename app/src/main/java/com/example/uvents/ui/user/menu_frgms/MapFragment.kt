@@ -103,8 +103,8 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         // Dummy data for events, consider retrieving this from a ViewModel or similar component
         val events = arrayListOf(
             Event("Festa universitaria", "Unibs", "Party", "Festa di Primavera per staccare dallo stress dello studio e degli esami", "Via Branze, 38, Brescia"),
-            Event("Mostra di Picasso", "Belle Arti Brescia", "Mostra d'arte", "Vengono esposti i quadri più particolari dell'autore", "Piazza della Vittoria, Brescia"),
-            Event("Eras Tour Taylor Swift", "San Siro Concerts", "Concerto", "Concerto di 3 ore con 40 canzoni dell'artista. Occasione unica per vedere Taylor Swift in Italia.", "Stadio San Siro, Milano")
+            Event("Mostra di Picasso", "Belle Arti Brescia", "Charity", "Vengono esposti i quadri più particolari dell'autore", "Piazza della Vittoria, Brescia"),
+            Event("Eras Tour Taylor Swift", "San Siro Concerts", "Concert", "Concerto di 3 ore con 40 canzoni dell'artista. Occasione unica per vedere Taylor Swift in Italia.", "Stadio San Siro, Milano")
         )
 
         mapController.getCurrentLocation(fusedLocationProviderClient, mapView, events)

@@ -2,18 +2,18 @@ package com.example.uvents.model
 
 class Event {
 
-    var name: String? = null
+    var name: String = ""
 //    var organizer: Organizer? = null
     var organizer: User? = null
-    var organizerFake: String? = null
-    var category: String? = null
-    var description: String? = null
-    var address: String? = null
-    var date: String? = null
+    var organizerFake: String = ""
+    var category: String = ""
+    var description: String = ""
+    var address: String = ""
+    var date: String = ""
 
     constructor() {}
 
-    constructor(name: String?, organizer: User?, category: String?, description: String?, address: String?, date: String?){
+    constructor(name: String, organizer: User?, category: String, description: String, address: String, date: String){
         this.name = name
         this.organizer = organizer
         this.category = category
@@ -22,7 +22,7 @@ class Event {
         this.date = date
     }
 
-    constructor(name: String?, organizer: String?, category: String?, description: String?, address: String?){
+    constructor(name: String, organizer: String, category: String, description: String, address: String){
         this.name = name
         this.organizerFake = organizer
         this.category = category
