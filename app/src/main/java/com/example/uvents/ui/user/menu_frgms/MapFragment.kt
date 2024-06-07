@@ -1,5 +1,6 @@
 package com.example.uvents.ui.user.menu_frgms
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -80,6 +81,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     }
 
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -113,7 +115,8 @@ class MapFragment(private val mapController: MapController) : Fragment() {
 
         toolbar = v.findViewById(R.id.toolbar)
         toolbar.apply {
-            title = "Search here"
+            title = getString(R.string.search_here)
+            setTitleTextColor(R.color.light_blue)
             mapController.setToolBar(this)
         }
 
@@ -237,7 +240,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         })
 
         searchView = searchActionView.actionView as SearchView
-        searchView.queryHint = "Where to?" //getString(R.string.query_hint)
+        searchView.queryHint = getString(R.string.where_to)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false

@@ -53,7 +53,7 @@ class EventFragment(private val mapController: MapController, private var event:
         }
 
         nameEvent.text = event.name
-        nameOrganizer.text = event.organizer
+        nameOrganizer.text = event.organizerFake
         category.text = event.category
         description.text = event.description
         location.text = event.address

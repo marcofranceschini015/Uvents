@@ -3,6 +3,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZGFyaW9kMjAiLCJhIjoiY2x3YWNybmJ5MGMzejJsczJkcG5reWNwOSJ9.JjOaoKLQTzBahy9sbvvU9g</string>
+    <string name="search_here">Search here</string>
+    <string name="where_to">Where to?</string>
+
     <string-array name="category_array">
         <item>Concert</item>
         <item>Theater</item>
