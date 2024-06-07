@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.R
-import com.example.uvents.ui.user.fragments.WelcomeFragment
+import com.example.uvents.controllers.WelcomeController
+import com.example.uvents.ui.user.welcome_frgms.WelcomeFragment
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -52,6 +52,7 @@ class WelcomeActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgContainer, fragment)
         fragmentTransaction.commit()
+        hideBack()
     }
 
     /**
@@ -71,6 +72,10 @@ class WelcomeActivity : AppCompatActivity() {
      */
     fun hideBack(){
         ivArrow.visibility = View.GONE
+    }
+
+    fun showBack() {
+        ivArrow.visibility = View.VISIBLE
     }
 
 }

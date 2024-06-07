@@ -52,5 +52,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("com.mapbox.maps:android:11.3.0")
     implementation("com.mapbox.search:mapbox-search-android-ui:2.1.0")
+    implementation("androidx.activity:activity-ktx:1.2.3")
 
 }

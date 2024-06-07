@@ -1,4 +1,4 @@
-package com.example.uvents.ui.user.fragments
+package com.example.uvents.ui.user.welcome_frgms
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

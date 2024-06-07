@@ -4,8 +4,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.WelcomeActivity
-import com.example.uvents.ui.user.fragments.CategorySelectionFragment
-import com.google.android.play.integrity.internal.m
+import com.example.uvents.ui.user.welcome_frgms.CategorySelectionFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -141,5 +140,9 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
      */
     fun hideBackArrow(){
         welcomeActivity.hideBack()
+    }
+
+    fun showBackArrow() {
+        welcomeActivity.showBack()
     }
 }

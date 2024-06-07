@@ -5,11 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -18,29 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainer
-import androidx.fragment.app.FragmentContainerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
-import com.example.uvents.ui.user.fragments.MapFragment
-import com.example.uvents.ui.user.menu.PersonalPageFragment
-import com.example.uvents.ui.user.fragments.SearchMapBarFragment
+import com.example.uvents.ui.user.menu_frgms.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.mapbox.search.ApiType
-import com.mapbox.search.ResponseInfo
-import com.mapbox.search.SearchEngine
-import com.mapbox.search.SearchEngineSettings
-import com.mapbox.search.offline.OfflineResponseInfo
-import com.mapbox.search.offline.OfflineSearchEngine
-import com.mapbox.search.offline.OfflineSearchEngineSettings
-import com.mapbox.search.offline.OfflineSearchResult
-import com.mapbox.search.record.HistoryRecord
-import com.mapbox.search.result.SearchResult
-import com.mapbox.search.result.SearchSuggestion
-import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter
-import com.mapbox.search.ui.view.CommonSearchViewConfiguration
-import com.mapbox.search.ui.view.DistanceUnitType
-import com.mapbox.search.ui.view.SearchResultsView
 
 /**
  * Activity with the map and every events on it
@@ -49,7 +25,6 @@ class MapActivity : AppCompatActivity() {
 
     private lateinit var mapController: MapController
     private lateinit var bottomNavigation: BottomNavigationView
-    private lateinit var frgSearchBarContainer: FragmentContainerView
 
     /**
      * On creation create a mapController and recover the user in it
@@ -69,7 +44,6 @@ class MapActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.bottomNav)
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
-        frgSearchBarContainer = findViewById(R.id.frgSearchBarContainer)
 
         val mapFragment = MapFragment(mapController)
 
@@ -79,7 +53,6 @@ class MapActivity : AppCompatActivity() {
                 R.id.home -> {
                     // todo switch background color
                     replaceFragment(mapFragment)
-                    frgSearchBarContainer.visibility = View.VISIBLE
                     true
                 }
 
@@ -96,15 +69,12 @@ class MapActivity : AppCompatActivity() {
                 R.id.profile -> {
                     // todo switch background color
                     mapController.setPersonalPage()
-                    frgSearchBarContainer.visibility = View.GONE
                     true
                 }
 
                 else -> false
             }
         }
-        replaceSearchBarFragment(SearchMapBarFragment(this))
-
 
         if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(
@@ -115,7 +85,6 @@ class MapActivity : AppCompatActivity() {
         }
     }
 
-
     /**
      * Function that replace the fragment in the activity
      */
@@ -123,13 +92,6 @@ class MapActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgMapContainer, fragment)
-        fragmentTransaction.commit()
-    }
-
-    fun replaceSearchBarFragment(fragment: Fragment){
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frgSearchBarContainer, fragment)
         fragmentTransaction.commit()
     }
 
@@ -143,5 +105,12 @@ class MapActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
+
+//    override fun onBackPressed() {
+//        val intent = Intent(this, WelcomeActivity::class.java)
+//        startActivity(intent)
+//        finish()
+//        super.onBackPressed()
+//    }
 
 }
