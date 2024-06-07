@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
@@ -147,7 +148,7 @@ class MapController(private var mapActivity: MapActivity) {
                     addClickListener(
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
-                                mapActivity.hideSearchBar()
+//                                mapActivity.hideSearchBar()
                                 mapActivity.replaceFragment(EventFragment(MapController(mapActivity), event))
                             } else
                                 viewAnnotation.visibility = View.VISIBLE
@@ -236,6 +237,14 @@ class MapController(private var mapActivity: MapActivity) {
                 Toast.makeText(mapActivity, "Some problems occured", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun setToolBar(toolBar: Toolbar) {
+        mapActivity.setSupportActionBar(toolBar)
+    }
+
+    fun printToast(msg: String) {
+        Toast.makeText(mapActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
 

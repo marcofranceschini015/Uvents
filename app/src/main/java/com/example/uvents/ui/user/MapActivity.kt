@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -14,11 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.ui.user.menu_frgms.MapFragment
-import com.example.uvents.ui.user.menu_frgms.SearchMapBarFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
@@ -28,7 +25,6 @@ class MapActivity : AppCompatActivity() {
 
     private lateinit var mapController: MapController
     private lateinit var bottomNavigation: BottomNavigationView
-    private lateinit var frgSearchBarContainer: FragmentContainerView
 
     /**
      * On creation create a mapController and recover the user in it
@@ -48,7 +44,6 @@ class MapActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.bottomNav)
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
-        frgSearchBarContainer = findViewById(R.id.frgSearchBarContainer)
 
         val mapFragment = MapFragment(mapController)
 
@@ -58,7 +53,6 @@ class MapActivity : AppCompatActivity() {
                 R.id.home -> {
                     // todo switch background color
                     replaceFragment(mapFragment)
-                    frgSearchBarContainer.visibility = View.VISIBLE
                     true
                 }
 
@@ -75,15 +69,12 @@ class MapActivity : AppCompatActivity() {
                 R.id.profile -> {
                     // todo switch background color
                     mapController.setPersonalPage()
-                    frgSearchBarContainer.visibility = View.GONE
                     true
                 }
 
                 else -> false
             }
         }
-        replaceSearchBarFragment(SearchMapBarFragment(this))
-
 
         if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(
@@ -102,17 +93,6 @@ class MapActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgMapContainer, fragment)
         fragmentTransaction.commit()
-    }
-
-    fun replaceSearchBarFragment(fragment: Fragment){
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frgSearchBarContainer, fragment)
-        fragmentTransaction.commit()
-    }
-
-    fun hideSearchBar() {
-        frgSearchBarContainer.visibility = View.GONE
     }
 
     private companion object {
