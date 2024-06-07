@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -62,6 +63,8 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     private lateinit var mapView: MapView
     private lateinit var mapMarkersManager: MapMarkersManager
 
+    private lateinit var btnAdvancedSearch: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -107,6 +110,12 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         mapController.getCurrentLocation(fusedLocationProviderClient, mapView, events)
 
         setHasOptionsMenu(true)
+
+        btnAdvancedSearch = v.findViewById(R.id.advancedSearch)
+
+        btnAdvancedSearch.setOnClickListener {
+            mapController.switchFragment(AdvancedSearchFragment())
+        }
 
         mapMarkersManager = MapMarkersManager(mapView)
 //        mapMarkersManager.onMarkersChangeListener = {

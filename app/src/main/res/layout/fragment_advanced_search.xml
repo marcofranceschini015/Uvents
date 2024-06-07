@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.user.menu_frgms.AdvancedSearchFragment"
+    android:background="@color/light_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/writings_dark_blue"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="Filter by" />
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvFilter"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/writings_dark_blue"
+            android:textSize="20dp"
+            android:text="Category" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCategory"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/writings_dark_blue"
+            android:textSize="20dp"
+            android:text="Date" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDate"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/writings_dark_blue"
+            android:textSize="20dp"
+            android:text="Time" />
+
+        <TextView
+            android:id="@+id/tvOrganizer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTime"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/writings_dark_blue"
+            android:textSize="20dp"
+            android:text="Organizer" />
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvOrganizer"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="260dp"
+            android:text="Apply"
+            android:textAllCaps="false"
+            android:fontFamily="@font/lato"
+            android:textSize="20sp"
+            android:textColor="#DAF7DC"
+            android:background="@drawable/button_sign_bg"
+            />
+
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
