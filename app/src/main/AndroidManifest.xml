@@ -18,15 +18,6 @@
         android:theme="@style/Theme.Uvents"
         tools:targetApi="31">
         <activity
-            android:name=".ui.user.ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.user.CategorySelectionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.organizer.DashboardOrganizerActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.user.MapActivity"
             android:exported="false" />
         <activity
