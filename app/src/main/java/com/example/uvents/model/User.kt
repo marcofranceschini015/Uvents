@@ -43,4 +43,13 @@ class User {
         }
         return list.toList()
     }
+
+    /**
+     * Add an event to the list
+     */
+    fun addEvent(e: Event) {
+        val eventList = eventsPublished.toMutableList()
+        eventList.add(e)
+        eventsPublished = eventList.toList()
+    }
 }
