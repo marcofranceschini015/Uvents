@@ -3,14 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.user.fragments.MapFragment">
+    tools:context=".ui.user.menu_frgms.MapFragment">
 
-    <com.mapbox.maps.MapView
-        android:id="@+id/mapView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:mapbox_cameraTargetLat="0"
-        app:mapbox_cameraTargetLng="0"
-        app:mapbox_cameraZoom="14.0"/>
+        android:layout_height="match_parent" >
+
+        <com.mapbox.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:mapbox_logoGravity="bottom"
+            app:mapbox_cameraTargetLat="0"
+            app:mapbox_cameraTargetLng="0"
+            app:mapbox_cameraZoom="14.0"
+            />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:theme="@style/MapboxSearchSdk.Theme.Auto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <com.mapbox.search.ui.view.SearchResultsView
+            android:id="@+id/search_results_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

@@ -1,12 +1,13 @@
-package com.example.uvents.ui.user.menu
+package com.example.uvents.ui.user.menu_frgms
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
@@ -43,6 +44,19 @@ class PersonalPageFragment(
     // followed organizers info
     private lateinit var adapterFollowed: PersonalPageAdapter
     private lateinit var copyFollowed: MutableList<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // This callback will only be called when the Fragment is at least Started.
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle the back button event
+                mapController.switchFragment(MapFragment(mapController))
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     /*+
     On the creation of the view
