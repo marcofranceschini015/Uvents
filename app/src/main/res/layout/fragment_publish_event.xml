@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.user.menu.PublishEventFragment"
+    android:background="#336699">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="600dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:gravity="bottom"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:text="Name"/>
+
+        <EditText
+            android:id="@+id/etInputName"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/insert_city_et_bg"
+            android:fontFamily="@font/inter"
+            android:hint="Event name"
+            android:paddingStart="20dp"
+            android:textColor="#DAF7DC"
+            android:textColorHint="#DAF7DC"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:gravity="bottom"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:text="Date"/>
+
+        <EditText
+            android:id="@+id/etInputDate"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:hint="mm/gg/yyyy"
+            android:textColorHint="#DAF7DC"
+            android:paddingStart="20dp"
+            android:fontFamily="@font/inter"
+            android:textSize="20sp"
+            android:textColor="#DAF7DC"
+            android:background="@drawable/insert_city_et_bg"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:gravity="bottom"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:text="Location"/>
+
+        <EditText
+            android:id="@+id/etInputLocation"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:hint="City, address"
+            android:textColorHint="#DAF7DC"
+            android:paddingStart="20dp"
+            android:fontFamily="@font/inter"
+            android:textSize="20sp"
+            android:textColor="#DAF7DC"
+            android:background="@drawable/insert_city_et_bg"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:gravity="bottom"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:text="Category"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCat"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/insert_city_et_bg"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:gravity="bottom"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:text="Description"/>
+
+        <EditText
+            android:id="@+id/etInputDescription"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/insert_city_et_bg"
+            android:fontFamily="@font/inter"
+            android:hint="Event name"
+            android:paddingStart="20dp"
+            android:textColor="#DAF7DC"
+            android:textColorHint="#DAF7DC"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/scrollview"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnUploadImage"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="20dp"
+            android:text="Upload image"
+            android:textAllCaps="false"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:background="@drawable/button_sign_bg"
+            android:layout_gravity="end|center_horizontal" />
+
+        <Button
+            android:id="@+id/btnPublish"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="wrap_content"
+            android:text="Publish"
+            android:textAllCaps="false"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:background="@drawable/button_sign_bg"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

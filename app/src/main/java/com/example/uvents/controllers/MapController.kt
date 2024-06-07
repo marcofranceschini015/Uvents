@@ -39,7 +39,7 @@ import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
 
-class MapController(private var mapActivity: MapActivity) {
+class MapController(var mapActivity: MapActivity) {
 
     private lateinit var user: User
     private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -212,21 +212,30 @@ class MapController(private var mapActivity: MapActivity) {
     }
 
 
+    /**
+     * Update a user when modifying the personal page
+     */
     fun updateUser (categories: List<String>, events: List<String>, followed: List<String>) {
         // todo special treatment for events published cancelled, has to send notification
         // todo organizer not followed -> modify view
         user.categories = categories
-        updateDatabase(categories)
+        updateDatabase(categories, user.getEventsPublished(), user.getFollowed())
     }
 
-    private fun updateDatabase(categories: List<String>) {
+
+    /**
+     * Update the database with the passed information
+     */
+    private fun updateDatabase(categories: List<String>, events: List<String>, followed: List<String>) {
         // Reference to the specific user's node
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         val userRef = mDbRef.child("user").child(user.uid)
 
         // Map of data to update
         val updates = hashMapOf<String, Any>(
-            "categories" to categories
+            "categories" to categories,
+            "eventsPublished" to events,
+            "followed" to followed
         )
 
         // Update children of the user node
@@ -239,6 +248,21 @@ class MapController(private var mapActivity: MapActivity) {
         }
     }
 
+    /**
+     * Publish an event in the database and add to the user
+     */
+    fun publishEvent(
+        name: String,
+        date: String,
+        location: String,
+        description: String,
+        category: String) {
+
+        val e = Event(name, user, category, description, location, date)
+        user.addEvent(e)
+    }
+
+
     fun setToolBar(toolBar: Toolbar) {
         mapActivity.setSupportActionBar(toolBar)
     }
@@ -246,6 +270,5 @@ class MapController(private var mapActivity: MapActivity) {
     fun printToast(msg: String) {
         Toast.makeText(mapActivity, msg, Toast.LENGTH_SHORT).show()
     }
-
 
 }

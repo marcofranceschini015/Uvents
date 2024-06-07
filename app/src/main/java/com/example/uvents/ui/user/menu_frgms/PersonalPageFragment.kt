@@ -131,7 +131,7 @@ class PersonalPageFragment(
 
         // go to publish an event page
         btnPublish.setOnClickListener {
-            // todo
+
         }
 
         return v
