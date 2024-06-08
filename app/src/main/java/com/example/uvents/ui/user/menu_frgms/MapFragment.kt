@@ -114,7 +114,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         btnAdvancedSearch = v.findViewById(R.id.advancedSearch)
 
         btnAdvancedSearch.setOnClickListener {
-            mapController.switchFragment(AdvancedSearchFragment())
+            mapController.switchFragment(AdvancedSearchFragment(mapController))
         }
 
         mapMarkersManager = MapMarkersManager(mapView)

@@ -39,7 +39,7 @@ import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
 
-class MapController(var mapActivity: MapActivity) {
+class MapController(val mapActivity: MapActivity) {
 
     private lateinit var user: User
     private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -152,7 +152,6 @@ class MapController(var mapActivity: MapActivity) {
                     addClickListener(
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
-//                                mapActivity.hideSearchBar()
                                 mapActivity.replaceFragment(EventFragment(MapController(mapActivity), user, event))
                             } else
                                 viewAnnotation.visibility = View.VISIBLE

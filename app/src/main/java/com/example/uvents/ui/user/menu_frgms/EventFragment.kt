@@ -79,7 +79,11 @@ class EventFragment(
         ivShare.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                val sharedText = event.name + "\n" + event.organizer + "\n" + event.category + "\n" + event.address
+                val sharedText = "Name: " + event.name + "\n" +
+                                 "Organizer: " + event.organizerFake + "\n" +
+                                 "Category: " + event.category + "\n" +
+                                 "Description: " + event.description + "\n" +
+                                 "Location: " + event.address
                 putExtra(Intent.EXTRA_TEXT, sharedText)
                 type = "text/plain"
             }
