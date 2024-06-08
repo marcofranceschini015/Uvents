@@ -10,6 +10,7 @@ class Event {
     var description: String = ""
     var address: String = ""
     var date: String = ""
+    //add var time
 
     constructor() {}
 
@@ -22,11 +23,12 @@ class Event {
         this.date = date
     }
 
-    constructor(name: String, organizer: String, category: String, description: String, address: String){
+    constructor(name: String, organizer: String, category: String, date: String, description: String, address: String){
         this.name = name
         this.organizerFake = organizer
         this.category = category
         this.description = description
         this.address = address
+        this.date = date
     }
 }

@@ -45,7 +45,7 @@ class MapActivity : AppCompatActivity() {
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
-        val mapFragment = MapFragment(mapController)
+        val mapFragment = MapFragment(mapController, null)
 
         replaceFragment(mapFragment)
         bottomNavigation.setOnItemSelectedListener { item ->

@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
+import android.text.Editable
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -163,7 +164,6 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
-
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
         convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
 
@@ -225,6 +225,10 @@ class MapController(val mapActivity: MapActivity) {
         updateDatabase(categories, user.getEventsPublished(), user.getFollowed())
     }
 
+    /**
+     * Methods alternatives to the previus one to add/delete categories from event page
+     * because the problem of the uninizialized user
+     */
     fun myUpdateUser (user:User) {
         // todo special treatment for events published cancelled, has to send notification
         // todo organizer not followed -> modify view
@@ -300,6 +304,33 @@ class MapController(val mapActivity: MapActivity) {
 
     fun printToast(msg: String) {
         Toast.makeText(mapActivity, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Events not passed but recovered from firebase, this method apply all the filters chosen by the user
+     * end return only the arraList<String> of the filtered events
+     */
+    fun applyFilteredSearch(events: ArrayList<Event>, organizerName: Editable?, fromDate: CharSequence, toDate: CharSequence,
+        fromTime: Editable?, toTime: Editable?, checkedCategories: List<String>): ArrayList<Event> {
+
+        val filteredEvents: ArrayList<Event> = arrayListOf<Event>()
+
+        events.forEach { event ->
+            if(organizerName.toString() == event.organizerFake) {
+                filteredEvents.add(event)
+            }
+
+            // todo date filter
+
+            // todo time filter
+
+            if(checkedCategories.contains(event.category)) {
+                filteredEvents.add(event)
+            }
+        }
+
+        return filteredEvents
+
     }
 
 }

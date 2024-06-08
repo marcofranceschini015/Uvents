@@ -47,7 +47,7 @@ import com.mapbox.search.ui.view.DistanceUnitType
 import com.mapbox.search.ui.view.SearchResultsView
 
 
-class MapFragment(private val mapController: MapController) : Fragment() {
+class MapFragment(private val mapController: MapController, private var events: ArrayList<Event>?) : Fragment() {
 
     //private lateinit var events: ArrayList<Event>
 
@@ -101,13 +101,35 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         // Dummy data for events, consider retrieving this from a ViewModel or similar component
-        val events = arrayListOf(
-            Event("Festa universitaria", "Unibs", "Party", "Festa di Primavera per staccare dallo stress dello studio e degli esami", "Via Branze, 38, Brescia"),
-            Event("Mostra di Picasso", "Belle Arti Brescia", "Charity", "Vengono esposti i quadri più particolari dell'autore", "Piazza della Vittoria, Brescia"),
-            Event("Eras Tour Taylor Swift", "San Siro Concerts", "Concert", "Concerto di 3 ore con 40 canzoni dell'artista. Occasione unica per vedere Taylor Swift in Italia.", "Stadio San Siro, Milano")
-        )
+        if(events == null) {
+            events = arrayListOf(
+                Event(
+                    "Festa universitaria",
+                    "Unibs",
+                    "Party",
+                    "20/06/2024",
+                    "Festa di Primavera per staccare dallo stress dello studio e degli esami",
+                    "Via Branze, 38, Brescia"),
+                Event(
+                    "Mostra di Picasso",
+                    "Belle Arti Brescia",
+                    "Charity",
+                    "28/06/2024",
+                    "Vengono esposti i quadri più particolari dell'autore",
+                    "Piazza della Vittoria, Brescia"
+                ),
+                Event(
+                    "Eras Tour Taylor Swift",
+                    "San Siro Concerts",
+                    "Concert",
+                    "14/07/2024",
+                    "Concerto di 3 ore con 40 canzoni dell'artista. Occasione unica per vedere Taylor Swift in Italia.",
+                    "Stadio San Siro, Milano"
+                )
+            )
+        }
 
-        mapController.getCurrentLocation(fusedLocationProviderClient, mapView, events)
+        mapController.getCurrentLocation(fusedLocationProviderClient, mapView, events!!)
 
         setHasOptionsMenu(true)
 

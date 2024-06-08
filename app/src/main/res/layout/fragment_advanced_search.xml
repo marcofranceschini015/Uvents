@@ -39,7 +39,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llCategory"
+            android:id="@+id/llOrganizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -53,20 +53,17 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/writings_dark_blue"
                 android:textSize="20dp"
-                android:text="Category"
-                android:textStyle="bold"/>
+                android:text="Organizer"
+                android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCategory"
+            <EditText
+                android:id="@+id/organizerName"
                 android:layout_width="match_parent"
-                android:layout_height="155dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/squared_background"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Organizer name"
+                android:textSize="18dp"
+                android:textColor="@color/writings_dark_blue"
                 />
 
         </LinearLayout>
@@ -76,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/llCategory"
+            android:layout_below="@id/llOrganizer"
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="20dp">
@@ -89,25 +86,34 @@
                 android:text="Date"
                 android:textStyle="bold" />
 
-            <EditText
+            <TextView
                 android:id="@+id/fromDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="8"
-                android:inputType="date"
-                android:hint="From dd/mm/yy"
+                android:hint="From"
                 android:textSize="18dp"
+                android:textColor="@color/writings_dark_blue"
+                android:layout_marginTop="10dp"
                 />
 
-            <EditText
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#2F4858" />
+
+            <TextView
                 android:id="@+id/toDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="8"
-                android:inputType="date"
-                android:hint="To dd/mm/yy"
+                android:hint="To"
                 android:textSize="18dp"
+                android:layout_marginTop="10dp"
                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#2F4858" />
 
         </LinearLayout>
 
@@ -135,8 +141,10 @@
                 android:layout_height="wrap_content"
                 android:ems="5"
                 android:inputType="time"
-                android:hint="From 24h"
-                android:textSize="18dp" />
+                android:hint="From 24h format"
+                android:textSize="18dp"
+                android:textColor="@color/writings_dark_blue"
+                />
 
             <EditText
                 android:id="@+id/toTime"
@@ -144,14 +152,15 @@
                 android:layout_height="wrap_content"
                 android:ems="5"
                 android:inputType="time"
-                android:hint="To 24h"
+                android:hint="To 24h format"
                 android:textSize="18dp"
+                android:textColor="@color/writings_dark_blue"
                 />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llOrganizer"
+            android:id="@+id/llCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -165,25 +174,31 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/writings_dark_blue"
                 android:textSize="20dp"
-                android:text="Organizer"
-                android:textStyle="bold" />
+                android:text="Category"
+                android:textStyle="bold"/>
 
-            <EditText
-                android:id="@+id/organizerName"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCategory"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Organizer name"
-                android:textSize="18dp" />
+                android:layout_height="155dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/squared_background"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
 
         </LinearLayout>
 
         <Button
-            android:layout_width="140dp"
+            android:id="@+id/btnApply"
+            android:layout_width="150dp"
             android:layout_height="35dp"
-            android:layout_below="@id/llOrganizer"
+            android:layout_below="@id/llCategory"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="230dp"
+            android:layout_marginStart="225dp"
             android:text="Apply"
             android:textAllCaps="false"
             android:fontFamily="@font/lato"
@@ -192,9 +207,6 @@
             android:background="@drawable/button_sign_bg"
             />
 
-
-
     </RelativeLayout>
-
 
 </FrameLayout>

@@ -52,7 +52,7 @@ class PersonalPageFragment(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController))
+                mapController.switchFragment(MapFragment(mapController, null))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

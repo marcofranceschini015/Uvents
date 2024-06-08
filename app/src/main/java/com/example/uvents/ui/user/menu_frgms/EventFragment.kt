@@ -22,6 +22,7 @@ class EventFragment(
     private lateinit var nameEvent: TextView
     private lateinit var nameOrganizer: TextView
     private lateinit var category: TextView
+    private lateinit var date: TextView
     private lateinit var description: TextView
     private lateinit var location: TextView
     private lateinit var ivShare: ImageView
@@ -37,7 +38,7 @@ class EventFragment(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController))
+                mapController.switchFragment(MapFragment(mapController, null))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -55,6 +56,7 @@ class EventFragment(
             nameEvent = v.findViewById(R.id.nameEvent)
             nameOrganizer = v.findViewById(R.id.organizerName)
             category = v.findViewById(R.id.category)
+            date = v.findViewById(R.id.date)
             description = v.findViewById(R.id.description)
             location = v.findViewById(R.id.location)
             ivShare = v.findViewById(R.id.shareEvent)
@@ -67,6 +69,7 @@ class EventFragment(
         nameEvent.text = event.name
         nameOrganizer.text = event.organizerFake
         category.text = event.category
+        date.text = event.date
         description.text = event.description
         location.text = event.address
 
