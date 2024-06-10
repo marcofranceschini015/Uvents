@@ -1,5 +1,6 @@
-package com.example.uvents.ui.user.menu
+package com.example.uvents.ui.user.menu_frgms
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.controllers.adapter.CategoryAdapter
 import com.example.uvents.model.CategorySource
+import java.util.Calendar
 
 class PublishEventFragment(private var mapController: MapController) : Fragment() {
 
@@ -44,6 +46,25 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
             btnPublish = v.findViewById(R.id.btnPublish)
         }
 
+        // set up the date when click on input date
+        etInputDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            // DatePickerDialog to pick the date
+            val datePickerDialog = DatePickerDialog(mapController.mapActivity, { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                // Format the date selected
+                val selectedDate = "${selectedMonth + 1}/$selectedDayOfMonth/$selectedYear"
+                etInputDate.setText(selectedDate)  // Set date in EditText
+            }, year, month, day)
+
+            datePickerDialog.datePicker.minDate = calendar.timeInMillis
+            datePickerDialog.show() // Show DatePickerDialog
+        }
+
+
         // get the category of the event
         val categoryList = CategorySource(mapController.mapActivity).getCategoryList()
         val adapter = CategoryAdapter(categoryList)
@@ -55,19 +76,27 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
             checkedTextsArray = checkedItems.toList()
 
             // CHECK A LOT OF THINGS
-            if(checkedTextsArray.size == 1) {
-                val category = checkedTextsArray[0]
-                mapController.publishEvent(
-                    etInputName.text.toString(),
-                    etInputDate.text.toString(),
-                    etInputLocation.text.toString(),
-                    etInputDescription.text.toString(),
-                    category
-                )
+            if(etInputName.text.isEmpty() ||
+                etInputDate.text.isEmpty() ||
+                etInputLocation.text.isEmpty() ||
+                etInputDescription.text.isEmpty()){
+                Toast.makeText(mapController.mapActivity, "Please fill all the forms", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(mapController.mapActivity, "You can only select one category", Toast.LENGTH_SHORT).show()
+                if(checkedTextsArray.size == 1) {
+                    val category = checkedTextsArray[0]
+                    mapController.publishEvent(
+                        etInputName.text.toString(),
+                        etInputDate.text.toString(),
+                        etInputLocation.text.toString(),
+                        etInputDescription.text.toString(),
+                        category
+                    )
+                    Toast.makeText(mapController.mapActivity, "Event successfully published", Toast.LENGTH_SHORT).show()
+                    mapController.setPersonalPage()
+                } else {
+                    Toast.makeText(mapController.mapActivity, "You have to select only one category", Toast.LENGTH_SHORT).show()
+                }
             }
-
         }
 
         return v

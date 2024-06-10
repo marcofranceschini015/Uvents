@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#336699"
-    android:layout_margin="5dp">
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_marginStart="10dp"
             android:fontFamily="@font/lato"
             android:text="Category name"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textColor="#DAF7DC"
             android:gravity=""/>
 

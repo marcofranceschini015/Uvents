@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.controllers.adapter.PersonalPageAdapter
+import com.example.uvents.ui.user.menu_frgms.PublishEventFragment
 
 
 class PersonalPageFragment(
@@ -131,7 +132,7 @@ class PersonalPageFragment(
 
         // go to publish an event page
         btnPublish.setOnClickListener {
-
+            mapController.switchFragment(PublishEventFragment(mapController))
         }
 
         return v

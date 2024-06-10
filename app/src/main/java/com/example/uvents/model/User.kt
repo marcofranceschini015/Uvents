@@ -1,14 +1,12 @@
 package com.example.uvents.model
 
-import com.google.firebase.database.Exclude
-
 class User {
 
     lateinit var name: String
     lateinit var email: String
     lateinit var uid: String
     lateinit var categories: List<String>
-    private var eventsPublished: List<Event> = listOf()
+    var eventsPublished: List<Event> = listOf()
     private var followed: List<User> = listOf()
 
     constructor() {}
@@ -23,7 +21,7 @@ class User {
      * Return the list of events in string format
      * in a way to be used in the view
      */
-    fun getEventsPublished():List<String> {
+    fun getEventNamePublished():List<String> {
         val list: MutableList<String> = mutableListOf()
         eventsPublished.forEach { event ->
             list.add(event.name!!)

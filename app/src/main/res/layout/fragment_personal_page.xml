@@ -129,10 +129,12 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:background="@drawable/personal_page_textview_bg"
-                android:paddingStart="20dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:translationZ="5dp"/>
+                android:translationZ="5dp"
+                android:paddingTop="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -151,10 +153,12 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:background="@drawable/personal_page_textview_bg"
-                android:paddingStart="20dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:translationZ="5dp"/>
+                android:translationZ="5dp"
+                android:paddingTop="5dp"/>
 
 
         </LinearLayout>

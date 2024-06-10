@@ -53,7 +53,7 @@ class EventFragment(private val mapController: MapController, private var event:
         }
 
         nameEvent.text = event.name
-        nameOrganizer.text = event.organizer
+        nameOrganizer.text = event.uid
         category.text = event.category
         description.text = event.description
         location.text = event.address
@@ -61,7 +61,7 @@ class EventFragment(private val mapController: MapController, private var event:
         ivShare.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                val sharedText = event.name + "\n" + event.organizer + "\n" + event.category + "\n" + event.address
+                val sharedText = event.name + "\n" + event.uid + "\n" + event.category + "\n" + event.address
                 putExtra(Intent.EXTRA_TEXT, sharedText)
                 type = "text/plain"
             }

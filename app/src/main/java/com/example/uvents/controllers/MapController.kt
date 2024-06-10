@@ -38,6 +38,7 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
+import kotlin.random.Random
 
 class MapController(var mapActivity: MapActivity) {
 
@@ -208,7 +209,7 @@ class MapController(var mapActivity: MapActivity) {
      * Set up the personal page with all information in the view
      */
     fun setPersonalPage() {
-        mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventsPublished(), user.getFollowed()))
+        mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventNamePublished(), user.getFollowed()))
     }
 
 
@@ -216,25 +217,49 @@ class MapController(var mapActivity: MapActivity) {
      * Update a user when modifying the personal page
      */
     fun updateUser (categories: List<String>, events: List<String>, followed: List<String>) {
-        // todo special treatment for events published cancelled, has to send notification
         // todo organizer not followed -> modify view
         user.categories = categories
-        updateDatabase(categories, user.getEventsPublished(), user.getFollowed())
+
+        removeEvent(events) // todo send notification
+        updateDatabase(categories, user.eventsPublished, user.getFollowed())
+    }
+
+
+    /**
+     * From a list of events' name remove the event
+     * in the User db and in the event db
+     */
+    private fun removeEvent(events: List<String>){
+        val listEidToDelete = mutableListOf<String?>()
+        user.eventsPublished.forEach{ event ->
+            if (!events.contains(event.name)) {
+                listEidToDelete.add(event.eid)
+            }
+        }
+        user.eventsPublished = user.eventsPublished.filter { it.eid in listEidToDelete }
+
+        // remove into db
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        val eventsRef = mDbRef.child("event")
+        listEidToDelete.forEach{ eid ->
+            eventsRef.child(eid.toString()).removeValue().addOnCompleteListener{}
+        }
     }
 
 
     /**
      * Update the database with the passed information
      */
-    private fun updateDatabase(categories: List<String>, events: List<String>, followed: List<String>) {
+    private fun updateDatabase(categories: List<String>, events: List<Event>, followed: List<String>) {
         // Reference to the specific user's node
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         val userRef = mDbRef.child("user").child(user.uid)
 
+
         // Map of data to update
         val updates = hashMapOf<String, Any>(
             "categories" to categories,
-            "eventsPublished" to events,
+            "eidPublished" to events,
             "followed" to followed
         )
 
@@ -257,9 +282,11 @@ class MapController(var mapActivity: MapActivity) {
         location: String,
         description: String,
         category: String) {
-
-        val e = Event(name, user, category, description, location, date)
+        val eid = System.currentTimeMillis().toString() + Random.nextInt()
+        val e = Event(name, user.uid, category, description, location, date, eid)
         user.addEvent(e)
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        mDbRef.child("event").child(eid).setValue(e)
     }
 
 
