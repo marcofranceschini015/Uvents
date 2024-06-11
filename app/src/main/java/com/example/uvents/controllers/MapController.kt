@@ -290,7 +290,7 @@ class MapController(var mapActivity: MapActivity) {
         }
 
         // delete into User instance
-        user.eventsPublished = user.eventsPublished.filter { it.eid in listEidToDelete }
+        user.eventsPublished = user.eventsPublished.filter { it.eid !in listEidToDelete }
 
         // remove into db
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
