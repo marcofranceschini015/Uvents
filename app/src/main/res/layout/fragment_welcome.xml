@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_marginTop="200dp">
+        android:layout_marginTop="220dp">
 
         <Button
             android:id="@+id/btnSignIn"
@@ -29,7 +29,7 @@
             android:textSize="24sp"
             android:textColor="#DAF7DC"
             android:background="@drawable/button_sign_bg"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="100dp"
             android:translationZ="5dp"/>
 
         <Button

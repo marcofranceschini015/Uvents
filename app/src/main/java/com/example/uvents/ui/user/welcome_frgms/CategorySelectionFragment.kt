@@ -30,6 +30,7 @@ class CategorySelectionFragment(private val ctrl: WelcomeController) : Fragment(
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerViewCat)
             val adapter = CategoryAdapter(categoryList)
             recyclerView.adapter = adapter
+            recyclerView.setHasFixedSize(false)
             ctrl.hideBackArrow()
 
             // when click the sign button catch all the selected categories

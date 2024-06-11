@@ -87,6 +87,7 @@
 
 
             <TextView
+                android:id="@+id/tvCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Liked categories"
@@ -108,7 +109,8 @@
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:translationZ="5dp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
 
             <TextView
@@ -129,12 +131,16 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:background="@drawable/personal_page_textview_bg"
-                android:paddingStart="20dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:translationZ="5dp"/>
+                android:translationZ="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
             <TextView
+                android:id="@+id/tvFollowed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Followed"
@@ -151,10 +157,13 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:background="@drawable/personal_page_textview_bg"
-                android:paddingStart="20dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:translationZ="5dp"/>
+                android:translationZ="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
 
         </LinearLayout>

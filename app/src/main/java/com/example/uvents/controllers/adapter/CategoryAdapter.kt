@@ -29,6 +29,7 @@ class CategoryAdapter(private val categories: Array<String>): RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.catTextView.text = categories[position]
+        holder.checkBox.setOnCheckedChangeListener(null)  // Detach listener
         holder.checkBox.isChecked = checkedState[position] ?: false
 
         // Update checked state when checkbox is toggled

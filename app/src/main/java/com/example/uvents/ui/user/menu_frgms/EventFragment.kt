@@ -67,7 +67,7 @@ class EventFragment(
         }
 
         nameEvent.text = event.name
-        nameOrganizer.text = event.organizerFake
+        nameOrganizer.text = event.organizerName
         category.text = event.category
         date.text = event.date
         description.text = event.description
@@ -83,7 +83,7 @@ class EventFragment(
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 val sharedText = "Name: " + event.name + "\n" +
-                                 "Organizer: " + event.organizerFake + "\n" +
+                                 "Organizer: " + event.organizerName + "\n" +
                                  "Category: " + event.category + "\n" +
                                  "Description: " + event.description + "\n" +
                                  "Location: " + event.address
