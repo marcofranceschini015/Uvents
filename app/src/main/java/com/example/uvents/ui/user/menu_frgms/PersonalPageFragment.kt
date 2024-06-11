@@ -38,6 +38,7 @@ class PersonalPageFragment(
     private lateinit var btnLogout: Button
     private lateinit var tvEvents: TextView
     private lateinit var tvFollowed: TextView
+    private lateinit var tvCategory: TextView
 
     // liked categories recycler view variables
     private lateinit var adapterCategories: PersonalPageAdapter
@@ -67,6 +68,7 @@ class PersonalPageFragment(
             tvUsername = v.findViewById(R.id.tvUsername)
             tvEmail = v.findViewById(R.id.tv_email)
             tvEvents = v.findViewById(R.id.tvEvents)
+            tvCategory = v.findViewById(R.id.tvCategory)
             tvFollowed = v.findViewById(R.id.tvFollowed)
             rvCategories = v.findViewById(R.id.rv_categories)
             rvEvents = v.findViewById(R.id.rv_events)
@@ -112,6 +114,12 @@ class PersonalPageFragment(
         if (followed.isEmpty()) {
             rvFollowed.visibility = View.GONE
             tvFollowed.visibility = View.GONE
+        }
+
+        // if no categories liked don't show categories view
+        if (categories.isEmpty()) {
+            rvCategories.visibility = View.GONE
+            tvCategory.visibility = View.GONE
         }
 
         // save the modification of

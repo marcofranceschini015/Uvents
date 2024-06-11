@@ -243,6 +243,41 @@ class MapController(var mapActivity: MapActivity) {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+
+        // add all the events published to a user
+        fetchEvents()
+    }
+
+
+    /**
+     * Recover the published event of a User from the db
+     * use datasnapshot to recover the single events and add
+     * it if the uid of the publisher is the same as the
+     * actual user.uid
+     */
+    private fun fetchEvents() {
+        val dbRef = FirebaseDatabase.getInstance(dbUrl).getReference("event")
+
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val eventsPublished = mutableListOf<Event>()
+                snapshot.children.forEach { eventSnapshot ->
+                    val event = eventSnapshot.getValue(Event::class.java)
+
+                    if (event?.uid == user.uid) {
+                        eventsPublished.add(event)
+                    }
+                }
+
+                // Update the user object with the fetched events
+                user.eventsPublished = eventsPublished.toList()
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("Database error: $databaseError")
+            }
+        })
     }
 
 
@@ -337,7 +372,7 @@ class MapController(var mapActivity: MapActivity) {
     ) {
         // create an eid unique
         val eid = System.currentTimeMillis().toString() + Random.nextInt()
-        val e = Event(name, user.uid, category, description, location, date, eid)
+        val e = Event(name, user.uid, user.name,category, description, location, date, eid)
 
         // add event to user instance
         user.addEvent(e)
