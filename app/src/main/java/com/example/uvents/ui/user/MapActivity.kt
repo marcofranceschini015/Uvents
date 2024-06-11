@@ -45,7 +45,7 @@ class MapActivity : AppCompatActivity() {
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
-        val mapFragment = MapFragment(mapController, null)
+        val mapFragment = MapFragment(mapController)
 
         replaceFragment(mapFragment)
         bottomNavigation.setOnItemSelectedListener { item ->
@@ -83,6 +83,7 @@ class MapActivity : AppCompatActivity() {
         }
     }
 
+
     /**
      * Function that replace the fragment in the activity
      */
@@ -92,6 +93,7 @@ class MapActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frgMapContainer, fragment)
         fragmentTransaction.commit()
     }
+
 
     private companion object {
 
@@ -103,12 +105,4 @@ class MapActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
-
-//    override fun onBackPressed() {
-//        val intent = Intent(this, WelcomeActivity::class.java)
-//        startActivity(intent)
-//        finish()
-//        super.onBackPressed()
-//    }
-
 }

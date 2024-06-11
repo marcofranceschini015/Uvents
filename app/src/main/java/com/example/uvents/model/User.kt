@@ -11,7 +11,7 @@ class User {
 
     constructor() {}
 
-    constructor(name: String, email: String, uid: String){
+    constructor(name: String, email: String, uid: String) {
         this.name = name
         this.email = email
         this.uid = uid
@@ -21,7 +21,7 @@ class User {
      * Return the list of events in string format
      * in a way to be used in the view
      */
-    fun getEventNamePublished():List<String> {
+    fun getEventNamePublished(): List<String> {
         val list: MutableList<String> = mutableListOf()
         eventsPublished.forEach { event ->
             list.add(event.name!!)
@@ -51,18 +51,30 @@ class User {
         eventsPublished = eventList.toList()
     }
 
+    /**
+     * Function to add a category to
+     * the liked categories
+     */
     fun addCategory(category: String) {
         val categoryList = categories.toMutableList()
         categoryList.add(category)
         categories = categoryList.toList()
     }
 
+    /**
+     * Remove a category from the liked
+     * categories
+     */
     fun removeCategory(category: String) {
         val categoryList = categories.toMutableList()
         categoryList.remove(category)
         categories = categoryList.toList()
     }
 
+    /**
+     * Get if a category is liked or not
+     * by searching into the categories list
+     */
     fun isFavouriteCategory(category: String?): Boolean {
         return categories.toMutableList().contains(category)
     }

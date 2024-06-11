@@ -38,7 +38,7 @@ class EventFragment(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController, null))
+                mapController.switchFragment(MapFragment(mapController))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

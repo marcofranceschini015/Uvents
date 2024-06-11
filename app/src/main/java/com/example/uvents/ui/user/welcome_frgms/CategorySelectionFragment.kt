@@ -20,6 +20,7 @@ class CategorySelectionFragment(private val ctrl: WelcomeController) : Fragment(
     private lateinit var signBtn: Button
     private lateinit var checkedTextsArray: List<String>
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -37,12 +38,12 @@ class CategorySelectionFragment(private val ctrl: WelcomeController) : Fragment(
             signBtn = v.findViewById(R.id.btnSignUp)
             signBtn.setOnClickListener {
                 val checkedItems = adapter.getCheckedItems()
-                // Do something with checkedItems, like creating an array
-                checkedTextsArray = checkedItems.toList() // Convert List to Array if needed
+                // Create a list with the checked items
+                checkedTextsArray = checkedItems.toList()
+                // Finalize the user initialization phase
                 ctrl.initializeUser(checkedTextsArray)
             }
         }
-
         return v
     }
 

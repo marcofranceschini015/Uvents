@@ -56,6 +56,7 @@ class WelcomeActivity : AppCompatActivity() {
         hideBack()
     }
 
+
     /**
      * Function that from WelcomeActivity go to MapActivity
      */
@@ -66,6 +67,7 @@ class WelcomeActivity : AppCompatActivity() {
         finish()
     }
 
+
     /**
      * Hide the back arrow when you are into the
      * category choice phase
@@ -74,6 +76,9 @@ class WelcomeActivity : AppCompatActivity() {
         ivArrow.visibility = View.GONE
     }
 
+    /**
+     * Show the back arrow
+     */
     fun showBack() {
         ivArrow.visibility = View.VISIBLE
     }
