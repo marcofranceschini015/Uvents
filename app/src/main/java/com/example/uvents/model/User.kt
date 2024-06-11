@@ -5,7 +5,7 @@ class User {
     lateinit var name: String
     lateinit var email: String
     lateinit var uid: String
-    lateinit var categories: List<String>
+    var categories: List<String> = listOf()
     var eventsPublished: List<Event> = listOf()
     private var followed: List<User> = listOf()
 

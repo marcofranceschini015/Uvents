@@ -38,9 +38,14 @@
                 android:layout_height="240dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
                 android:background="@drawable/insert_city_et_bg"
                 android:layout_marginTop="10dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:translationZ="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
 
         </LinearLayout>

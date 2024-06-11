@@ -108,7 +108,8 @@
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:translationZ="5dp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
 
             <TextView
@@ -134,9 +135,11 @@
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:translationZ="5dp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
             <TextView
+                android:id="@+id/tvFollowed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Followed"
@@ -158,7 +161,8 @@
                 android:layout_marginTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:translationZ="5dp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
 
         </LinearLayout>

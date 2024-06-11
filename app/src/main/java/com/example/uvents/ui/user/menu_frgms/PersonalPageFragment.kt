@@ -14,16 +14,20 @@ import com.example.uvents.controllers.MapController
 import com.example.uvents.controllers.adapter.PersonalPageAdapter
 import com.example.uvents.ui.user.menu_frgms.PublishEventFragment
 
-
+/**
+ * Fragment that show the Personal Page content
+ * with all the user's info
+ */
 class PersonalPageFragment(
     private val mapController: MapController,
     private val username: String,
-    private val email:String,
+    private val email: String,
     private val categories: List<String>,
     private val events: List<String>,
     private val followed: List<String>
 ) : Fragment() {
 
+    // View elements
     private lateinit var tvUsername: TextView
     private lateinit var tvEmail: TextView
     private lateinit var rvCategories: RecyclerView
@@ -33,31 +37,20 @@ class PersonalPageFragment(
     private lateinit var btnSave: Button
     private lateinit var btnLogout: Button
     private lateinit var tvEvents: TextView
+    private lateinit var tvFollowed: TextView
 
-    // liked categories info
+    // liked categories recycler view variables
     private lateinit var adapterCategories: PersonalPageAdapter
     private lateinit var copyCategories: MutableList<String>
 
-    // events published info
+    // events published recycler view variables
     private lateinit var adapterEvents: PersonalPageAdapter
     private lateinit var copyEvents: MutableList<String>
 
-    // followed organizers info
+    // followed organizers recycler view variables
     private lateinit var adapterFollowed: PersonalPageAdapter
     private lateinit var copyFollowed: MutableList<String>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // This callback will only be called when the Fragment is at least Started.
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController))
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
 
     /*+
     On the creation of the view
@@ -74,6 +67,7 @@ class PersonalPageFragment(
             tvUsername = v.findViewById(R.id.tvUsername)
             tvEmail = v.findViewById(R.id.tv_email)
             tvEvents = v.findViewById(R.id.tvEvents)
+            tvFollowed = v.findViewById(R.id.tvFollowed)
             rvCategories = v.findViewById(R.id.rv_categories)
             rvEvents = v.findViewById(R.id.rv_events)
             rvFollowed = v.findViewById(R.id.rv_followed)
@@ -109,9 +103,15 @@ class PersonalPageFragment(
         tvEmail.text = email
 
         // if no events published don't show the events rv
-        if (events.isEmpty()){
+        if (events.isEmpty()) {
             rvEvents.visibility = View.GONE
             tvEvents.visibility = View.GONE
+        }
+
+        // if no followed organizer don't show the followed rv
+        if (followed.isEmpty()) {
+            rvFollowed.visibility = View.GONE
+            tvFollowed.visibility = View.GONE
         }
 
         // save the modification of
@@ -123,6 +123,7 @@ class PersonalPageFragment(
                 copyEvents.toList(),
                 copyFollowed.toList()
             )
+            mapController.setPersonalPage()
         }
 
         // logout the user, go the main page

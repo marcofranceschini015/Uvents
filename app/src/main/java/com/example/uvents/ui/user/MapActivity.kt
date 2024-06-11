@@ -51,7 +51,6 @@ class MapActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    // todo switch background color
                     replaceFragment(mapFragment)
                     true
                 }
@@ -67,7 +66,6 @@ class MapActivity : AppCompatActivity() {
                 }
 
                 R.id.profile -> {
-                    // todo switch background color
                     mapController.setPersonalPage()
                     true
                 }

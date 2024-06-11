@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -47,7 +48,7 @@ class WelcomeActivity : AppCompatActivity() {
     /**
      * Function that replace the fragment in the activity
      */
-    fun replaceFragment(fragment: Fragment){
+    fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frgContainer, fragment)
@@ -58,7 +59,7 @@ class WelcomeActivity : AppCompatActivity() {
     /**
      * Function that from WelcomeActivity go to MapActivity
      */
-    fun goToYourLocalizationMap(uid: String){
+    fun goToYourLocalizationMap(uid: String) {
         val intent = Intent(this, MapActivity::class.java)
         intent.putExtra("btnLocalitation", true)
         intent.putExtra("uid", uid)
@@ -70,7 +71,7 @@ class WelcomeActivity : AppCompatActivity() {
      * Hide the back arrow when you are into the
      * category choice phase
      */
-    fun hideBack(){
+    fun hideBack() {
         ivArrow.visibility = View.GONE
     }
 

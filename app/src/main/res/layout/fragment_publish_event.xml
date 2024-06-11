@@ -14,24 +14,22 @@
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="550dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:layout_height="550dp"
+        android:orientation="vertical" >
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_height="48dp"
-            android:gravity="bottom"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:textSize="24sp"
             android:textColor="#DAF7DC"
-            android:text="Name"/>
+            android:text="Name"
+            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/etInputName"
@@ -46,15 +44,15 @@
             android:paddingStart="20dp"
             android:textColor="#DAF7DC"
             android:textColorHint="#DAF7DC"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:translationZ="5dp"/>
 
         <TextView
             android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:layout_height="48dp"
-            android:gravity="bottom"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:textSize="24sp"
             android:textColor="#DAF7DC"
@@ -76,19 +74,18 @@
             android:layout_marginTop="10dp"
             android:focusable="false"
             android:cursorVisible="false"
-            android:clickable="true" />
+            android:clickable="true"
+            android:translationZ="5dp"/>
 
         <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_height="48dp"
-            android:gravity="bottom"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:textSize="24sp"
             android:textColor="#DAF7DC"
-            android:text="Location"/>
+            android:text="Location"
+            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/etInputLocation"
@@ -103,15 +100,14 @@
             android:textSize="20sp"
             android:textColor="#DAF7DC"
             android:background="@drawable/insert_city_et_bg"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:translationZ="5dp"/>
 
         <TextView
             android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_height="48dp"
-            android:gravity="bottom"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:textSize="24sp"
             android:textColor="#DAF7DC"
@@ -120,30 +116,34 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCat"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="130dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
             android:background="@drawable/insert_city_et_bg"
             android:layout_marginTop="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:translationZ="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_height="48dp"
-            android:gravity="bottom"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:textSize="24sp"
             android:textColor="#DAF7DC"
-            android:text="Description"/>
+            android:text="Description"
+            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/etInputDescription"
             android:layout_width="match_parent"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:layout_height="150dp"
+            android:layout_height="130dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/insert_city_et_bg"
             android:fontFamily="@font/inter"
@@ -153,7 +153,8 @@
             android:textColorHint="#DAF7DC"
             android:textSize="20sp"
             android:paddingTop="5dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:translationZ="5dp"/>
 
 
     </LinearLayout>

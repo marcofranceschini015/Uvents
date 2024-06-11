@@ -42,18 +42,43 @@ import kotlin.random.Random
 
 class MapController(var mapActivity: MapActivity) {
 
+    // instance of the actual User for ever app running
     private lateinit var user: User
-    private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
+
+    // variables for the database connection
+    private val dbUrl: String =
+        "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
     private lateinit var mDbRef: DatabaseReference
 
-    fun switchFragment(f: Fragment){
+
+    /**
+     * Switch the fragment in the main map activity
+     * (the one with the navbar)
+     */
+    fun switchFragment(f: Fragment) {
         mapActivity.replaceFragment(f)
     }
 
-    fun getCurrentLocation(fusedLocationProviderClient: FusedLocationProviderClient, mapView: MapView, events: ArrayList<Event>) {
-        if (ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mapActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
+
+    fun getCurrentLocation(
+        fusedLocationProviderClient: FusedLocationProviderClient,
+        mapView: MapView,
+        events: ArrayList<Event>
+    ) {
+        if (ActivityCompat.checkSelfPermission(
+                mapActivity,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                mapActivity,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                mapActivity,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                100
+            )
             return
         }
 
@@ -62,15 +87,19 @@ class MapController(var mapActivity: MapActivity) {
         val location = fusedLocationProviderClient.lastLocation
         location.addOnSuccessListener {
             if (it != null) {
-               latitude = it.latitude
-               longitude = it.longitude
-                val cameraPosition = CameraOptions.Builder().center(Point.fromLngLat(it.longitude, it.latitude)).zoom(14.0).build()
+                latitude = it.latitude
+                longitude = it.longitude
+                val cameraPosition =
+                    CameraOptions.Builder().center(Point.fromLngLat(it.longitude, it.latitude))
+                        .zoom(14.0).build()
                 mapView.mapboxMap.setCamera(cameraPosition)
 
                 addAnnotationToMap(mapView, latitude, longitude, events)
 
             } else {
-                val cameraPosition = CameraOptions.Builder().center(Point.fromLngLat(9.188120, 45.463619)).zoom(14.0).build()
+                val cameraPosition =
+                    CameraOptions.Builder().center(Point.fromLngLat(9.188120, 45.463619)).zoom(14.0)
+                        .build()
                 mapView.mapboxMap.setCamera(cameraPosition)
 
                 addAnnotationToMap(mapView, null, null, events)
@@ -79,9 +108,14 @@ class MapController(var mapActivity: MapActivity) {
     }
 
 
-    private fun addAnnotationToMap(mapView: MapView, myLatitude: Double?, myLongitude: Double?, events: ArrayList<Event>) {
+    private fun addAnnotationToMap(
+        mapView: MapView,
+        myLatitude: Double?,
+        myLongitude: Double?,
+        events: ArrayList<Event>
+    ) {
 // Create an instance of the Annotation API and get the PointAnnotationManager.
-        if(myLatitude != null) {
+        if (myLatitude != null) {
             bitmapFromDrawableRes(
                 mapActivity,
                 R.drawable.your_position
@@ -108,7 +142,8 @@ class MapController(var mapActivity: MapActivity) {
             var longitude: Double = 0.0
             var latitude: Double = 0.0
             if (addresses!!.isEmpty()) {
-                Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG).show()
+                Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG)
+                    .show()
             } else {
                 val address = addresses[0]
                 longitude = address.longitude
@@ -150,7 +185,12 @@ class MapController(var mapActivity: MapActivity) {
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
 //                                mapActivity.hideSearchBar()
-                                mapActivity.replaceFragment(EventFragment(MapController(mapActivity), event))
+                                mapActivity.replaceFragment(
+                                    EventFragment(
+                                        MapController(mapActivity),
+                                        event
+                                    )
+                                )
                             } else
                                 viewAnnotation.visibility = View.VISIBLE
                             false
@@ -199,6 +239,7 @@ class MapController(var mapActivity: MapActivity) {
                 // recover the User by uid passed
                 user = dataSnapshot.getValue(User::class.java)!!
             }
+
             override fun onCancelled(error: DatabaseError) {
             }
         })
@@ -209,19 +250,29 @@ class MapController(var mapActivity: MapActivity) {
      * Set up the personal page with all information in the view
      */
     fun setPersonalPage() {
-        mapActivity.replaceFragment(PersonalPageFragment(this, user.name, user.email, user.categories, user.getEventNamePublished(), user.getFollowed()))
+        mapActivity.replaceFragment(
+            PersonalPageFragment(
+                this,
+                user.name,
+                user.email,
+                user.categories,
+                user.getEventNamePublished(),
+                user.getFollowed()
+            )
+        )
     }
 
 
     /**
      * Update a user when modifying the personal page
+     * with all the lists recovered from the page
      */
-    fun updateUser (categories: List<String>, events: List<String>, followed: List<String>) {
+    fun updateUser(categories: List<String>, events: List<String>, followed: List<String>) {
         // todo organizer not followed -> modify view
         user.categories = categories
 
         removeEvent(events) // todo send notification
-        updateDatabase(categories, user.eventsPublished, user.getFollowed())
+        updateDatabase(categories, user.getFollowed())
     }
 
 
@@ -229,20 +280,23 @@ class MapController(var mapActivity: MapActivity) {
      * From a list of events' name remove the event
      * in the User db and in the event db
      */
-    private fun removeEvent(events: List<String>){
+    private fun removeEvent(events: List<String>) {
+        // got the eid to delete
         val listEidToDelete = mutableListOf<String?>()
-        user.eventsPublished.forEach{ event ->
+        user.eventsPublished.forEach { event ->
             if (!events.contains(event.name)) {
                 listEidToDelete.add(event.eid)
             }
         }
+
+        // delete into User instance
         user.eventsPublished = user.eventsPublished.filter { it.eid in listEidToDelete }
 
         // remove into db
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         val eventsRef = mDbRef.child("event")
-        listEidToDelete.forEach{ eid ->
-            eventsRef.child(eid.toString()).removeValue().addOnCompleteListener{}
+        listEidToDelete.forEach { eid ->
+            eventsRef.child(eid.toString()).removeValue().addOnCompleteListener {}
         }
     }
 
@@ -250,7 +304,7 @@ class MapController(var mapActivity: MapActivity) {
     /**
      * Update the database with the passed information
      */
-    private fun updateDatabase(categories: List<String>, events: List<Event>, followed: List<String>) {
+    private fun updateDatabase(categories: List<String>, followed: List<String>) {
         // Reference to the specific user's node
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         val userRef = mDbRef.child("user").child(user.uid)
@@ -258,9 +312,7 @@ class MapController(var mapActivity: MapActivity) {
 
         // Map of data to update
         val updates = hashMapOf<String, Any>(
-            "categories" to categories,
-            "eidPublished" to events,
-            "followed" to followed
+            "categories" to categories
         )
 
         // Update children of the user node
@@ -281,10 +333,16 @@ class MapController(var mapActivity: MapActivity) {
         date: String,
         location: String,
         description: String,
-        category: String) {
+        category: String
+    ) {
+        // create an eid unique
         val eid = System.currentTimeMillis().toString() + Random.nextInt()
         val e = Event(name, user.uid, category, description, location, date, eid)
+
+        // add event to user instance
         user.addEvent(e)
+
+        // add event to the database
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("event").child(eid).setValue(e)
     }
