@@ -1,7 +1,5 @@
 package com.example.uvents.model
 
-import com.google.firebase.database.Exclude
-
 class User {
 
     lateinit var name: String
@@ -51,5 +49,21 @@ class User {
         val eventList = eventsPublished.toMutableList()
         eventList.add(e)
         eventsPublished = eventList.toList()
+    }
+
+    fun addCategory(category: String) {
+        val categoryList = categories.toMutableList()
+        categoryList.add(category)
+        categories = categoryList.toList()
+    }
+
+    fun removeCategory(category: String) {
+        val categoryList = categories.toMutableList()
+        categoryList.remove(category)
+        categories = categoryList.toList()
+    }
+
+    fun isFavouriteCategory(category: String?): Boolean {
+        return categories.toMutableList().contains(category)
     }
 }

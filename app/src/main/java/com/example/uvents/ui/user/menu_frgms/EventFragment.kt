@@ -12,15 +12,24 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.model.Event
+import com.example.uvents.model.User
 
-class EventFragment(private val mapController: MapController, private var event: Event) : Fragment() {
+class EventFragment(
+    private val mapController: MapController,
+    private var user: User,
+    private var event: Event) : Fragment() {
 
     private lateinit var nameEvent: TextView
     private lateinit var nameOrganizer: TextView
     private lateinit var category: TextView
+    private lateinit var date: TextView
     private lateinit var description: TextView
     private lateinit var location: TextView
     private lateinit var ivShare: ImageView
+    private lateinit var ivFollow: ImageView
+    private lateinit var ivChat: ImageView
+    private lateinit var ivAddCategory: ImageView
+    private lateinit var ivRemoveCategory: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +38,7 @@ class EventFragment(private val mapController: MapController, private var event:
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController))
+                mapController.switchFragment(MapFragment(mapController, null))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -47,27 +56,57 @@ class EventFragment(private val mapController: MapController, private var event:
             nameEvent = v.findViewById(R.id.nameEvent)
             nameOrganizer = v.findViewById(R.id.organizerName)
             category = v.findViewById(R.id.category)
+            date = v.findViewById(R.id.date)
             description = v.findViewById(R.id.description)
             location = v.findViewById(R.id.location)
             ivShare = v.findViewById(R.id.shareEvent)
+            ivFollow = v.findViewById(R.id.follow)
+            ivChat = v.findViewById(R.id.chat)
+            ivAddCategory = v.findViewById(R.id.addCategory)
+            ivRemoveCategory = v.findViewById(R.id.removeCategory)
         }
 
         nameEvent.text = event.name
-        nameOrganizer.text = event.organizer
+        nameOrganizer.text = event.organizerFake
         category.text = event.category
+        date.text = event.date
         description.text = event.description
         location.text = event.address
+
+        if(user.isFavouriteCategory(event.category)) {
+            ivAddCategory.visibility = View.GONE
+        } else {
+            ivRemoveCategory.visibility = View.GONE
+        }
 
         ivShare.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                val sharedText = event.name + "\n" + event.organizer + "\n" + event.category + "\n" + event.address
+                val sharedText = "Name: " + event.name + "\n" +
+                                 "Organizer: " + event.organizerFake + "\n" +
+                                 "Category: " + event.category + "\n" +
+                                 "Description: " + event.description + "\n" +
+                                 "Location: " + event.address
                 putExtra(Intent.EXTRA_TEXT, sharedText)
                 type = "text/plain"
             }
 
             val shareIntent = Intent.createChooser(sendIntent, "Share via")
             startActivity(shareIntent)
+        }
+
+        ivAddCategory.setOnClickListener {
+            user.addCategory(event.category)
+            mapController.myUpdateUser(user)
+            ivAddCategory.visibility = View.GONE
+            ivRemoveCategory.visibility = View.VISIBLE
+        }
+
+        ivRemoveCategory.setOnClickListener {
+            user.removeCategory(event.category)
+            mapController.myUpdateUser(user)
+            ivAddCategory.visibility = View.VISIBLE
+            ivRemoveCategory.visibility = View.GONE
         }
 
         return v
