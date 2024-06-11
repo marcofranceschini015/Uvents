@@ -61,7 +61,6 @@ class WelcomeActivity : AppCompatActivity() {
      */
     fun goToYourLocalizationMap(uid: String) {
         val intent = Intent(this, MapActivity::class.java)
-        intent.putExtra("btnLocalitation", true)
         intent.putExtra("uid", uid)
         startActivity(intent)
         finish()

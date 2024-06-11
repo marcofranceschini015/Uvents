@@ -52,6 +52,19 @@ class PersonalPageFragment(
     private lateinit var adapterFollowed: PersonalPageAdapter
     private lateinit var copyFollowed: MutableList<String>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // This callback will only be called when the Fragment is at least Started.
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle the back button event
+                mapController.switchFragment(MapFragment(mapController, null))
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
 
     /*+
     On the creation of the view

@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
+import android.text.Editable
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -40,7 +41,7 @@ import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
 import kotlin.random.Random
 
-class MapController(var mapActivity: MapActivity) {
+class MapController(val mapActivity: MapActivity) {
 
     // instance of the actual User for ever app running
     private lateinit var user: User
@@ -138,7 +139,7 @@ class MapController(var mapActivity: MapActivity) {
 
             val geocoder = Geocoder(mapActivity, Locale.getDefault())
             val addresses = event.address
-                ?.let { geocoder.getFromLocationName(it, 1) }
+                .let { geocoder.getFromLocationName(it, 1) }
             var longitude: Double = 0.0
             var latitude: Double = 0.0
             if (addresses!!.isEmpty()) {
@@ -174,7 +175,7 @@ class MapController(var mapActivity: MapActivity) {
                 )
 //            viewAnnotation.visibility = View.GONE
 
-                viewAnnotation.findViewById<TextView>(R.id.annotation).setText("${event.name}")
+                viewAnnotation.findViewById<TextView>(R.id.annotation).text = event.name
 
 //            viewAnnotation.findViewById<TextView>(R.id.annotation).setOnClickListener {
 //                viewAnnotation.visibility = View.GONE
@@ -184,13 +185,19 @@ class MapController(var mapActivity: MapActivity) {
                     addClickListener(
                         OnPointAnnotationClickListener { clickedAnnotation ->
                             if (pointAnnotation == clickedAnnotation) {
+
 //                                mapActivity.hideSearchBar()
+                              /*
                                 mapActivity.replaceFragment(
                                     EventFragment(
                                         MapController(mapActivity),
                                         event
                                     )
-                                )
+                                ) */
+
+                              // attenzione, togliere lo user
+                                mapActivity.replaceFragment(EventFragment(MapController(mapActivity), user, event))
+
                             } else
                                 viewAnnotation.visibility = View.VISIBLE
                             false
@@ -200,7 +207,6 @@ class MapController(var mapActivity: MapActivity) {
             }
         }
     }
-
 
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
         convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
@@ -335,6 +341,38 @@ class MapController(var mapActivity: MapActivity) {
         }
     }
 
+    /**
+     * Methods alternatives to the previus one to add/delete categories from event page
+     * because the problem of the uninizialized user
+     */
+    fun myUpdateUser (user:User) {
+        // todo special treatment for events published cancelled, has to send notification
+        // todo organizer not followed -> modify view
+        myUpdateDatabase(user)
+    }
+
+    private fun myUpdateDatabase(user:User) {
+        // Reference to the specific user's node
+        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        val userRef = mDbRef.child("user").child(user.uid)
+
+        // Map of data to update
+        val updates = hashMapOf<String, Any>(
+            "categories" to user.categories,
+            "eventsPublished" to user.getEventsPublished(),
+            "followed" to user.getFollowed()
+        )
+
+        // Update children of the user node
+        userRef.updateChildren(updates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(mapActivity, "Your preferences have been updated", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(mapActivity, "Some problems occured", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     /**
      * Update the database with the passed information
@@ -389,6 +427,33 @@ class MapController(var mapActivity: MapActivity) {
 
     fun printToast(msg: String) {
         Toast.makeText(mapActivity, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Events not passed but recovered from firebase, this method apply all the filters chosen by the user
+     * end return only the arraList<String> of the filtered events
+     */
+    fun applyFilteredSearch(events: ArrayList<Event>, organizerName: Editable?, fromDate: CharSequence, toDate: CharSequence,
+        fromTime: Editable?, toTime: Editable?, checkedCategories: List<String>): ArrayList<Event> {
+
+        val filteredEvents: ArrayList<Event> = arrayListOf<Event>()
+
+        events.forEach { event ->
+            if(organizerName.toString() == event.organizerFake) {
+                filteredEvents.add(event)
+            }
+
+            // todo date filter
+
+            // todo time filter
+
+            if(checkedCategories.contains(event.category)) {
+                filteredEvents.add(event)
+            }
+        }
+
+        return filteredEvents
+
     }
 
 }
