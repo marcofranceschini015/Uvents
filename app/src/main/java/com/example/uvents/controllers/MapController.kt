@@ -139,7 +139,9 @@ class MapController(val mapActivity: MapActivity) {
 
             val geocoder = Geocoder(mapActivity, Locale.getDefault())
             val addresses = event.address
-                .let { geocoder.getFromLocationName(it, 1) }
+                .let {
+                        geocoder.getFromLocationName(it!!, 1)
+                }
             var longitude: Double = 0.0
             var latitude: Double = 0.0
             if (addresses!!.isEmpty()) {
@@ -359,7 +361,7 @@ class MapController(val mapActivity: MapActivity) {
         // Map of data to update
         val updates = hashMapOf<String, Any>(
             "categories" to user.categories,
-            "eventsPublished" to user.getEventsPublished(),
+            "eventsPublished" to user.getEventNamePublished(),
             "followed" to user.getFollowed()
         )
 
@@ -439,7 +441,7 @@ class MapController(val mapActivity: MapActivity) {
         val filteredEvents: ArrayList<Event> = arrayListOf<Event>()
 
         events.forEach { event ->
-            if(organizerName.toString() == event.organizerFake) {
+            if(organizerName.toString() == event.organizerName) {
                 filteredEvents.add(event)
             }
 

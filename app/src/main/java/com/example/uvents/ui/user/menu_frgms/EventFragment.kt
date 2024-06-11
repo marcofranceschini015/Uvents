@@ -96,14 +96,14 @@ class EventFragment(
         }
 
         ivAddCategory.setOnClickListener {
-            user.addCategory(event.category)
+            user.addCategory(event.category!!)
             mapController.myUpdateUser(user)
             ivAddCategory.visibility = View.GONE
             ivRemoveCategory.visibility = View.VISIBLE
         }
 
         ivRemoveCategory.setOnClickListener {
-            user.removeCategory(event.category)
+            user.removeCategory(event.category!!)
             mapController.myUpdateUser(user)
             ivAddCategory.visibility = View.VISIBLE
             ivRemoveCategory.visibility = View.GONE
