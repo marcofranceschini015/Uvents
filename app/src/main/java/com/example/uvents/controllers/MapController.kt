@@ -390,39 +390,6 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
-    /*
-    fun myUpdateUser(user: User) {
-        // todo special treatment for events published cancelled, has to send notification
-        // todo organizer not followed -> modify view
-        myUpdateDatabase(user)
-    }
-
-    private fun myUpdateDatabase(user: User) {
-        // Reference to the specific user's node
-        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
-        val userRef = mDbRef.child("user").child(user.uid)
-
-        // Map of data to update
-        val updates = hashMapOf<String, Any>(
-            "categories" to user.categories,
-            "eventsPublished" to user.getEventNamePublished(),
-            "followed" to user.getFollowed()
-        )
-
-        // Update children of the user node
-        userRef.updateChildren(updates).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(
-                    mapActivity,
-                    "Your preferences have been updated",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(mapActivity, "Some problems occured", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-    */
 
     /**
      * Update the database with the passed information
@@ -479,8 +446,6 @@ class MapController(val mapActivity: MapActivity) {
         getAllPublishedEvents()
         addEventAnnotation(mapView)
     }
-
-
 
 
     fun setToolBar(toolBar: Toolbar) {

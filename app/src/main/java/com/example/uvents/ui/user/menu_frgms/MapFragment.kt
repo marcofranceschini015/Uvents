@@ -45,7 +45,11 @@ import com.mapbox.search.ui.view.CommonSearchViewConfiguration
 import com.mapbox.search.ui.view.DistanceUnitType
 import com.mapbox.search.ui.view.SearchResultsView
 
-
+/**
+ * Fragment that contains the map with all
+ * the events on it
+ * todo da riordinare
+ */
 class MapFragment(private val mapController: MapController) : Fragment() {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -54,7 +58,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     private lateinit var searchView: SearchView
     private lateinit var searchResultsView: SearchResultsView
     private lateinit var searchEngineUiAdapter: SearchEngineUiAdapter
-    lateinit var mapView: MapView
+    private lateinit var mapView: MapView
     private lateinit var mapMarkersManager: MapMarkersManager
     private lateinit var btnAdvancedSearch: ImageView
 
@@ -80,6 +84,9 @@ class MapFragment(private val mapController: MapController) : Fragment() {
 
 
     @SuppressLint("ResourceAsColor")
+    /**
+     * When the map is created do all this things
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -102,7 +109,6 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         setHasOptionsMenu(true)
 
         btnAdvancedSearch = v.findViewById(R.id.advancedSearch)
-
         btnAdvancedSearch.setOnClickListener {
             mapController.switchFragment(AdvancedSearchFragment(mapController))
         }
@@ -223,6 +229,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         mapController.updateMapViewWithEvents(mapView)
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
         super.onCreateOptionsMenu(menu,inflater)
@@ -253,6 +260,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
             }
         })
     }
+
 
     private class MapMarkersManager(mapView: MapView) {
 
