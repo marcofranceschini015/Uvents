@@ -56,6 +56,10 @@ class MapController(val mapActivity: MapActivity) {
         "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
     private lateinit var mDbRef: DatabaseReference
 
+    init{
+        getAllPublishedEvents()
+    }
+
 
     /**
      * Switch the fragment in the main map activity
@@ -174,9 +178,13 @@ class MapController(val mapActivity: MapActivity) {
                                 // attenzione, togliere lo user
                                 mapActivity.replaceFragment(
                                     EventFragment(
-                                        MapController(mapActivity),
-                                        user,
-                                        event
+                                        this@MapController,
+                                        event.name!!,
+                                        event.organizerName!!,
+                                        event.category!!,
+                                        event.date!!,
+                                        event.description!!,
+                                        event.address!!
                                     )
                                 )
                             } else
@@ -263,9 +271,7 @@ class MapController(val mapActivity: MapActivity) {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // recover the User by uid passed
                 user = dataSnapshot.getValue(User::class.java)!!
-                getAllPublishedEvents() // todo gli eventi vengono settati fuori sincronia
-                fetchEvents() // todo async, fuori fase quindi user rimane senza eventi pubblicati
-                // todo back da un evento fa sparire l'evento, sospetto
+                fetchEvents()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -279,7 +285,7 @@ class MapController(val mapActivity: MapActivity) {
      * use datasnapshot to recover the single events
      */
     private fun getAllPublishedEvents() {
-        val dbRef = FirebaseDatabase.getInstance(dbUrl).getReference("event")
+        val dbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference("event")
         val eventsPublished = mutableListOf<Event>()
 
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -345,6 +351,21 @@ class MapController(val mapActivity: MapActivity) {
     }
 
 
+    fun addCategory(category: String) {
+        user.addCategory(category)
+        updateDatabase(user.categories, user.getFollowed())
+    }
+
+    fun removeCategory(category: String) {
+        user.removeCategory(category)
+        updateDatabase(user.categories, user.getFollowed())
+    }
+
+    fun isFavouriteCategory(category: String): Boolean {
+        return user.isFavouriteCategory(category)
+    }
+
+
     /**
      * From a list of events' name remove the event
      * in the User db and in the event db
@@ -369,10 +390,7 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
-    /**
-     * Methods alternatives to the previous one to add/delete categories from event page
-     * because the problem of the uninitialized user
-     */
+    /*
     fun myUpdateUser(user: User) {
         // todo special treatment for events published cancelled, has to send notification
         // todo organizer not followed -> modify view
@@ -404,7 +422,7 @@ class MapController(val mapActivity: MapActivity) {
             }
         }
     }
-
+    */
 
     /**
      * Update the database with the passed information
@@ -451,6 +469,17 @@ class MapController(val mapActivity: MapActivity) {
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("event").child(eid).setValue(e)
     }
+
+
+    /**
+     * Modify the map View adding the annotations for every events
+     * updating in case of new events published
+     */
+    fun updateMapViewWithEvents(mapView: MapView) {
+        getAllPublishedEvents()
+        addEventAnnotation(mapView)
+    }
+
 
 
 

@@ -75,7 +75,7 @@ class User {
      * Get if a category is liked or not
      * by searching into the categories list
      */
-    fun isFavouriteCategory(category: String?): Boolean {
+    fun isFavouriteCategory(category: String): Boolean {
         return categories.toMutableList().contains(category)
     }
 }

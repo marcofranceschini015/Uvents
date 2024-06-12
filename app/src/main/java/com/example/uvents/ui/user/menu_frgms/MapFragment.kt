@@ -54,7 +54,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     private lateinit var searchView: SearchView
     private lateinit var searchResultsView: SearchResultsView
     private lateinit var searchEngineUiAdapter: SearchEngineUiAdapter
-    private lateinit var mapView: MapView
+    lateinit var mapView: MapView
     private lateinit var mapMarkersManager: MapMarkersManager
     private lateinit var btnAdvancedSearch: ImageView
 
@@ -215,6 +215,13 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         searchView.setQuery("", false)
     }
 
+
+    /**
+     * Update the map when a new event is published
+     */
+    fun updateMap() {
+        mapController.updateMapViewWithEvents(mapView)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
