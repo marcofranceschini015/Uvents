@@ -37,7 +37,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController, null))
+                mapController.switchFragment(MapFragment(mapController))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -62,7 +62,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
         }
 
         ivClose.setOnClickListener {
-            mapController.switchFragment(MapFragment(mapController, null))
+            mapController.switchFragment(MapFragment(mapController))
         }
 
         val categoryList = CategorySource(mapController.mapActivity).getCategoryList()
@@ -92,7 +92,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
                 etTimeFrom.text, etTimeTo.text, adapter.getCheckedItems())
 
                 mapController.printToast("Filter successfully applied")
-                mapController.switchFragment(MapFragment(mapController, filteredEvents))
+                mapController.switchFragment(MapFragment(mapController)) // todo filter in controller logic
             }
         }
 

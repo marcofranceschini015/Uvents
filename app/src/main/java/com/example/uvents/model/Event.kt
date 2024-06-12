@@ -2,7 +2,7 @@ package com.example.uvents.model
 
 class Event {
 
-    var name: String = ""
+    var name: String? = ""
     var uid: String? = null
     var organizerName: String? = null
     var category: String? = null

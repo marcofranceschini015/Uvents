@@ -17,8 +17,12 @@ import com.example.uvents.controllers.adapter.CategoryAdapter
 import com.example.uvents.model.CategorySource
 import java.util.Calendar
 
+/**
+ * Fragment with all the elements to create an publish an event
+ */
 class PublishEventFragment(private var mapController: MapController) : Fragment() {
 
+    // Elements in the view
     private lateinit var etInputName: EditText
     private lateinit var etInputDate: EditText
     private lateinit var etInputLocation: EditText
@@ -54,35 +58,47 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             // DatePickerDialog to pick the date
-            val datePickerDialog = DatePickerDialog(mapController.mapActivity, { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-                // Format the date selected
-                val selectedDate = "${selectedMonth + 1}/$selectedDayOfMonth/$selectedYear"
-                etInputDate.setText(selectedDate)  // Set date in EditText
-            }, year, month, day)
+            val datePickerDialog = DatePickerDialog(
+                mapController.mapActivity,
+                { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                    // Format the date selected
+                    val selectedDate = "${selectedMonth + 1}/$selectedDayOfMonth/$selectedYear"
+                    etInputDate.setText(selectedDate)  // Set date in EditText
+                },
+                year,
+                month,
+                day
+            )
 
             datePickerDialog.datePicker.minDate = calendar.timeInMillis
             datePickerDialog.show() // Show DatePickerDialog
         }
-
 
         // get the category of the event
         val categoryList = CategorySource(mapController.mapActivity).getCategoryList()
         val adapter = CategoryAdapter(categoryList)
         recyclerViewCat.adapter = adapter
 
-
+        // when click publish check empty things
+        // and that the category selected is exactly one
         btnPublish.setOnClickListener {
             val checkedItems = adapter.getCheckedItems()
             checkedTextsArray = checkedItems.toList()
 
-            // CHECK A LOT OF THINGS
-            if(etInputName.text.isEmpty() ||
+            // Check empty forms
+            if (etInputName.text.isEmpty() ||
                 etInputDate.text.isEmpty() ||
                 etInputLocation.text.isEmpty() ||
-                etInputDescription.text.isEmpty()){
-                Toast.makeText(mapController.mapActivity, "Please fill all the forms", Toast.LENGTH_SHORT).show()
+                etInputDescription.text.isEmpty()
+            ) {
+                Toast.makeText(
+                    mapController.mapActivity,
+                    "Please fill all the forms",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                if(checkedTextsArray.size == 1) {
+                // check one category
+                if (checkedTextsArray.size == 1) {
                     val category = checkedTextsArray[0]
                     mapController.publishEvent(
                         etInputName.text.toString(),
@@ -91,14 +107,22 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
                         etInputDescription.text.toString(),
                         category
                     )
-                    Toast.makeText(mapController.mapActivity, "Event successfully published", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        mapController.mapActivity,
+                        "Event successfully published",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // modify the view of the profile after publication
                     mapController.setPersonalPage()
                 } else {
-                    Toast.makeText(mapController.mapActivity, "You have to select only one category", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        mapController.mapActivity,
+                        "You have to select only one category",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
-
         return v
     }
 

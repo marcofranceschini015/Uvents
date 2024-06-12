@@ -17,7 +17,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
-import com.example.uvents.model.Event
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.mapbox.android.gestures.Utils.dpToPx
@@ -47,27 +46,24 @@ import com.mapbox.search.ui.view.DistanceUnitType
 import com.mapbox.search.ui.view.SearchResultsView
 
 
-class MapFragment(private val mapController: MapController, private var events: ArrayList<Event>?) : Fragment() {
-
-    //private lateinit var events: ArrayList<Event>
+class MapFragment(private val mapController: MapController) : Fragment() {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationProvider: LocationProvider
-
     private lateinit var toolbar: Toolbar
     private lateinit var searchView: SearchView
-
     private lateinit var searchResultsView: SearchResultsView
     private lateinit var searchEngineUiAdapter: SearchEngineUiAdapter
-
-    private lateinit var mapView: MapView
+    lateinit var mapView: MapView
     private lateinit var mapMarkersManager: MapMarkersManager
-
     private lateinit var btnAdvancedSearch: ImageView
 
+
+    /**
+     * Only to manage call back
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // This callback will only be called when the Fragment is at least Started.
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -80,7 +76,6 @@ class MapFragment(private val mapController: MapController, private var events: 
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
     }
 
 
@@ -92,6 +87,7 @@ class MapFragment(private val mapController: MapController, private var events: 
     ): View {
         val v: View = inflater.inflate(R.layout.fragment_map, container, false)
 
+        // Load map from mapbox
         mapView = v.findViewById(R.id.mapView)
         mapView.mapboxMap.also { mapboxMap ->
             mapboxMap.loadStyle(getMapStyleUri())
@@ -100,36 +96,8 @@ class MapFragment(private val mapController: MapController, private var events: 
         // Set up location services and event handling
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        // Dummy data for events, consider retrieving this from a ViewModel or similar component
-        if(events == null) {
-            events = arrayListOf(
-                Event(
-                    "Festa universitaria",
-                    "Unibs",
-                    "Party",
-                    "20/06/2024",
-                    "Festa di Primavera per staccare dallo stress dello studio e degli esami",
-                    "Via Branze, 38, Brescia"),
-                Event(
-                    "Mostra di Picasso",
-                    "Belle Arti Brescia",
-                    "Charity",
-                    "28/06/2024",
-                    "Vengono esposti i quadri più particolari dell'autore",
-                    "Piazza della Vittoria, Brescia"
-                ),
-                Event(
-                    "Eras Tour Taylor Swift",
-                    "San Siro Concerts",
-                    "Concert",
-                    "14/07/2024",
-                    "Concerto di 3 ore con 40 canzoni dell'artista. Occasione unica per vedere Taylor Swift in Italia.",
-                    "Stadio San Siro, Milano"
-                )
-            )
-        }
-
-        mapController.getCurrentLocation(fusedLocationProviderClient, mapView, events!!)
+        // set up the current location and also every event
+        mapController.getCurrentLocation(fusedLocationProviderClient, mapView)
 
         setHasOptionsMenu(true)
 
@@ -140,9 +108,6 @@ class MapFragment(private val mapController: MapController, private var events: 
         }
 
         mapMarkersManager = MapMarkersManager(mapView)
-//        mapMarkersManager.onMarkersChangeListener = {
-//            mapActivity.updateOnBackPressedCallbackEnabled()
-//        }
 
         toolbar = v.findViewById(R.id.toolbar)
         toolbar.apply {
@@ -230,13 +195,9 @@ class MapFragment(private val mapController: MapController, private var events: 
             }
         })
 
-//        if (ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//            ActivityCompat.checkSelfPermission(mapActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(mapActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
-//        }
-
         return v
     }
+
 
     private fun getMapStyleUri(): String {
         return when (val darkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
@@ -248,9 +209,18 @@ class MapFragment(private val mapController: MapController, private var events: 
         }
     }
 
+
     private fun closeSearchView() {
         toolbar.collapseActionView()
         searchView.setQuery("", false)
+    }
+
+
+    /**
+     * Update the map when a new event is published
+     */
+    fun updateMap() {
+        mapController.updateMapViewWithEvents(mapView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

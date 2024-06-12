@@ -11,19 +11,21 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
-import com.example.uvents.model.Event
-import com.example.uvents.model.User
 
 class EventFragment(
     private val mapController: MapController,
-    private var user: User,
-    private var event: Event) : Fragment() {
+    private val name: String,
+    private val organizerName: String,
+    private val category: String,
+    private val date: String,
+    private val description: String,
+    private val address: String) : Fragment() {
 
     private lateinit var nameEvent: TextView
     private lateinit var nameOrganizer: TextView
-    private lateinit var category: TextView
-    private lateinit var date: TextView
-    private lateinit var description: TextView
+    private lateinit var tvCategory: TextView
+    private lateinit var tvDate: TextView
+    private lateinit var tvDescription: TextView
     private lateinit var location: TextView
     private lateinit var ivShare: ImageView
     private lateinit var ivFollow: ImageView
@@ -38,7 +40,7 @@ class EventFragment(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController, null))
+                mapController.switchFragment(MapFragment(mapController))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -55,9 +57,9 @@ class EventFragment(
         if(v != null) {
             nameEvent = v.findViewById(R.id.nameEvent)
             nameOrganizer = v.findViewById(R.id.organizerName)
-            category = v.findViewById(R.id.category)
-            date = v.findViewById(R.id.date)
-            description = v.findViewById(R.id.description)
+            tvCategory = v.findViewById(R.id.category)
+            tvDate = v.findViewById(R.id.date)
+            tvDescription = v.findViewById(R.id.description)
             location = v.findViewById(R.id.location)
             ivShare = v.findViewById(R.id.shareEvent)
             ivFollow = v.findViewById(R.id.follow)
@@ -66,14 +68,14 @@ class EventFragment(
             ivRemoveCategory = v.findViewById(R.id.removeCategory)
         }
 
-        nameEvent.text = event.name
-        nameOrganizer.text = event.organizerName
-        category.text = event.category
-        date.text = event.date
-        description.text = event.description
-        location.text = event.address
+        nameEvent.text = name
+        nameOrganizer.text = organizerName
+        tvCategory.text = category
+        tvDate.text = date
+        tvDescription.text = description
+        location.text = address
 
-        if(user.isFavouriteCategory(event.category)) {
+        if(mapController.isFavouriteCategory(category)) {
             ivAddCategory.visibility = View.GONE
         } else {
             ivRemoveCategory.visibility = View.GONE
@@ -82,11 +84,11 @@ class EventFragment(
         ivShare.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                val sharedText = "Name: " + event.name + "\n" +
-                                 "Organizer: " + event.organizerName + "\n" +
-                                 "Category: " + event.category + "\n" +
-                                 "Description: " + event.description + "\n" +
-                                 "Location: " + event.address
+                val sharedText = "Name: " + name + "\n" +
+                                 "Organizer: " + organizerName + "\n" +
+                                 "Category: " + category + "\n" +
+                                 "Description: " + description + "\n" +
+                                 "Location: " + address
                 putExtra(Intent.EXTRA_TEXT, sharedText)
                 type = "text/plain"
             }
@@ -96,15 +98,13 @@ class EventFragment(
         }
 
         ivAddCategory.setOnClickListener {
-            user.addCategory(event.category)
-            mapController.myUpdateUser(user)
+            mapController.addCategory(category)
             ivAddCategory.visibility = View.GONE
             ivRemoveCategory.visibility = View.VISIBLE
         }
 
         ivRemoveCategory.setOnClickListener {
-            user.removeCategory(event.category)
-            mapController.myUpdateUser(user)
+            mapController.removeCategory(category)
             ivAddCategory.visibility = View.VISIBLE
             ivRemoveCategory.visibility = View.GONE
         }

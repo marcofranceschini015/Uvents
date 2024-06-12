@@ -25,6 +25,7 @@ class MapActivity : AppCompatActivity() {
 
     private lateinit var mapController: MapController
     private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var mapFragment: MapFragment
 
     /**
      * On creation create a mapController and recover the user in it
@@ -45,13 +46,14 @@ class MapActivity : AppCompatActivity() {
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
-        val mapFragment = MapFragment(mapController, null)
+        mapFragment = MapFragment(mapController)
 
         replaceFragment(mapFragment)
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
                     replaceFragment(mapFragment)
+                    mapFragment.updateMap() //todo poco efficente
                     true
                 }
 
@@ -83,6 +85,7 @@ class MapActivity : AppCompatActivity() {
         }
     }
 
+
     /**
      * Function that replace the fragment in the activity
      */
@@ -92,6 +95,7 @@ class MapActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frgMapContainer, fragment)
         fragmentTransaction.commit()
     }
+
 
     private companion object {
 
@@ -103,12 +107,4 @@ class MapActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
-
-//    override fun onBackPressed() {
-//        val intent = Intent(this, WelcomeActivity::class.java)
-//        startActivity(intent)
-//        finish()
-//        super.onBackPressed()
-//    }
-
 }
