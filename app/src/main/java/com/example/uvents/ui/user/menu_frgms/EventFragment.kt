@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 
+/**
+ * Show every single event with the
+ * info of it
+ */
 class EventFragment(
     private val mapController: MapController,
     private val name: String,
@@ -21,6 +25,7 @@ class EventFragment(
     private val description: String,
     private val address: String) : Fragment() {
 
+    // view elements
     private lateinit var nameEvent: TextView
     private lateinit var nameOrganizer: TextView
     private lateinit var tvCategory: TextView
@@ -33,9 +38,12 @@ class EventFragment(
     private lateinit var ivAddCategory: ImageView
     private lateinit var ivRemoveCategory: ImageView
 
+
+    /**
+     * Manage the back button of android
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // This callback will only be called when the Fragment is at least Started.
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -46,15 +54,19 @@ class EventFragment(
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+
+    /**
+     * When the view is created set up everything
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val v: View? = inflater.inflate(R.layout.fragment_event, container, false)
 
         if(v != null) {
+            // view connection
             nameEvent = v.findViewById(R.id.nameEvent)
             nameOrganizer = v.findViewById(R.id.organizerName)
             tvCategory = v.findViewById(R.id.category)
@@ -68,6 +80,7 @@ class EventFragment(
             ivRemoveCategory = v.findViewById(R.id.removeCategory)
         }
 
+        // set every value of the view
         nameEvent.text = name
         nameOrganizer.text = organizerName
         tvCategory.text = category
@@ -75,12 +88,17 @@ class EventFragment(
         tvDescription.text = description
         location.text = address
 
+        // if the category of the event is already in the liked one
+        // show the remove category button
+        // otherwise the add
         if(mapController.isFavouriteCategory(category)) {
             ivAddCategory.visibility = View.GONE
         } else {
             ivRemoveCategory.visibility = View.GONE
         }
 
+        // set the text for the sharing
+        // of the event
         ivShare.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -92,11 +110,11 @@ class EventFragment(
                 putExtra(Intent.EXTRA_TEXT, sharedText)
                 type = "text/plain"
             }
-
             val shareIntent = Intent.createChooser(sendIntent, "Share via")
             startActivity(shareIntent)
         }
 
+        // listener for the add/remove category
         ivAddCategory.setOnClickListener {
             mapController.addCategory(category)
             ivAddCategory.visibility = View.GONE

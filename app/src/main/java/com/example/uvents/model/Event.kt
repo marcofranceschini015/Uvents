@@ -1,7 +1,10 @@
 package com.example.uvents.model
 
+/**
+ * Class that represents an event
+ * with every information relative to it
+ */
 class Event {
-
     var name: String? = ""
     var uid: String? = null
     var organizerName: String? = null

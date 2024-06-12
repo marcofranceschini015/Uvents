@@ -20,12 +20,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
  * Activity with the map and every events on it
+ * There is also the menu bar that is permanent
+ * when the fragments will be switched.
+ * The menu leads to Personal page, Home, Chat
+ * and Booked events
  */
 class MapActivity : AppCompatActivity() {
 
     private lateinit var mapController: MapController
     private lateinit var bottomNavigation: BottomNavigationView
-    private lateinit var mapFragment: MapFragment
 
     /**
      * On creation create a mapController and recover the user in it
@@ -42,18 +45,26 @@ class MapActivity : AppCompatActivity() {
             insets
         }
 
+        // set up the navigation menu
         bottomNavigation = findViewById(R.id.bottomNav)
+
+        // create the controller and set the user
+        // realtive to the uid of the login
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
-        mapFragment = MapFragment(mapController)
-
+        // create the mapFragment and set it
+        val mapFragment = MapFragment(mapController)
         replaceFragment(mapFragment)
+
+        // set up the listener for every
+        // icon in the menu, in a way to manage
+        // the switch between every fragment
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
                     replaceFragment(mapFragment)
-                    mapFragment.updateMap() //todo poco efficente
+                    mapFragment.updateMap()
                     true
                 }
 

@@ -1,5 +1,9 @@
 package com.example.uvents.model
 
+/**
+ * Class that represents a signed user
+ * that could be also a publisher of events
+ */
 class User {
 
     lateinit var name: String

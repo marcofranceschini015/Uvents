@@ -41,6 +41,7 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
         val v: View? = inflater.inflate(R.layout.fragment_publish_event, container, false)
 
         if (v != null) {
+            // link with the view
             etInputName = v.findViewById(R.id.etInputName)
             etInputDate = v.findViewById(R.id.etInputDate)
             etInputLocation = v.findViewById(R.id.etInputLocation)
