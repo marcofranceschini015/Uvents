@@ -78,6 +78,36 @@
             android:translationZ="5dp"/>
 
         <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
+            android:textSize="24sp"
+            android:textColor="#DAF7DC"
+            android:text="Time"/>
+
+        <EditText
+            android:id="@+id/etInputTime"
+            android:layout_width="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_height="48dp"
+            android:hint="hh:min"
+            android:textColorHint="#DAF7DC"
+            android:paddingStart="20dp"
+            android:fontFamily="@font/inter"
+            android:textSize="20sp"
+            android:textColor="#DAF7DC"
+            android:background="@drawable/insert_city_et_bg"
+            android:layout_marginTop="10dp"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:clickable="true"
+            android:translationZ="5dp"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_height="wrap_content"

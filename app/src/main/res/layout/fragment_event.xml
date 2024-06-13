@@ -150,11 +150,29 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginStart="5dp"
                 android:gravity="center_vertical"
                 android:text="Date"
+                android:textSize="18dp"
+                android:textColor="#2F4858"
+                />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/baseline_access_time_24" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:gravity="center_vertical"
+                android:text="Time"
                 android:textSize="18dp"
                 android:textColor="#2F4858"
                 />

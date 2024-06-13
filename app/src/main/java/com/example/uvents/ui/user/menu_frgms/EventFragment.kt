@@ -22,6 +22,7 @@ class EventFragment(
     private val organizerName: String,
     private val category: String,
     private val date: String,
+    private val time: String,
     private val description: String,
     private val address: String) : Fragment() {
 
@@ -30,6 +31,7 @@ class EventFragment(
     private lateinit var nameOrganizer: TextView
     private lateinit var tvCategory: TextView
     private lateinit var tvDate: TextView
+    private lateinit var tvTime: TextView
     private lateinit var tvDescription: TextView
     private lateinit var location: TextView
     private lateinit var ivShare: ImageView
@@ -71,6 +73,7 @@ class EventFragment(
             nameOrganizer = v.findViewById(R.id.organizerName)
             tvCategory = v.findViewById(R.id.category)
             tvDate = v.findViewById(R.id.date)
+            tvTime = v.findViewById(R.id.time)
             tvDescription = v.findViewById(R.id.description)
             location = v.findViewById(R.id.location)
             ivShare = v.findViewById(R.id.shareEvent)
@@ -85,6 +88,7 @@ class EventFragment(
         nameOrganizer.text = organizerName
         tvCategory.text = category
         tvDate.text = date
+        tvTime.text = time
         tvDescription.text = description
         location.text = address
 

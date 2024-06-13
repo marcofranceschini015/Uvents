@@ -183,6 +183,7 @@ class MapController(val mapActivity: MapActivity) {
                                         event.organizerName!!,
                                         event.category!!,
                                         event.date!!,
+                                        event.time!!,
                                         event.description!!,
                                         event.address!!
                                     )
@@ -421,13 +422,14 @@ class MapController(val mapActivity: MapActivity) {
     fun publishEvent(
         name: String,
         date: String,
+        time: String,
         location: String,
         description: String,
         category: String
     ) {
         // create an eid unique
         val eid = System.currentTimeMillis().toString() + Random.nextInt()
-        val e = Event(name, user.uid, user.name, category, description, location, date, eid)
+        val e = Event(name, user.uid, user.name, category, description, location, date, time, eid)
 
         // add event to user instance
         user.addEvent(e)
