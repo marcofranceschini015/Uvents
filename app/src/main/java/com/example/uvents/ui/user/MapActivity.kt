@@ -29,6 +29,7 @@ class MapActivity : AppCompatActivity() {
 
     private lateinit var mapController: MapController
     private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var mapFragment: MapFragment
 
     /**
      * On creation create a mapController and recover the user in it
@@ -54,7 +55,7 @@ class MapActivity : AppCompatActivity() {
         mapController.setUser(intent.getStringExtra("uid"))
 
         // create the mapFragment and set it
-        val mapFragment = MapFragment(mapController)
+        mapFragment = MapFragment(mapController)
         replaceFragment(mapFragment)
 
         // set up the listener for every

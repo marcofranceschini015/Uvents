@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.User
@@ -82,7 +83,6 @@ class MapController(val mapActivity: MapActivity) {
         fusedLocationProviderClient: FusedLocationProviderClient,
         mapView: MapView
     ) {
-        //getAllPublishedEvents()
         if (ActivityCompat.checkSelfPermission(
                 mapActivity,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -136,72 +136,74 @@ class MapController(val mapActivity: MapActivity) {
      * Add an annotation for every events published
      */
     private fun addEventAnnotation(mapView: MapView) {
-        events.value?.forEach { event ->
-            val geocoder = Geocoder(mapActivity, Locale.getDefault())
-            val addresses = event.address
-                .let {
-                    geocoder.getFromLocationName(it!!, 1)
-                }
-            var longitude = 0.0
-            var latitude = 0.0
-            if (addresses!!.isEmpty()) {
-                Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG)
-                    .show()
-            } else {
-                val address = addresses[0]
-                longitude = address.longitude
-                latitude = address.latitude
-            }
-
-            // set the red marker for every event at long and lat
-            bitmapFromDrawableRes(
-                mapActivity,
-                R.drawable.red_marker
-            )?.let {
-
-                val annotationApi = mapView.annotations
-                val pointAnnotationManager = annotationApi.createPointAnnotationManager()
-                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-                    .withPoint(Point.fromLngLat(longitude, latitude))
-                    .withIconImage(it)
-                    .withIconAnchor(IconAnchor.TOP)
-                val pointAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
-                val viewAnnotationManager = mapView.viewAnnotationManager
-                val viewAnnotation = viewAnnotationManager.addViewAnnotation(
-                    resId = R.layout.item_callout_view,
-                    options = viewAnnotationOptions {
-                        geometry(Point.fromLngLat(longitude, latitude))
+        events.observe(mapActivity, Observer { listevent ->
+            listevent.forEach { event ->
+                val geocoder = Geocoder(mapActivity, Locale.getDefault())
+                val addresses = event.address
+                    .let {
+                        geocoder.getFromLocationName(it!!, 1)
                     }
-                )
-                viewAnnotation.findViewById<TextView>(R.id.annotation).text = event.name
+                var longitude = 0.0
+                var latitude = 0.0
+                if (addresses!!.isEmpty()) {
+                    Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    val address = addresses[0]
+                    longitude = address.longitude
+                    latitude = address.latitude
+                }
 
-                // set up a click listener for every event
-                pointAnnotationManager.apply {
-                    addClickListener(
-                        OnPointAnnotationClickListener { clickedAnnotation ->
-                            if (pointAnnotation == clickedAnnotation) {
-                                // attenzione, togliere lo user
-                                mapActivity.replaceFragment(
-                                    EventFragment(
-                                        this@MapController,
-                                        event.name!!,
-                                        event.organizerName!!,
-                                        event.category!!,
-                                        event.date!!,
-                                        event.time!!,
-                                        event.description!!,
-                                        event.address!!,
-                                        event.imageUrl!!
-                                    )
-                                )
-                            } else
-                                viewAnnotation.visibility = View.VISIBLE
-                            false
+                // set the red marker for every event at long and lat
+                bitmapFromDrawableRes(
+                    mapActivity,
+                    R.drawable.red_marker
+                )?.let {
+
+                    val annotationApi = mapView.annotations
+                    val pointAnnotationManager = annotationApi.createPointAnnotationManager()
+                    val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
+                        .withPoint(Point.fromLngLat(longitude, latitude))
+                        .withIconImage(it)
+                        .withIconAnchor(IconAnchor.TOP)
+                    val pointAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
+                    val viewAnnotationManager = mapView.viewAnnotationManager
+                    val viewAnnotation = viewAnnotationManager.addViewAnnotation(
+                        resId = R.layout.item_callout_view,
+                        options = viewAnnotationOptions {
+                            geometry(Point.fromLngLat(longitude, latitude))
                         }
                     )
+                    viewAnnotation.findViewById<TextView>(R.id.annotation).text = event.name
+
+                    // set up a click listener for every event
+                    pointAnnotationManager.apply {
+                        addClickListener(
+                            OnPointAnnotationClickListener { clickedAnnotation ->
+                                if (pointAnnotation == clickedAnnotation) {
+                                    // attenzione, togliere lo user
+                                    mapActivity.replaceFragment(
+                                        EventFragment(
+                                            this@MapController,
+                                            event.name!!,
+                                            event.organizerName!!,
+                                            event.category!!,
+                                            event.date!!,
+                                            event.time!!,
+                                            event.description!!,
+                                            event.address!!,
+                                            event.imageUrl!!
+                                        )
+                                    )
+                                } else
+                                    viewAnnotation.visibility = View.VISIBLE
+                                false
+                            }
+                        )
+                    }
                 }
             }
-        }
+        })
     }
 
 
@@ -303,7 +305,7 @@ class MapController(val mapActivity: MapActivity) {
                         eventsPublished.add(event)
                     }
                 }
-                events.value = eventsPublished
+                events.postValue(eventsPublished)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -320,12 +322,14 @@ class MapController(val mapActivity: MapActivity) {
      */
     private fun fetchEvents() {
         val userEvents = mutableListOf<Event>()
-        events.value?.forEach{ e->
-            if (e.uid == user.uid){
-                userEvents.add(e)
+        events.observe(mapActivity, Observer { listevent->
+            listevent.forEach{ e->
+                if (e.uid == user.uid && !userEvents.contains(e)){
+                    userEvents.add(e)
+                }
             }
-        }
-        user.eventsPublished = userEvents.toList()
+            user.eventsPublished = userEvents.toList()
+        })
     }
 
 

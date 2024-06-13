@@ -56,7 +56,7 @@ dependencies {
     implementation("com.mapbox.maps:android:11.3.0")
     implementation("com.mapbox.search:mapbox-search-android-ui:2.1.0")
     implementation("androidx.activity:activity-ktx:1.4.0")
-
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     kapt("com.github.bumptech.glide:compiler:4.12.0")
 
