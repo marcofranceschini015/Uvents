@@ -18,7 +18,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             app:srcCompat="@drawable/taylor_swift_concert"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <LinearLayout
             android:id="@+id/llNameEvent"
