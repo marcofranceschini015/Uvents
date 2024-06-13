@@ -14,6 +14,7 @@ class Event {
     var date: String? = null
     var time: String? = null
     var eid: String? = null
+    var imageUrl: String? = null
 
     constructor() {}
 

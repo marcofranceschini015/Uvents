@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
+import android.net.Uri
 import android.text.Editable
 import android.view.View
 import android.widget.TextView
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
@@ -78,6 +80,7 @@ class MapController(val mapActivity: MapActivity) {
         fusedLocationProviderClient: FusedLocationProviderClient,
         mapView: MapView
     ) {
+        //getAllPublishedEvents()
         if (ActivityCompat.checkSelfPermission(
                 mapActivity,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -185,7 +188,8 @@ class MapController(val mapActivity: MapActivity) {
                                         event.date!!,
                                         event.time!!,
                                         event.description!!,
-                                        event.address!!
+                                        event.address!!,
+                                        event.imageUrl!!
                                     )
                                 )
                             } else
@@ -425,18 +429,44 @@ class MapController(val mapActivity: MapActivity) {
         time: String,
         location: String,
         description: String,
-        category: String
+        category: String,
+        fileUri: Uri
     ) {
         // create an eid unique
         val eid = System.currentTimeMillis().toString() + Random.nextInt()
         val e = Event(name, user.uid, user.name, category, description, location, date, time, eid)
 
+        // convert image to url and then
+        // save the event into the db
+        uploadImageToFirebase(fileUri, e)
+
         // add event to user instance
         user.addEvent(e)
+    }
 
-        // add event to the database
+
+    private fun uploadImageToFirebase(fileUri: Uri, event: Event) {
+        val fileName = fileUri.lastPathSegment ?: "default_name"
+        val storageReference = FirebaseStorage.getInstance().getReference("uploads/$fileName")
+
+        storageReference.putFile(fileUri)
+            .addOnSuccessListener {
+                // Get the download URL
+                storageReference.downloadUrl.addOnSuccessListener { uri ->
+                    val imageUrl = uri.toString()
+                    event.imageUrl = imageUrl
+                    storeEvent(event)
+                    //saveImageUrlToEvent(imageUrl, eventKey)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(mapActivity, "Upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun storeEvent(event: Event) {
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
-        mDbRef.child("event").child(eid).setValue(e)
+        mDbRef.child("event").child(event.eid!!).setValue(event)
     }
 
 
@@ -488,9 +518,7 @@ class MapController(val mapActivity: MapActivity) {
                 filteredEvents.add(event)
             }
         }
-
         return filteredEvents
-
     }
 
 }

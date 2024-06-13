@@ -2,6 +2,8 @@ package com.example.uvents.ui.user.menu_frgms
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +12,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.controllers.adapter.CategoryAdapter
 import com.example.uvents.model.CategorySource
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import java.util.Calendar
 import java.util.Locale
 
@@ -34,6 +40,8 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
     private lateinit var btnPublish: Button
     private lateinit var etInputTime: EditText
     private lateinit var checkedTextsArray: List<String>
+
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
 
     /**
@@ -72,6 +80,14 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
         val adapter = CategoryAdapter(categoryList)
         recyclerViewCat.adapter = adapter
 
+
+        var fileUri: Uri? = null
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                fileUri = it
+            }
+        }
+
         // when click publish check empty things
         // and that the category selected is exactly one
         btnPublish.setOnClickListener {
@@ -93,22 +109,32 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
             } else {
                 // check one category
                 if (checkedTextsArray.size == 1) {
-                    val category = checkedTextsArray[0]
-                    mapController.publishEvent(
-                        etInputName.text.toString(),
-                        etInputDate.text.toString(),
-                        etInputTime.text.toString(),
-                        etInputLocation.text.toString(),
-                        etInputDescription.text.toString(),
-                        category
-                    )
-                    Toast.makeText(
-                        mapController.mapActivity,
-                        "Event successfully published",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // modify the view of the profile after publication
-                    mapController.setPersonalPage()
+                    if (fileUri != null) {
+                        val category = checkedTextsArray[0]
+                        mapController.publishEvent(
+                            etInputName.text.toString(),
+                            etInputDate.text.toString(),
+                            etInputTime.text.toString(),
+                            etInputLocation.text.toString(),
+                            etInputDescription.text.toString(),
+                            category,
+                            fileUri!!
+                        )
+                        Toast.makeText(
+                            mapController.mapActivity,
+                            "Event successfully published",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // modify the view of the profile after publication
+                        mapController.setPersonalPage()
+                    }
+                    else {
+                        Toast.makeText(
+                            mapController.mapActivity,
+                            "Please take an image",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     Toast.makeText(
                         mapController.mapActivity,
@@ -117,6 +143,10 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
                     ).show()
                 }
             }
+        }
+
+        btnUploadImage.setOnClickListener {
+            imagePickerLauncher.launch("image/*")
         }
         return v
     }

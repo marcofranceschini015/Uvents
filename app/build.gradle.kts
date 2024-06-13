@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -49,9 +50,15 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-database")
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
+    implementation("com.google.firebase:firebase-storage:20.0.1")
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("com.mapbox.maps:android:11.3.0")
     implementation("com.mapbox.search:mapbox-search-android-ui:2.1.0")
-    implementation("androidx.activity:activity-ktx:1.2.3")
+    implementation("androidx.activity:activity-ktx:1.4.0")
+
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    kapt("com.github.bumptech.glide:compiler:4.12.0")
+
 
 }

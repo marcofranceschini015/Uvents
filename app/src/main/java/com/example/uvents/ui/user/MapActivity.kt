@@ -49,7 +49,7 @@ class MapActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.bottomNav)
 
         // create the controller and set the user
-        // realtive to the uid of the login
+        // relative to the uid of the login
         mapController = MapController(this)
         mapController.setUser(intent.getStringExtra("uid"))
 
