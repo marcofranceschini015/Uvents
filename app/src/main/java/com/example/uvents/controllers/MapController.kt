@@ -17,6 +17,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.User
@@ -51,7 +52,8 @@ class MapController(val mapActivity: MapActivity) {
 
     // instance of the actual User for ever app running
     private lateinit var user: User
-    private var events: List<Event> = listOf()
+    // MutableLiveData to solve asynch problems of reading database
+    private var events: MutableLiveData<List<Event>> = MutableLiveData()
 
     // variables for the database connection
     private val dbUrl: String =
@@ -134,7 +136,7 @@ class MapController(val mapActivity: MapActivity) {
      * Add an annotation for every events published
      */
     private fun addEventAnnotation(mapView: MapView) {
-        events.forEach { event ->
+        events.value?.forEach { event ->
             val geocoder = Geocoder(mapActivity, Locale.getDefault())
             val addresses = event.address
                 .let {
@@ -287,21 +289,21 @@ class MapController(val mapActivity: MapActivity) {
 
     /**
      * Recover the published events from the db
-     * use datasnapshot to recover the single events
+     * use DataSnapshot to recover the single events
      */
     private fun getAllPublishedEvents() {
         val dbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference("event")
-        val eventsPublished = mutableListOf<Event>()
 
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                val eventsPublished = mutableListOf<Event>()
                 snapshot.children.forEach { eventSnapshot ->
                     val event = eventSnapshot.getValue(Event::class.java)
                     if (event != null) {
                         eventsPublished.add(event)
                     }
                 }
-                events = eventsPublished
+                events.value = eventsPublished
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -318,7 +320,7 @@ class MapController(val mapActivity: MapActivity) {
      */
     private fun fetchEvents() {
         val userEvents = mutableListOf<Event>()
-        events.forEach{e->
+        events.value?.forEach{ e->
             if (e.uid == user.uid){
                 userEvents.add(e)
             }
