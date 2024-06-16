@@ -33,13 +33,21 @@ import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
 
+
+/**
+ * Class that is useful to manage
+ * all the annotations in a map
+ * adding or removing some of that
+ */
 class AnnotationManager(
     private val mapView: MapView,
     private val mapActivity: MapActivity,
     private val mapController: MapController,
     private val eventFetcher: EventFetcher) {
 
+    // Save a connection between event an annotation on the map
     private val eventAnnotations = mutableMapOf<Event, PointAnnotation>()
+
 
     /**
      * Get the current location, set the pointer on the
@@ -106,6 +114,7 @@ class AnnotationManager(
 
         return addresses!!.isNotEmpty()
     }
+
 
     /**
      * Given an event add the annotation to the map

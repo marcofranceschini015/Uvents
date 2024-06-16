@@ -1,29 +1,16 @@
 package com.example.uvents.controllers
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.location.Geocoder
+
 import android.net.Uri
 import android.text.Editable
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.EventFetcher
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.MapActivity
-import com.example.uvents.ui.user.menu_frgms.EventFragment
 import com.example.uvents.ui.user.menu_frgms.PersonalPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.database.DataSnapshot
@@ -32,22 +19,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.mapbox.geojson.Point
-import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
-import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
-import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
-import com.mapbox.maps.viewannotation.geometry
-import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import kotlin.random.Random
 
 /**
@@ -56,8 +33,12 @@ import kotlin.random.Random
  */
 class MapController(val mapActivity: MapActivity) {
 
+    // manage the reading of events from db
     private var eventFetcher: EventFetcher = EventFetcher()
+
+    // manage the annotations on the map
     private lateinit var annotationManager: AnnotationManager
+
     // instance of the actual User for ever app running
     private lateinit var user: User
 
@@ -67,6 +48,9 @@ class MapController(val mapActivity: MapActivity) {
     private lateinit var mDbRef: DatabaseReference
 
 
+    /**
+     * Set view the first time
+     */
     fun setView(mapView: MapView, fusedLocationProviderClient: FusedLocationProviderClient) {
         annotationManager = AnnotationManager(mapView, mapActivity, this, eventFetcher)
         annotationManager.addEventAnnotation()
@@ -149,16 +133,29 @@ class MapController(val mapActivity: MapActivity) {
     }
 
 
+    /**
+     * Add a new category in the user instance
+     */
     fun addCategory(category: String) {
         user.addCategory(category)
         updateDatabase(user.categories, user.getFollowed())
     }
 
+
+    /**
+     * Remove a category from the liked of the
+     * user
+     */
     fun removeCategory(category: String) {
         user.removeCategory(category)
         updateDatabase(user.categories, user.getFollowed())
     }
 
+
+    /**
+     * Get if the category selected is from the
+     * liked of a user
+     */
     fun isFavouriteCategory(category: String): Boolean {
         return user.isFavouriteCategory(category)
     }
@@ -212,19 +209,26 @@ class MapController(val mapActivity: MapActivity) {
         // Update children of the user node
         userRef.updateChildren(updates).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(mapActivity, "Updated", Toast.LENGTH_SHORT).show()
+                printToast("Updated")
             } else {
-                Toast.makeText(mapActivity, "Some problems occured", Toast.LENGTH_SHORT).show()
+                printToast("Some problems occurred")
             }
         }
     }
 
 
+    /**
+     * Get if a name of an event is already taken
+     */
     fun nameExists(name: String): Boolean{
         return eventFetcher.nameExists(name)
     }
 
 
+    /**
+     * Get if a location given from an address
+     * exist or not
+     */
     fun locationExist(address: String): Boolean {
         return annotationManager.locationExist(address)
     }
@@ -268,6 +272,10 @@ class MapController(val mapActivity: MapActivity) {
     }
 
 
+    /**
+     * Upload an image into firebase. Use coroutine and suspend fun
+     * because need the other code to wait the finish of this fun
+     */
     private suspend fun uploadImageToFirebase(fileUri: Uri, event: Event) {
         val fileName = fileUri.lastPathSegment ?: "default_name"
         val storageReference = FirebaseStorage.getInstance().getReference("uploads/$fileName")
@@ -280,27 +288,35 @@ class MapController(val mapActivity: MapActivity) {
             val imageUrl = uploadTaskSnapshot.storage.downloadUrl.await().toString()
             event.imageUrl = imageUrl
 
-            storeEvent(event) // Assume this function is adapted for coroutine use or properly handles database operations
+            // Store the event into the db
+            storeEvent(event)
         } catch (e: Exception) {
             // Handle possible exceptions such as network errors
-            Toast.makeText(mapActivity, "Upload failed: ${e.message}", Toast.LENGTH_SHORT).show()
-            ""
+            printToast("Upload failed: ${e.message}")
         }
     }
 
 
+    /**
+     * Store the event into the db under event node
+     */
     private fun storeEvent(event: Event) {
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("event").child(event.eid!!).setValue(event)
     }
 
 
-
+    /**
+     * Set the tool bar in the map activity
+     */
     fun setToolBar(toolBar: Toolbar) {
         mapActivity.setSupportActionBar(toolBar)
     }
 
 
+    /**
+     * useful to print toast messages
+     */
     fun printToast(msg: String) {
         Toast.makeText(mapActivity, msg, Toast.LENGTH_SHORT).show()
     }

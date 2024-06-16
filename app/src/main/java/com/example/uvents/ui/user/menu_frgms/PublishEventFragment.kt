@@ -39,8 +39,6 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
     private lateinit var btnUploadImage: Button
     private lateinit var btnPublish: Button
     private lateinit var etInputTime: EditText
-    private lateinit var checkedTextsArray: List<String>
-
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
 
@@ -88,75 +86,20 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
             }
         }
 
-        // when click publish check empty things
-        // and that the category selected is exactly one
+        // Publish an event with some fun
+        // to check forms validation, category selection
+        // image selection and location selection
         btnPublish.setOnClickListener {
             val checkedItems = adapter.getCheckedItems()
-            checkedTextsArray = checkedItems.toList()
+            val checkedTextsArray = checkedItems.toList()
 
-            // Check empty forms
-            if (etInputName.text.isEmpty() ||
-                etInputDate.text.isEmpty() ||
-                etInputTime.text.isEmpty() ||
-                etInputLocation.text.isEmpty() ||
-                etInputDescription.text.isEmpty()
-            ) {
-                Toast.makeText(
-                    mapController.mapActivity,
-                    "Please fill all the forms",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                if (mapController.nameExists(etInputName.text.toString())){
-                    Toast.makeText(
-                        mapController.mapActivity,
-                        "Name already taken",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                else {
-                    if (!mapController.locationExist(etInputLocation.text.toString())) {
-                        Toast.makeText(
-                            mapController.mapActivity,
-                            "Location doesn't exist",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        // check one category
-                        if (checkedTextsArray.size == 1) {
-                            if (fileUri != null) {
-                                val category = checkedTextsArray[0]
-                                mapController.publishEvent(
-                                    etInputName.text.toString(),
-                                    etInputDate.text.toString(),
-                                    etInputTime.text.toString(),
-                                    etInputLocation.text.toString(),
-                                    etInputDescription.text.toString(),
-                                    category,
-                                    fileUri!!
-                                )
-                                Toast.makeText(
-                                    mapController.mapActivity,
-                                    "Published, wait...",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                // modify the view of the profile after publication
-                                //mapController.setPersonalPage()
-                            } else {
-                                Toast.makeText(
-                                    mapController.mapActivity,
-                                    "Please take an image",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        } else {
-                            Toast.makeText(
-                                mapController.mapActivity,
-                                "You have to select only one category",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
+            if (validateForms()) {
+                if (mapController.nameExists(etInputName.text.toString())) {
+                    showToast("Name already taken")
+                } else if (!mapController.locationExist(etInputLocation.text.toString())) {
+                    showToast("Location doesn't exist")
+                } else {
+                    handleCategoryAndPublish(checkedTextsArray, fileUri)
                 }
             }
         }
@@ -210,6 +153,64 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
 
         datePickerDialog.datePicker.minDate = calendar.timeInMillis
         datePickerDialog.show() // Show DatePickerDialog
+    }
+
+
+    /**
+     * Check if the forms are empty or filled
+     */
+    private fun validateForms(): Boolean {
+        if (etInputName.text.isEmpty() || etInputDate.text.isEmpty() ||
+            etInputTime.text.isEmpty() || etInputLocation.text.isEmpty() ||
+            etInputDescription.text.isEmpty()) {
+            showToast("Please fill all the forms")
+            return false
+        }
+        return true
+    }
+
+
+    /**
+     * Handle the category selected and if it's ok
+     * go to publish event
+     */
+    private fun handleCategoryAndPublish(checkedTextsArray: List<String>, fileUri: Uri?) {
+        if (checkedTextsArray.size == 1) {
+            fileUri?.let {
+                publishEvent(checkedTextsArray[0], it)
+            } ?: showToast("Please take an image")
+        } else {
+            showToast("You have to select only one category")
+        }
+    }
+
+
+    /**
+     * Publish event if everything it's ok
+     */
+    private fun publishEvent(category: String, fileUri: Uri) {
+        mapController.publishEvent(
+            etInputName.text.toString(),
+            etInputDate.text.toString(),
+            etInputTime.text.toString(),
+            etInputLocation.text.toString(),
+            etInputDescription.text.toString(),
+            category,
+            fileUri
+        )
+        showToast("Published, wait...")
+    }
+
+
+    /**
+     * Manage the showing of a toast message
+     */
+    private fun showToast(message: String) {
+        Toast.makeText(
+            mapController.mapActivity,
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 }
