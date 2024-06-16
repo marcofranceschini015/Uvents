@@ -115,39 +115,47 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
                     ).show()
                 }
                 else {
-                    // check one category
-                    if (checkedTextsArray.size == 1) {
-                        if (fileUri != null) {
-                            val category = checkedTextsArray[0]
-                            mapController.publishEvent(
-                                etInputName.text.toString(),
-                                etInputDate.text.toString(),
-                                etInputTime.text.toString(),
-                                etInputLocation.text.toString(),
-                                etInputDescription.text.toString(),
-                                category,
-                                fileUri!!
-                            )
-                            Toast.makeText(
-                                mapController.mapActivity,
-                                "Published, wait...",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            // modify the view of the profile after publication
-                            //mapController.setPersonalPage()
+                    if (!mapController.locationExist(etInputLocation.text.toString())) {
+                        Toast.makeText(
+                            mapController.mapActivity,
+                            "Location doesn't exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // check one category
+                        if (checkedTextsArray.size == 1) {
+                            if (fileUri != null) {
+                                val category = checkedTextsArray[0]
+                                mapController.publishEvent(
+                                    etInputName.text.toString(),
+                                    etInputDate.text.toString(),
+                                    etInputTime.text.toString(),
+                                    etInputLocation.text.toString(),
+                                    etInputDescription.text.toString(),
+                                    category,
+                                    fileUri!!
+                                )
+                                Toast.makeText(
+                                    mapController.mapActivity,
+                                    "Published, wait...",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                // modify the view of the profile after publication
+                                //mapController.setPersonalPage()
+                            } else {
+                                Toast.makeText(
+                                    mapController.mapActivity,
+                                    "Please take an image",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         } else {
                             Toast.makeText(
                                 mapController.mapActivity,
-                                "Please take an image",
+                                "You have to select only one category",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    } else {
-                        Toast.makeText(
-                            mapController.mapActivity,
-                            "You have to select only one category",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
             }

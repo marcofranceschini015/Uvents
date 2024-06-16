@@ -95,6 +95,19 @@ class AnnotationManager(
 
 
     /**
+     * Check if a location exists, if is written correctly
+     * to add an event to the map
+     */
+    fun locationExist(address: String): Boolean {
+        val geocoder = Geocoder(mapActivity, Locale.getDefault())
+        val addresses = address.let {
+            geocoder.getFromLocationName(address, 1)
+        }
+
+        return addresses!!.isNotEmpty()
+    }
+
+    /**
      * Given an event add the annotation to the map
      * setup the listener and add the link between event and annotation
      * to the mutable map
@@ -107,14 +120,10 @@ class AnnotationManager(
             }
         var longitude = 0.0
         var latitude = 0.0
-        if (addresses!!.isEmpty()) {
-            Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG)
-                .show()
-        } else {
-            val address = addresses[0]
-            longitude = address.longitude
-            latitude = address.latitude
-        }
+        val address = addresses?.get(0) // not empty, check before add
+        longitude = address!!.longitude
+        latitude = address.latitude
+
 
         // set the red marker for every event at long and lat
         bitmapFromDrawableRes(

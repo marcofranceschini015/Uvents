@@ -225,6 +225,11 @@ class MapController(val mapActivity: MapActivity) {
     }
 
 
+    fun locationExist(address: String): Boolean {
+        return annotationManager.locationExist(address)
+    }
+
+
     /**
      * Publish an event in the database and add to the user
      */
