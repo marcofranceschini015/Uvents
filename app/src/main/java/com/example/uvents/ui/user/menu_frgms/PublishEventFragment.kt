@@ -1,6 +1,9 @@
 package com.example.uvents.ui.user.menu_frgms
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,13 +12,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 import com.example.uvents.controllers.adapter.CategoryAdapter
 import com.example.uvents.model.CategorySource
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import java.util.Calendar
+import java.util.Locale
 
 /**
  * Fragment with all the elements to create an publish an event
@@ -30,9 +38,13 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
     private lateinit var etInputDescription: EditText
     private lateinit var btnUploadImage: Button
     private lateinit var btnPublish: Button
+    private lateinit var etInputTime: EditText
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
-    private lateinit var checkedTextsArray: List<String>
 
+    /**
+     * When the view is created set up everything
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,30 +61,16 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
             etInputDescription = v.findViewById(R.id.etInputDescription)
             btnUploadImage = v.findViewById(R.id.btnUploadImage)
             btnPublish = v.findViewById(R.id.btnPublish)
+            etInputTime = v.findViewById(R.id.etInputTime)
         }
 
-        // set up the date when click on input date
+        // set up date and time
         etInputDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            openDatePickerDialog(etInputDate)
+        }
 
-            // DatePickerDialog to pick the date
-            val datePickerDialog = DatePickerDialog(
-                mapController.mapActivity,
-                { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-                    // Format the date selected
-                    val selectedDate = "${selectedMonth + 1}/$selectedDayOfMonth/$selectedYear"
-                    etInputDate.setText(selectedDate)  // Set date in EditText
-                },
-                year,
-                month,
-                day
-            )
-
-            datePickerDialog.datePicker.minDate = calendar.timeInMillis
-            datePickerDialog.show() // Show DatePickerDialog
+        etInputTime.setOnClickListener {
+            openTimePickerDialog(etInputTime)
         }
 
         // get the category of the event
@@ -80,51 +78,139 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
         val adapter = CategoryAdapter(categoryList)
         recyclerViewCat.adapter = adapter
 
-        // when click publish check empty things
-        // and that the category selected is exactly one
+
+        var fileUri: Uri? = null
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                fileUri = it
+            }
+        }
+
+        // Publish an event with some fun
+        // to check forms validation, category selection
+        // image selection and location selection
         btnPublish.setOnClickListener {
             val checkedItems = adapter.getCheckedItems()
-            checkedTextsArray = checkedItems.toList()
+            val checkedTextsArray = checkedItems.toList()
 
-            // Check empty forms
-            if (etInputName.text.isEmpty() ||
-                etInputDate.text.isEmpty() ||
-                etInputLocation.text.isEmpty() ||
-                etInputDescription.text.isEmpty()
-            ) {
-                Toast.makeText(
-                    mapController.mapActivity,
-                    "Please fill all the forms",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                // check one category
-                if (checkedTextsArray.size == 1) {
-                    val category = checkedTextsArray[0]
-                    mapController.publishEvent(
-                        etInputName.text.toString(),
-                        etInputDate.text.toString(),
-                        etInputLocation.text.toString(),
-                        etInputDescription.text.toString(),
-                        category
-                    )
-                    Toast.makeText(
-                        mapController.mapActivity,
-                        "Event successfully published",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // modify the view of the profile after publication
-                    mapController.setPersonalPage()
+            if (validateForms()) {
+                if (mapController.nameExists(etInputName.text.toString())) {
+                    showToast("Name already taken")
+                } else if (!mapController.locationExist(etInputLocation.text.toString())) {
+                    showToast("Location doesn't exist")
                 } else {
-                    Toast.makeText(
-                        mapController.mapActivity,
-                        "You have to select only one category",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    handleCategoryAndPublish(checkedTextsArray, fileUri)
                 }
             }
         }
+
+        btnUploadImage.setOnClickListener {
+            imagePickerLauncher.launch("image/*")
+        }
         return v
+    }
+
+
+    /**
+     * Open the time picker dialog when click on the
+     * edit text time
+     */
+    private fun openTimePickerDialog(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(mapController.mapActivity, { _, selectedHour, selectedMinute ->
+            val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
+            editText.setText(formattedTime)  // Set the time to the EditText that was passed in
+        }, hour, minute, true)
+
+        timePickerDialog.show()
+    }
+
+
+    /**
+     * Open the date picker dialog
+     * when click on the date edit text
+     */
+    private fun openDatePickerDialog(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // DatePickerDialog to pick the date
+        val datePickerDialog = DatePickerDialog(
+            mapController.mapActivity, { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                // Format the date selected
+                val selectedDate = "${selectedMonth + 1}/$selectedDayOfMonth/$selectedYear"
+                editText.setText(selectedDate)  // Set date in EditText
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.datePicker.minDate = calendar.timeInMillis
+        datePickerDialog.show() // Show DatePickerDialog
+    }
+
+
+    /**
+     * Check if the forms are empty or filled
+     */
+    private fun validateForms(): Boolean {
+        if (etInputName.text.isEmpty() || etInputDate.text.isEmpty() ||
+            etInputTime.text.isEmpty() || etInputLocation.text.isEmpty() ||
+            etInputDescription.text.isEmpty()) {
+            showToast("Please fill all the forms")
+            return false
+        }
+        return true
+    }
+
+
+    /**
+     * Handle the category selected and if it's ok
+     * go to publish event
+     */
+    private fun handleCategoryAndPublish(checkedTextsArray: List<String>, fileUri: Uri?) {
+        if (checkedTextsArray.size == 1) {
+            fileUri?.let {
+                publishEvent(checkedTextsArray[0], it)
+            } ?: showToast("Please take an image")
+        } else {
+            showToast("You have to select only one category")
+        }
+    }
+
+
+    /**
+     * Publish event if everything it's ok
+     */
+    private fun publishEvent(category: String, fileUri: Uri) {
+        mapController.publishEvent(
+            etInputName.text.toString(),
+            etInputDate.text.toString(),
+            etInputTime.text.toString(),
+            etInputLocation.text.toString(),
+            etInputDescription.text.toString(),
+            category,
+            fileUri
+        )
+        showToast("Published, wait...")
+    }
+
+
+    /**
+     * Manage the showing of a toast message
+     */
+    private fun showToast(message: String) {
+        Toast.makeText(
+            mapController.mapActivity,
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
 
@@ -22,14 +23,17 @@ class EventFragment(
     private val organizerName: String,
     private val category: String,
     private val date: String,
+    private val time: String,
     private val description: String,
-    private val address: String) : Fragment() {
+    private val address: String,
+    private val imageUrl: String) : Fragment() {
 
     // view elements
     private lateinit var nameEvent: TextView
     private lateinit var nameOrganizer: TextView
     private lateinit var tvCategory: TextView
     private lateinit var tvDate: TextView
+    private lateinit var tvTime: TextView
     private lateinit var tvDescription: TextView
     private lateinit var location: TextView
     private lateinit var ivShare: ImageView
@@ -37,6 +41,7 @@ class EventFragment(
     private lateinit var ivChat: ImageView
     private lateinit var ivAddCategory: ImageView
     private lateinit var ivRemoveCategory: ImageView
+    private lateinit var imageEvent: ImageView
 
 
     /**
@@ -71,6 +76,7 @@ class EventFragment(
             nameOrganizer = v.findViewById(R.id.organizerName)
             tvCategory = v.findViewById(R.id.category)
             tvDate = v.findViewById(R.id.date)
+            tvTime = v.findViewById(R.id.time)
             tvDescription = v.findViewById(R.id.description)
             location = v.findViewById(R.id.location)
             ivShare = v.findViewById(R.id.shareEvent)
@@ -78,6 +84,7 @@ class EventFragment(
             ivChat = v.findViewById(R.id.chat)
             ivAddCategory = v.findViewById(R.id.addCategory)
             ivRemoveCategory = v.findViewById(R.id.removeCategory)
+            imageEvent = v.findViewById(R.id.imageEvent)
         }
 
         // set every value of the view
@@ -85,8 +92,10 @@ class EventFragment(
         nameOrganizer.text = organizerName
         tvCategory.text = category
         tvDate.text = date
+        tvTime.text = time
         tvDescription.text = description
         location.text = address
+        loadImage(imageUrl)
 
         // if the category of the event is already in the liked one
         // show the remove category button
@@ -128,6 +137,16 @@ class EventFragment(
         }
 
         return v
+    }
+
+
+    /**
+     * Load an image from url into the imageView
+     */
+    private fun loadImage(imageUrl: String) {
+        Glide.with(this)
+            .load(imageUrl)
+            .into(imageEvent)
     }
 
 }
