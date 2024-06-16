@@ -52,8 +52,7 @@ class MapController(val mapActivity: MapActivity) {
     private var events: List<Event> = listOf()
 
     // variables for the database connection
-    private val dbUrl: String =
-        "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
+    private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
     private lateinit var mDbRef: DatabaseReference
 
     init{
@@ -260,6 +259,27 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
+    fun getUidByUsername(username: String): String {
+        val dbRef = FirebaseDatabase.getInstance(dbUrl).getReference("user")
+        var uid = ""
+
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach { userSnapshot ->
+                    val user = userSnapshot.getValue(User::class.java)
+                    if (user!!.name == username) {
+                        uid = user.uid
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("Database error: $databaseError")
+            }
+        })
+
+        return uid
+    }
 
     /**
      * Recover in the database the user from its uid
@@ -285,7 +305,7 @@ class MapController(val mapActivity: MapActivity) {
      * use datasnapshot to recover the single events
      */
     private fun getAllPublishedEvents() {
-        val dbRef = FirebaseDatabase.getInstance("https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/").getReference("event")
+        val dbRef = FirebaseDatabase.getInstance(dbUrl).getReference("event")
         val eventsPublished = mutableListOf<Event>()
 
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {

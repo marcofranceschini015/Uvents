@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Uvents"
         tools:targetApi="31">
         <activity
+            android:name=".ui.user.menu_frgms.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.user.MapActivity"
             android:exported="false" />
         <activity

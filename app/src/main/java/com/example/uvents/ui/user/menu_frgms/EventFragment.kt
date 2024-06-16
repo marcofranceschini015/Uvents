@@ -127,6 +127,14 @@ class EventFragment(
             ivRemoveCategory.visibility = View.GONE
         }
 
+        ivChat.setOnClickListener {
+            val intent = Intent(mapController.mapActivity, ChatActivity::class.java)
+            intent.putExtra("name", nameOrganizer.text)
+            intent.putExtra("uid", mapController.getUidByUsername(nameOrganizer.text.toString()))
+            startActivity(intent)
+            mapController.mapActivity.finish()
+        }
+
         return v
     }
 

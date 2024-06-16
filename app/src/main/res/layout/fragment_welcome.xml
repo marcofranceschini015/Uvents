@@ -29,7 +29,7 @@
             android:textSize="24sp"
             android:textColor="#DAF7DC"
             android:background="@drawable/button_sign_bg"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="120dp"
             android:translationZ="5dp"/>
 
         <Button

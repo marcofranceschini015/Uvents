@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
+import com.example.uvents.ui.user.menu_frgms.ChatsFragment
 import com.example.uvents.ui.user.menu_frgms.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -74,7 +75,7 @@ class MapActivity : AppCompatActivity() {
                 }
 
                 R.id.chat -> {
-                    // Handle "Chat" action
+                    replaceFragment(ChatsFragment(mapController))
                     true
                 }
 
