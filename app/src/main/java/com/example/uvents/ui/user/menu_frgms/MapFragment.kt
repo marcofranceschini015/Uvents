@@ -207,9 +207,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
 
         // Set up location services and event handling
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        mapController.attachView(mapView)
-        // set up the current location and also every event
-        mapController.getCurrentLocation(fusedLocationProviderClient)
+        mapController.setView(mapView, fusedLocationProviderClient)
     }
 
 
@@ -227,14 +225,6 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     private fun closeSearchView() {
         toolbar.collapseActionView()
         searchView.setQuery("", false)
-    }
-
-
-    /**
-     * Update the map when a new event is published
-     */
-    fun updateMap() {
-        mapController.updateMapViewWithEvents()
     }
 
 

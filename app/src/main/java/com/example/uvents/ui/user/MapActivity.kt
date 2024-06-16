@@ -65,7 +65,6 @@ class MapActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
                     replaceFragment(mapFragment)
-                    mapFragment.updateMap()
                     true
                 }
 

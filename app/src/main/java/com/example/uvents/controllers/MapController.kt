@@ -42,6 +42,11 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.Locale
 import kotlin.random.Random
 
@@ -52,8 +57,7 @@ import kotlin.random.Random
 class MapController(val mapActivity: MapActivity) {
 
     private var eventFetcher: EventFetcher = EventFetcher()
-    private lateinit var mapView: MapView
-
+    private lateinit var annotationManager: AnnotationManager
     // instance of the actual User for ever app running
     private lateinit var user: User
 
@@ -63,9 +67,10 @@ class MapController(val mapActivity: MapActivity) {
     private lateinit var mDbRef: DatabaseReference
 
 
-    fun attachView(mapView: MapView) {
-        this.mapView = mapView
-        addEventAnnotation()
+    fun setView(mapView: MapView, fusedLocationProviderClient: FusedLocationProviderClient) {
+        annotationManager = AnnotationManager(mapView, mapActivity, this, eventFetcher)
+        annotationManager.addEventAnnotation()
+        annotationManager.getCurrentLocation(fusedLocationProviderClient)
     }
 
 
@@ -79,199 +84,6 @@ class MapController(val mapActivity: MapActivity) {
 
 
     /**
-     * Get the current location, set the pointer on the
-     * position, and locate the camera around the position
-     */
-    fun getCurrentLocation( //todo da tagliare assolutamente
-        fusedLocationProviderClient: FusedLocationProviderClient
-    ) {
-        if (ActivityCompat.checkSelfPermission(
-                mapActivity,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                mapActivity,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                mapActivity,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                100
-            )
-            return
-        }
-
-        var latitude: Double?
-        var longitude: Double?
-        val location = fusedLocationProviderClient.lastLocation
-
-        // get latitude and longitude getting the location
-        location.addOnSuccessListener {
-            if (it != null) {
-                latitude = it.latitude
-                longitude = it.longitude
-                val cameraPosition =
-                    CameraOptions.Builder().center(Point.fromLngLat(it.longitude, it.latitude))
-                        .zoom(14.0).build()
-                mapView.mapboxMap.setCamera(cameraPosition)
-
-                // set personal position
-                // and add all the annotation
-                addAnnotationToMap(latitude, longitude)
-                //addEventAnnotation(mapView)
-            } else {
-                // otherwise set the camera to a default value (Milan)
-                val cameraPosition =
-                    CameraOptions.Builder().center(Point.fromLngLat(9.188120, 45.463619)).zoom(14.0)
-                        .build()
-                mapView.mapboxMap.setCamera(cameraPosition)
-
-                addAnnotationToMap(null, null)
-                //addEventAnnotation(mapView)
-            }
-        }
-    }
-
-
-    /**
-     * Add an annotation for every events published
-     */
-    private fun addEventAnnotation() {
-        eventFetcher.eventsData.observe(mapActivity, Observer { listevent ->
-            listevent.forEach { event ->
-                val geocoder = Geocoder(mapActivity, Locale.getDefault())
-                val addresses = event.address
-                    .let {
-                        geocoder.getFromLocationName(it!!, 1)
-                    }
-                var longitude = 0.0
-                var latitude = 0.0
-                if (addresses!!.isEmpty()) {
-                    Toast.makeText(mapActivity, "Location inexistent or not found", Toast.LENGTH_LONG)
-                        .show()
-                } else {
-                    val address = addresses[0]
-                    longitude = address.longitude
-                    latitude = address.latitude
-                }
-
-                // set the red marker for every event at long and lat
-                bitmapFromDrawableRes(
-                    mapActivity,
-                    R.drawable.red_marker
-                )?.let {
-
-                    val annotationApi = mapView.annotations
-                    val pointAnnotationManager = annotationApi.createPointAnnotationManager()
-                    val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-                        .withPoint(Point.fromLngLat(longitude, latitude))
-                        .withIconImage(it)
-                        .withIconAnchor(IconAnchor.TOP)
-                    val pointAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
-                    val viewAnnotationManager = mapView.viewAnnotationManager
-                    val viewAnnotation = viewAnnotationManager.addViewAnnotation(
-                        resId = R.layout.item_callout_view,
-                        options = viewAnnotationOptions {
-                            geometry(Point.fromLngLat(longitude, latitude))
-                        }
-                    )
-                    viewAnnotation.findViewById<TextView>(R.id.annotation).text = event.name
-
-                    // set up a click listener for every event
-                    pointAnnotationManager.apply {
-                        addClickListener(
-                            OnPointAnnotationClickListener { clickedAnnotation ->
-                                if (pointAnnotation == clickedAnnotation) {
-                                    // attenzione, togliere lo user
-                                    mapActivity.replaceFragment(
-                                        EventFragment(
-                                            this@MapController,
-                                            event.name!!,
-                                            event.organizerName!!,
-                                            event.category!!,
-                                            event.date!!,
-                                            event.time!!,
-                                            event.description!!,
-                                            event.address!!,
-                                            event.imageUrl!!
-                                        )
-                                    )
-                                } else
-                                    viewAnnotation.visibility = View.VISIBLE
-                                false
-                            }
-                        )
-                    }
-                }
-            }
-        })
-    }
-
-
-    /**
-     * Add annotation to the map
-     * relative of a personal position
-     * @param myLatitude personal position latitude
-     * @param myLongitude personal position longitude
-     */
-    private fun addAnnotationToMap(
-        myLatitude: Double?,
-        myLongitude: Double?
-    ) {
-
-        // Set up the personal position annotation
-        if (myLatitude != null) {
-            bitmapFromDrawableRes(
-                mapActivity,
-                R.drawable.your_position
-            )?.let {
-                val annotationApi = mapView.annotations
-                val pointAnnotationManager = annotationApi.createPointAnnotationManager()
-                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-                    .withPoint(Point.fromLngLat(myLongitude!!, myLatitude))
-                    .withIconImage(it)
-                pointAnnotationManager.create(pointAnnotationOptions)
-            }
-        }
-
-        // for each event published get the location from the address
-        // and set the annotation on the map
-    }
-
-
-    /**
-     * Get a bitmap from a drawable resoursce
-     */
-    private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
-        convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
-
-
-    /**
-     * Convert of drawable resource to a bitmap
-     */
-    private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
-        if (sourceDrawable == null) {
-            return null
-        }
-        return if (sourceDrawable is BitmapDrawable) {
-            sourceDrawable.bitmap
-        } else {
-            val constantState = sourceDrawable.constantState ?: return null
-            val drawable = constantState.newDrawable().mutate()
-            val bitmap: Bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth, drawable.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            bitmap
-        }
-    }
-
-
-    /**
      * Recover in the database the user from its uid
      */
     fun setUser(uid: String?) {
@@ -281,7 +93,7 @@ class MapController(val mapActivity: MapActivity) {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // recover the User by uid passed
                 user = dataSnapshot.getValue(User::class.java)!!
-                fetchEvents()
+                fetchEventsForUser()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -295,11 +107,11 @@ class MapController(val mapActivity: MapActivity) {
      * if the uid of the publisher is the same as the
      * actual user.uid
      */
-    private fun fetchEvents() {
+    private fun fetchEventsForUser() {
         val userEvents = mutableListOf<Event>()
         eventFetcher.eventsData.observe(mapActivity, Observer { listevent->
             listevent.forEach{ e->
-                if (e.uid == user.uid && !userEvents.contains(e)){
+                if (e.uid == user.uid){
                     userEvents.add(e)
                 }
             }
@@ -368,11 +180,17 @@ class MapController(val mapActivity: MapActivity) {
         // delete into User instance
         user.eventsPublished = user.eventsPublished.filter { it.eid !in listEidToDelete }
 
+        // remove from the db of events
+        eventFetcher.removeEvent(listEidToDelete)
+
         // remove into db
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         val eventsRef = mDbRef.child("event")
         listEidToDelete.forEach { eid ->
+            // remove from database given an eid
             eventsRef.child(eid.toString()).removeValue().addOnCompleteListener {}
+            // remove from view annotation
+            annotationManager.removeSingleAnnotation(eid!!)
         }
     }
 
@@ -401,6 +219,12 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
+
+    fun nameExists(name: String): Boolean{
+        return eventFetcher.nameExists(name)
+    }
+
+
     /**
      * Publish an event in the database and add to the user
      */
@@ -419,46 +243,52 @@ class MapController(val mapActivity: MapActivity) {
 
         // convert image to url and then
         // save the event into the db
-        uploadImageToFirebase(fileUri, e)
+        CoroutineScope(Dispatchers.IO).launch {
+            uploadImageToFirebase(fileUri, e)
+            withContext(Dispatchers.Main) {
+                // Update UI or handle the event further in the UI thread
+                // add event to user instance
+                user.addEvent(e)
 
-        // add event to user instance
-        user.addEvent(e)
+                // add to the event fetcher
+                eventFetcher.addEvent(e)
+
+                // add the annotation to the map
+                annotationManager.addSingleAnnotation(e)
+
+                // reload the personal page after publish an event
+                setPersonalPage()
+            }
+        }
     }
 
 
-    private fun uploadImageToFirebase(fileUri: Uri, event: Event) {
+    private suspend fun uploadImageToFirebase(fileUri: Uri, event: Event) {
         val fileName = fileUri.lastPathSegment ?: "default_name"
         val storageReference = FirebaseStorage.getInstance().getReference("uploads/$fileName")
 
-        storageReference.putFile(fileUri)
-            .addOnSuccessListener {
-                // Get the download URL
-                storageReference.downloadUrl.addOnSuccessListener { uri ->
-                    val imageUrl = uri.toString()
-                    event.imageUrl = imageUrl
-                    storeEvent(event)
-                    //saveImageUrlToEvent(imageUrl, eventKey)
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(mapActivity, "Upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
+        try {
+            // Start the file upload and wait for it to finish
+            val uploadTaskSnapshot = storageReference.putFile(fileUri).await()
+
+            // Get the download URL and wait for it to be available
+            val imageUrl = uploadTaskSnapshot.storage.downloadUrl.await().toString()
+            event.imageUrl = imageUrl
+
+            storeEvent(event) // Assume this function is adapted for coroutine use or properly handles database operations
+        } catch (e: Exception) {
+            // Handle possible exceptions such as network errors
+            Toast.makeText(mapActivity, "Upload failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            ""
+        }
     }
+
 
     private fun storeEvent(event: Event) {
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("event").child(event.eid!!).setValue(event)
     }
 
-
-    /**
-     * Modify the map View adding the annotations for every events
-     * updating in case of new events published
-     */
-    fun updateMapViewWithEvents() {
-        eventFetcher.fetchEvents()
-        addEventAnnotation()
-    }
 
 
     fun setToolBar(toolBar: Toolbar) {
