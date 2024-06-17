@@ -7,30 +7,57 @@
     tools:context=".ui.user.menu_frgms.ChatsFragment"
     android:background="#86BBD8">
 
-    <RelativeLayout
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvNoChat"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18dp"-->
+<!--            android:textColor="@color/writings_dark_blue"-->
+<!--            android:text="You haven't started any chat" />-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvOrganizerChats"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            tools:listitem="@layout/organizer_chat_name" />-->
+
+<!--    </RelativeLayout>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tvNoChat"
+            android:id="@+id/tvYourChats"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:textColor="@color/writings_dark_blue"
-            android:text="You haven't started any chat" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOrganizerChats"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            tools:listitem="@layout/organizer_chat_name"
+            android:layout_height="70dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rvOrganizerNames"
+            android:gravity="center_vertical"
+            android:text="Your chats"
+            android:background="@color/dark_blue"
+            android:textColor="@color/white"
+            android:textSize="26dp"
+            android:paddingStart="10dp"
             />
 
-    </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOrganizerNames"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvYourChats"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/organizer_chat_name"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

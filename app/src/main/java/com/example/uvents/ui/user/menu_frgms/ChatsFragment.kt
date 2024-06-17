@@ -50,17 +50,17 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
         val v: View? = inflater.inflate(R.layout.fragment_chats, container, false)
 
         if(v != null) {
-            msgEmptyChat = v.findViewById(R.id.tvNoChat)
+//            msgEmptyChat = v.findViewById(R.id.tvNoChat)
             userList = ArrayList()
             adapter = OrganizerChatsAdapter(mapController.mapActivity, userList)
             mAuth = FirebaseAuth.getInstance()
-            userRecyclerView = v.findViewById(R.id.rvOrganizerChats)
+            userRecyclerView = v.findViewById(R.id.rvOrganizerNames)
         }
 
-        if(adapter.itemCount != 0) {
-            msgEmptyChat.visibility = View.GONE
-            userRecyclerView.visibility = View.GONE
-        }
+//        if(adapter.itemCount != 0) {
+//            msgEmptyChat.visibility = View.GONE
+//            userRecyclerView.visibility = View.GONE
+//        }
 
         userRecyclerView.layoutManager = LinearLayoutManager(mapController.mapActivity)
         userRecyclerView.adapter = adapter

@@ -10,7 +10,7 @@ import com.example.uvents.R
 import com.example.uvents.model.Message
 import com.google.firebase.auth.FirebaseAuth
 
-class MessageAdapter(val context: Context, val messageList: ArrayList<Message>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageAdapter(val context: Context, val messageList: List<Message>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val ITEM_SENT = 1
     val ITEM_RECEIVED = 2

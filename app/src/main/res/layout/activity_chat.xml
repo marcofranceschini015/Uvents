@@ -8,11 +8,25 @@
     tools:context=".ui.user.menu_frgms.ChatActivity"
     android:background="#86BBD8">
 
+    <TextView
+        android:id="@+id/tvOrganizerName"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:text="Organizer name"
+        android:background="@color/dark_blue"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        android:paddingStart="10dp"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp" />
+        android:layout_below="@id/tvOrganizerName"
+        android:layout_marginTop="20dp"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout"
