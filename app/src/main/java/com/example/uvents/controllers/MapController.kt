@@ -2,13 +2,16 @@ package com.example.uvents.controllers
 
 
 import android.net.Uri
+import android.os.Build
 import android.text.Editable
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.uvents.model.Event
 import com.example.uvents.model.EventFetcher
+import com.example.uvents.model.EventSearcher
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.MapActivity
 import com.example.uvents.ui.user.menu_frgms.PersonalPageFragment
@@ -323,34 +326,21 @@ class MapController(val mapActivity: MapActivity) {
 
     /**
      * Events not passed but recovered from firebase, this method apply all the filters chosen by the user
-     * end return only the arraList<String> of the filtered events
+     * end return only the arrayList<String> of the filtered events
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun applyFilteredSearch(
-        events: ArrayList<Event>,
-        organizerName: Editable?,
-        fromDate: CharSequence,
-        toDate: CharSequence,
-        fromTime: Editable?,
-        toTime: Editable?,
+        organizerName: String?,
+        fromDate: String?,
+        toDate: String?,
+        fromTime: String?,
         checkedCategories: List<String>
-    ): ArrayList<Event> {
-
-        val filteredEvents: ArrayList<Event> = arrayListOf<Event>()
-
-        events.forEach { event ->
-            if (organizerName.toString() == event.organizerName) {
-                filteredEvents.add(event)
-            }
-
-            // todo date filter
-
-            // todo time filter
-
-            if (checkedCategories.contains(event.category)) {
-                filteredEvents.add(event)
-            }
-        }
-        return filteredEvents
+    ) {
+        val eventSearcher = eventFetcher.eventsData.value?.let { EventSearcher(it.toMutableList()) }
+        val filteredEvent =
+            eventSearcher?.filteredSearch(organizerName,fromDate,toDate,fromTime, checkedCategories)
     }
+
+
 
 }

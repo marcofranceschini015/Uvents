@@ -139,23 +139,17 @@
                 android:id="@+id/fromTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="5"
                 android:inputType="time"
-                android:hint="From 24h format"
+                android:hint="From hh:min"
                 android:textSize="18dp"
                 android:textColor="@color/writings_dark_blue"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:clickable="true"
                 />
 
-            <EditText
-                android:id="@+id/toTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:inputType="time"
-                android:hint="To 24h format"
-                android:textSize="18dp"
-                android:textColor="@color/writings_dark_blue"
-                />
+
+
 
         </LinearLayout>
 

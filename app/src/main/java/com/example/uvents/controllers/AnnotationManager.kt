@@ -222,6 +222,15 @@ class AnnotationManager(
     }
 
 
+    /////////// SHOW FILTERED LOGIC
+    fun addFilteredEventAnnotation(events: List<Event>) {
+        events.forEach {e ->
+            addSingleAnnotation(e)
+        }
+    }
+    ///////////
+
+
     /**
      * Add annotation to the map
      * relative of a personal position
