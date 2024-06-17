@@ -3,7 +3,6 @@ package com.example.uvents.controllers
 
 import android.net.Uri
 import android.os.Build
-import android.text.Editable
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
@@ -336,9 +335,31 @@ class MapController(val mapActivity: MapActivity) {
         fromTime: String?,
         checkedCategories: List<String>
     ) {
+        val fullEvents = eventFetcher.eventsData.value ?: listOf()
         val eventSearcher = eventFetcher.eventsData.value?.let { EventSearcher(it.toMutableList()) }
         val filteredEvent =
             eventSearcher?.filteredSearch(organizerName,fromDate,toDate,fromTime, checkedCategories)
+        val eventsToRemove = getEventsToRemove(fullEvents, filteredEvent!!)
+
+        // Remove from the actual list of events and from the view
+        // the events removes
+        eventFetcher.removeEvent(eventsToRemove.toMutableList())
+        eventsToRemove.forEach { eid ->
+            annotationManager.removeSingleAnnotation(eid!!)
+        }
+    }
+
+
+    private fun getEventsToRemove(
+        fullEvents: List<Event>,
+        filteredEvents: List<Event>
+    ): List<String?> {
+        // Extract the list of IDs from the filtered events
+        val filteredIds = filteredEvents.map { it.eid }.toSet()
+
+        // Find all IDs that are not in the filtered list
+
+        return fullEvents.filter { it.eid !in filteredIds }.map { it.eid }
     }
 
 

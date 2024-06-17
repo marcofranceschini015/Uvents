@@ -98,7 +98,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
                 etTimeFrom.text.toString(), adapter.getCheckedItems())
 
                 mapController.printToast("Filter successfully applied")
-                //mapController.switchFragment(MapFragment(mapController)) // todo filter in controller logic
+                mapController.mapActivity.backHome() // todo filter in controller logic
             }
         }
 

@@ -64,7 +64,7 @@ class MapActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceFragment(mapFragment)
+                    backHome()
                     true
                 }
 
@@ -94,6 +94,10 @@ class MapActivity : AppCompatActivity() {
                 PERMISSIONS_REQUEST_LOCATION
             )
         }
+    }
+
+    fun backHome() {
+        replaceFragment(mapFragment)
     }
 
 

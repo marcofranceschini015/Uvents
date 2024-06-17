@@ -27,6 +27,7 @@ import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.geometry
@@ -220,15 +221,6 @@ class AnnotationManager(
             }
         })
     }
-
-
-    /////////// SHOW FILTERED LOGIC
-    fun addFilteredEventAnnotation(events: List<Event>) {
-        events.forEach {e ->
-            addSingleAnnotation(e)
-        }
-    }
-    ///////////
 
 
     /**
