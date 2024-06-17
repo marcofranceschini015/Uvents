@@ -94,17 +94,9 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     ): View {
         val v: View = inflater.inflate(R.layout.fragment_map, container, false)
 
-        // Load map from mapbox
+        // Load map from mapbox with all annotations
         mapView = v.findViewById(R.id.mapView)
-        mapView.mapboxMap.also { mapboxMap ->
-            mapboxMap.loadStyle(getMapStyleUri())
-        }
-
-        // Set up location services and event handling
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
-        // set up the current location and also every event
-        mapController.getCurrentLocation(fusedLocationProviderClient, mapView)
+        setUpMap()
 
         setHasOptionsMenu(true)
 
@@ -205,6 +197,20 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     }
 
 
+    /**
+     * Load the map and also all the annotations
+     */
+    private fun setUpMap() {
+        mapView.mapboxMap.also { mapboxMap ->
+            mapboxMap.loadStyle(getMapStyleUri())
+        }
+
+        // Set up location services and event handling
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        mapController.setView(mapView, fusedLocationProviderClient)
+    }
+
+
     private fun getMapStyleUri(): String {
         return when (val darkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> Style.DARK
@@ -219,14 +225,6 @@ class MapFragment(private val mapController: MapController) : Fragment() {
     private fun closeSearchView() {
         toolbar.collapseActionView()
         searchView.setQuery("", false)
-    }
-
-
-    /**
-     * Update the map when a new event is published
-     */
-    fun updateMap() {
-        mapController.updateMapViewWithEvents(mapView)
     }
 
 

@@ -59,6 +59,7 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
 
         if(adapter.itemCount != 0) {
             msgEmptyChat.visibility = View.GONE
+            userRecyclerView.visibility = View.GONE
         }
 
         userRecyclerView.layoutManager = LinearLayoutManager(mapController.mapActivity)

@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity() : AppCompatActivity() {
 
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var messageBox: EditText
@@ -54,7 +54,7 @@ class ChatActivity : AppCompatActivity() {
         })
 
         val name = intent.getStringExtra("name")
-        val receiverUid = "kb4BRNGecIR3h2dSkiRemCsLem83" //intent.getStringExtra("uid")
+        val receiverUid = intent.getStringExtra("uid")
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid!!
 
         senderRoom = receiverUid + senderUid
@@ -69,23 +69,24 @@ class ChatActivity : AppCompatActivity() {
 
         messageList = ArrayList()
         messageAdapter = MessageAdapter(this, messageList)
-
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
 
-        mDbRef.child("chat").child(senderRoom!!).child("messages").addValueEventListener(object:
+        mDbRef.child("chat").child(senderRoom!!).child("messages").addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 messageList.clear()
                 for (postSnapshot in snapshot.children) {
                     val message = postSnapshot.getValue(Message::class.java)
                     messageList.add(message!!)
+                    println("Message: ${message.message}")
                 }
+                println("Total messages: ${messageList.size}")
                 messageAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                println("Database error: ${error.message}")
             }
 
         })
@@ -94,13 +95,42 @@ class ChatActivity : AppCompatActivity() {
             val message = messageBox.text.toString()
             val messageObject = Message(message, senderUid)
 
-            mDbRef.child("chat").child(senderRoom!!).child("messages").push().setValue(messageObject).addOnSuccessListener {
-                mDbRef.child("chat").child(receiverRoom!!).child("messages").push().setValue(messageObject)
+            mDbRef.child("chat").child(senderRoom!!).child("messages").push()
+                .setValue(messageObject).addOnSuccessListener {
+                mDbRef.child("chat").child(receiverRoom!!).child("messages").push()
+                    .setValue(messageObject)
             }
 
             messageBox.setText("")
         }
 
     }
-
 }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            mDbRef.child("chat").child(senderRoom!!).child("messages").addValueEventListener(object:
+//                ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    messageList.clear()
+//                    for (postSnapshot in snapshot.children) {
+//                        val message = postSnapshot.getValue(Message::class.java)
+//                        messageList.add(message!!)
+//                    }
+//                    messageAdapter.notifyDataSetChanged()
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    println("Database error: ${error.message}")
+//                }
+//
+//            })
+//
+//            withContext(Dispatchers.Main) {
+//                messageAdapter = MessageAdapter(this@ChatActivity, messageList)
+//                chatRecyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
+//                chatRecyclerView.adapter = messageAdapter
+//            }
+//        }
+//
+//    }
+//
+//}
