@@ -23,6 +23,9 @@ import com.example.uvents.model.Event
 import java.util.Calendar
 import java.util.Locale
 
+/**
+ * Fragment that contains all the utilities for the advanced research
+ */
 class AdvancedSearchFragment(private val mapController: MapController) : Fragment() {
 
     private lateinit var ivClose: ImageView
@@ -32,6 +35,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
     private lateinit var etTimeFrom: EditText
     private lateinit var etOrganizer: EditText
     private lateinit var btnApply: Button
+    private lateinit var btnReset: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +66,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
             etTimeFrom = v.findViewById(R.id.fromTime)
             etOrganizer = v.findViewById(R.id.organizerName)
             btnApply = v.findViewById(R.id.btnApply)
+            btnReset = v.findViewById(R.id.btnReset)
         }
 
         ivClose.setOnClickListener {
@@ -84,8 +89,8 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
             openTimePickerDialog(etTimeFrom)
         }
 
-        //val events = getDummyEvents()
-
+        // When apply a filtered search
+        // at least do 1 research
         btnApply.setOnClickListener {
             if(etOrganizer.text.isEmpty() && tvDateFrom.text.isEmpty() && tvDateTo.text.isEmpty() &&
             etTimeFrom.text.isEmpty() && adapter.getCheckedItems().isEmpty() ) {
@@ -98,8 +103,15 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
                 etTimeFrom.text.toString(), adapter.getCheckedItems())
 
                 mapController.printToast("Filter successfully applied")
-                mapController.mapActivity.backHome() // todo filter in controller logic
+                mapController.mapActivity.backHome()
             }
+        }
+
+        // When click All Events reset all the events
+        btnReset.setOnClickListener {
+            mapController.resetView()
+            mapController.printToast("Restore all events")
+            mapController.mapActivity.backHome()
         }
 
         return v
@@ -124,7 +136,9 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
     }
 
 
-
+    /**
+     * Open the date picker and select a date
+     */
     private fun clickDatePicker(startingDate: Boolean) {
         val myCalendar = Calendar.getInstance()
         val year = myCalendar.get(Calendar.YEAR)

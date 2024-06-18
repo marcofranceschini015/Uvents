@@ -61,6 +61,16 @@ class MapController(val mapActivity: MapActivity) {
 
 
     /**
+     * Reset all the events by simply clear the db and
+     * fetching again the db
+     */
+    fun resetView() {
+        eventFetcher.clearEvents()
+        eventFetcher.fetchEvents()
+    }
+
+
+    /**
      * Switch the fragment in the main map activity
      * (the one with the navbar)
      */
@@ -189,7 +199,7 @@ class MapController(val mapActivity: MapActivity) {
             // remove from database given an eid
             eventsRef.child(eid.toString()).removeValue().addOnCompleteListener {}
             // remove from view annotation
-            annotationManager.removeSingleAnnotation(eid!!)
+            //annotationManager.removeSingleAnnotation(eid!!)
         }
     }
 
@@ -341,15 +351,16 @@ class MapController(val mapActivity: MapActivity) {
             eventSearcher?.filteredSearch(organizerName,fromDate,toDate,fromTime, checkedCategories)
         val eventsToRemove = getEventsToRemove(fullEvents, filteredEvent!!)
 
-        // Remove from the actual list of events and from the view
-        // the events removes
+        // Remove from the actual list of events
+        // the events removed
         eventFetcher.removeEvent(eventsToRemove.toMutableList())
-        eventsToRemove.forEach { eid ->
-            annotationManager.removeSingleAnnotation(eid!!)
-        }
     }
 
 
+    /**
+     * Get a list of eid of Events removed from a
+     * List of Events compared to the local db
+     */
     private fun getEventsToRemove(
         fullEvents: List<Event>,
         filteredEvents: List<Event>
@@ -358,7 +369,6 @@ class MapController(val mapActivity: MapActivity) {
         val filteredIds = filteredEvents.map { it.eid }.toSet()
 
         // Find all IDs that are not in the filtered list
-
         return fullEvents.filter { it.eid !in filteredIds }.map { it.eid }
     }
 
