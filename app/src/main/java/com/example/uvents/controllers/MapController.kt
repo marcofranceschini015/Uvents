@@ -46,8 +46,7 @@ class MapController(val mapActivity: MapActivity) {
     private lateinit var user: User
 
     // variables for the database connection
-    private val dbUrl: String =
-        "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
+    private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
     private lateinit var mDbRef: DatabaseReference
 
 
@@ -67,6 +66,10 @@ class MapController(val mapActivity: MapActivity) {
      */
     fun switchFragment(f: Fragment) {
         mapActivity.replaceFragment(f)
+    }
+
+    fun ImtheOrganizer(organizerUid: String): Boolean {
+        return organizerUid == user.uid
     }
 
 
@@ -388,16 +391,48 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
-    fun chatExists(chatId: String, callback: (Boolean, Exception?) -> Unit) {
-        val database = FirebaseDatabase.getInstance(dbUrl).getReference()
-        val chatRef = database.child("chat").child(chatId)
+//    fun chatExists(chatId: String, callback: (Boolean, Exception?) -> Unit) {
+//        val database = FirebaseDatabase.getInstance(dbUrl).getReference()
+//        val chatRef = database.child("chat").child(chatId)
+//
+//        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    callback(true, null)
+//                } else {
+//                    callback(false, null)
+//                }
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                callback(false, databaseError.toException())
+//            }
+//        })
+//    }
 
-        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    fun chatExists(chatId1: String, chatId2: String, callback: (Boolean, Exception?) -> Unit) {
+        val database = FirebaseDatabase.getInstance(dbUrl).getReference()
+        val chatRef1 = database.child("chat").child(chatId1)
+        val chatRef2 = database.child("chat").child(chatId2)
+
+        chatRef1.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     callback(true, null)
                 } else {
-                    callback(false, null)
+                    chatRef2.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                callback(true, null)
+                            } else {
+                                callback(false, null)
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            callback(false, databaseError.toException())
+                        }
+                    })
                 }
             }
 
@@ -406,6 +441,7 @@ class MapController(val mapActivity: MapActivity) {
             }
         })
     }
+
 
 
 }

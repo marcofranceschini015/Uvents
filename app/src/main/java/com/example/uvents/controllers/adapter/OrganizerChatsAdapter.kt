@@ -1,4 +1,4 @@
-package com.example.chatapplication
+package com.example.uvents.controllers.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
-import com.example.uvents.model.User
+import com.example.uvents.model.Event
 import com.example.uvents.ui.user.menu_frgms.ChatActivity
 
-class OrganizerChatsAdapter(val context: Context, val userList: MutableList<User>): RecyclerView.Adapter<OrganizerChatsAdapter.UserViewHolder>() {
+class OrganizerChatsAdapter(val context: Context, private val eventList: MutableList<Event>): RecyclerView.Adapter<OrganizerChatsAdapter.UserViewHolder>() {
     class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val text_name = itemView.findViewById<TextView>(R.id.txt_name)
+        val eventName: TextView = itemView.findViewById(R.id.eventName)
+        val orgName: TextView = itemView.findViewById(R.id.organizerName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -22,18 +23,19 @@ class OrganizerChatsAdapter(val context: Context, val userList: MutableList<User
     }
 
     override fun getItemCount(): Int {
-        return userList.size
+        return eventList.size
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val currentUser = userList[position]
-        holder.text_name.text = currentUser.name
+        val currentEvent = eventList[position]
+        holder.eventName.text = currentEvent.name
+        holder.orgName.text = currentEvent.organizerName
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
-            intent.putExtra("name", currentUser.name)
-            intent.putExtra("uid", currentUser.uid)
+            intent.putExtra("name", currentEvent.name)
+            intent.putExtra("uid", currentEvent.uid)
+            intent.putExtra("eid", currentEvent.eid)
             context.startActivity(intent)
-//            context.finish()
         }
     }
 }

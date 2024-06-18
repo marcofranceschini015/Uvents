@@ -7,27 +7,6 @@
     tools:context=".ui.user.menu_frgms.ChatsFragment"
     android:background="#86BBD8">
 
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tvNoChat"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center"-->
-<!--            android:textSize="18dp"-->
-<!--            android:textColor="@color/writings_dark_blue"-->
-<!--            android:text="You haven't started any chat" />-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rvOrganizerChats"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            tools:listitem="@layout/organizer_chat_name" />-->
-
-<!--    </RelativeLayout>-->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

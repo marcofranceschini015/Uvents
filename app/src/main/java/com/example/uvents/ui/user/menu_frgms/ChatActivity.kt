@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener
 
 class ChatActivity() : AppCompatActivity() {
 
-    private lateinit var orgName: TextView
+    private lateinit var eventName: TextView
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var linearLayout: LinearLayout
     private lateinit var messageBox: EditText
@@ -102,13 +102,14 @@ class ChatActivity() : AppCompatActivity() {
 
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
+        val eventEid = intent.getStringExtra("eid")
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid!!
 
-        orgName = findViewById(R.id.tvOrganizerName)
-        orgName.text = name
+        eventName = findViewById(R.id.tvOrganizerName)
+        eventName.text = name
 
-        senderRoom = receiverUid + senderUid
-        receiverRoom = senderUid + receiverUid
+        senderRoom = receiverUid + senderUid + eventEid
+        receiverRoom = senderUid + receiverUid + eventEid
 
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
 

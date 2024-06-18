@@ -9,10 +9,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.chatapplication.OrganizerChatsAdapter
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
-import com.example.uvents.model.User
+import com.example.uvents.controllers.adapter.OrganizerChatsAdapter
+import com.example.uvents.model.Event
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,7 +24,7 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
 
     private lateinit var msgEmptyChat: TextView
     private lateinit var userRecyclerView: RecyclerView
-    private lateinit var userList: MutableList<User>
+    private lateinit var eventList: MutableList<Event>
     private lateinit var adapter: OrganizerChatsAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -51,8 +51,8 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
 
         if(v != null) {
             msgEmptyChat = v.findViewById(R.id.tvNoChat)
-            userList = mutableListOf()
-            adapter = OrganizerChatsAdapter(mapController.mapActivity, userList)
+            eventList = mutableListOf()
+            adapter = OrganizerChatsAdapter(mapController.mapActivity, eventList)
             mAuth = FirebaseAuth.getInstance()
             userRecyclerView = v.findViewById(R.id.rvOrganizerNames)
         }
@@ -62,40 +62,42 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
         userRecyclerView.adapter = adapter
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
 
-        mDbRef.child("user").addValueEventListener(object : ValueEventListener {
+        mDbRef.child("event").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                userList.clear()
+                eventList.clear()
                 val pendingCallbacks = snapshot.childrenCount
                 var processedCallbacks = 0
 
                 for (postSnapshot in snapshot.children) {
-                    val currentUser = postSnapshot.getValue(User::class.java)
+                    val currentEvent = postSnapshot.getValue(Event::class.java)
 
-                    if (mAuth.currentUser?.uid!! != currentUser?.uid) {
-                        mapController.chatExists(mAuth.currentUser?.uid!! + currentUser?.uid!!) { exists, exception ->
+//                    if (mAuth.currentUser?.uid!! != currentEvent?.uid) {
+                        val chatId1 = mAuth.currentUser?.uid!! + currentEvent?.uid!! + currentEvent.eid!!
+                        val chatId2 = currentEvent.uid!! + mAuth.currentUser?.uid!! + currentEvent.eid!!
+                        mapController.chatExists(chatId1, chatId2) { exists, exception ->
                             if (exception != null) {
                                 exception.printStackTrace()
                             } else if (exists) {
-                                userList.add(currentUser)
+                                eventList.add(currentEvent)
                             }
 
                             processedCallbacks++
                             if (processedCallbacks.toLong() == pendingCallbacks) {
                                 adapter.notifyDataSetChanged()
-                                if(userList.isEmpty()) {
+                                if(eventList.isEmpty()) {
                                     msgEmptyChat.visibility = View.VISIBLE
                                 }
                             }
                         }
-                    } else {
-                        processedCallbacks++
-                        if (processedCallbacks.toLong() == pendingCallbacks) {
-                            adapter.notifyDataSetChanged()
-                            if(userList.isEmpty()) {
-                                msgEmptyChat.visibility = View.VISIBLE
-                            }
-                        }
-                    }
+//                    } else {
+//                        processedCallbacks++
+//                        if (processedCallbacks.toLong() == pendingCallbacks) {
+//                            adapter.notifyDataSetChanged()
+//                            if(eventList.isEmpty()) {
+//                                msgEmptyChat.visibility = View.VISIBLE
+//                            }
+//                        }
+//                    }
                 }
             }
 
