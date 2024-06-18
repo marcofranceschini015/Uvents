@@ -1,6 +1,5 @@
 package com.example.uvents.ui.user.menu_frgms
 
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.widget.EditText
@@ -18,7 +17,6 @@ import com.example.chatapplication.MessageAdapter
 import com.example.uvents.R
 import com.example.uvents.databinding.ActivityChatBinding
 import com.example.uvents.model.Message
-import com.example.uvents.ui.user.MapActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -53,14 +51,36 @@ class ChatActivity() : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val intent = Intent(this@ChatActivity, MapActivity::class.java)
-//                intent.putExtra("uid", uid)
-                startActivity(intent)
-                finish()
+                // Optionally call the default back press behavior
+                if (isEnabled) {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
             }
         })
 
+
+
+//        setContentView(R.layout.activity_chat)
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
+//            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+//            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+//
+//            if (imeVisible) {
+//                chatRecyclerView.updatePadding(bottom = -(imeHeight*0.87).toInt())
+//                linearLayout.updatePadding(bottom = imeHeight)
+//            } else {
+//                chatRecyclerView.updatePadding(bottom = 0)
+//                linearLayout.updatePadding(bottom = 0)
+//            }
+//
+//            insets
+//        }
+
+        chatRecyclerView = findViewById(R.id.chatRecyclerView)
         linearLayout = findViewById(R.id.linearLayout)
+        messageBox = findViewById(R.id.messageBox)
+        sendButton = findViewById(R.id.sendButton)
 
         // Adding a global layout listener to adjust the UI when the keyboard appears or disappears
         binding.main.viewTreeObserver.addOnGlobalLayoutListener {
@@ -71,9 +91,11 @@ class ChatActivity() : AppCompatActivity() {
 
             if (keypadHeight > screenHeight * 0.15) {
                 // Keyboard is visible
+                binding.chatRecyclerView.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
                 binding.linearLayout.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
             } else {
                 // Keyboard is hidden
+                binding.chatRecyclerView.translationY = 0f
                 binding.linearLayout.translationY = 0f
             }
         }
@@ -89,10 +111,6 @@ class ChatActivity() : AppCompatActivity() {
         receiverRoom = senderUid + receiverUid
 
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
-
-        chatRecyclerView = findViewById(R.id.chatRecyclerView)
-        messageBox = findViewById(R.id.messageBox)
-        sendButton = findViewById(R.id.sendButton)
 
         messageList = mutableListOf()
         messageAdapter = MessageAdapter(this, messageList)

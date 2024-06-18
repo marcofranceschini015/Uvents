@@ -388,4 +388,24 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
+    fun chatExists(chatId: String, callback: (Boolean, Exception?) -> Unit) {
+        val database = FirebaseDatabase.getInstance(dbUrl).getReference()
+        val chatRef = database.child("chat").child(chatId)
+
+        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    callback(true, null)
+                } else {
+                    callback(false, null)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(false, databaseError.toException())
+            }
+        })
+    }
+
+
 }

@@ -148,11 +148,9 @@ class EventFragment(
 
                 withContext(Dispatchers.Main) {
                     startActivity(intent)
-                    mapController.mapActivity.finish()
+//                    mapController.mapActivity.finish()
                 }
             }
-
-//            mapController.getUidByUsername(nameOrganizer.text.toString())
         }
 
         return v

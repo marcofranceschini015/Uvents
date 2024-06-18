@@ -58,6 +58,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/organizer_chat_name"
             />
+
+        <TextView
+            android:id="@+id/tvNoChat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="You haven't started any chat yet" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -11,7 +11,7 @@ import com.example.uvents.R
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.menu_frgms.ChatActivity
 
-class OrganizerChatsAdapter(val context: Context, val userList: ArrayList<User>): RecyclerView.Adapter<OrganizerChatsAdapter.UserViewHolder>() {
+class OrganizerChatsAdapter(val context: Context, val userList: MutableList<User>): RecyclerView.Adapter<OrganizerChatsAdapter.UserViewHolder>() {
     class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val text_name = itemView.findViewById<TextView>(R.id.txt_name)
     }
@@ -33,6 +33,7 @@ class OrganizerChatsAdapter(val context: Context, val userList: ArrayList<User>)
             intent.putExtra("name", currentUser.name)
             intent.putExtra("uid", currentUser.uid)
             context.startActivity(intent)
+//            context.finish()
         }
     }
 }

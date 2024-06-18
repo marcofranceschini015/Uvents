@@ -21,6 +21,7 @@
         android:requestLegacyExternalStorage="false">
         <activity
             android:name=".ui.user.menu_frgms.ChatActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".ui.user.MapActivity"

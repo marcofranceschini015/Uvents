@@ -24,7 +24,7 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
 
     private lateinit var msgEmptyChat: TextView
     private lateinit var userRecyclerView: RecyclerView
-    private lateinit var userList: ArrayList<User>
+    private lateinit var userList: MutableList<User>
     private lateinit var adapter: OrganizerChatsAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -50,18 +50,14 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
         val v: View? = inflater.inflate(R.layout.fragment_chats, container, false)
 
         if(v != null) {
-//            msgEmptyChat = v.findViewById(R.id.tvNoChat)
-            userList = ArrayList()
+            msgEmptyChat = v.findViewById(R.id.tvNoChat)
+            userList = mutableListOf()
             adapter = OrganizerChatsAdapter(mapController.mapActivity, userList)
             mAuth = FirebaseAuth.getInstance()
             userRecyclerView = v.findViewById(R.id.rvOrganizerNames)
         }
 
-//        if(adapter.itemCount != 0) {
-//            msgEmptyChat.visibility = View.GONE
-//            userRecyclerView.visibility = View.GONE
-//        }
-
+        msgEmptyChat.visibility = View.GONE
         userRecyclerView.layoutManager = LinearLayoutManager(mapController.mapActivity)
         userRecyclerView.adapter = adapter
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
@@ -69,16 +65,42 @@ class ChatsFragment(private val mapController: MapController) : Fragment() {
         mDbRef.child("user").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
+                val pendingCallbacks = snapshot.childrenCount
+                var processedCallbacks = 0
+
                 for (postSnapshot in snapshot.children) {
                     val currentUser = postSnapshot.getValue(User::class.java)
+
                     if (mAuth.currentUser?.uid!! != currentUser?.uid) {
-                        userList.add(currentUser!!)
+                        mapController.chatExists(mAuth.currentUser?.uid!! + currentUser?.uid!!) { exists, exception ->
+                            if (exception != null) {
+                                exception.printStackTrace()
+                            } else if (exists) {
+                                userList.add(currentUser)
+                            }
+
+                            processedCallbacks++
+                            if (processedCallbacks.toLong() == pendingCallbacks) {
+                                adapter.notifyDataSetChanged()
+                                if(userList.isEmpty()) {
+                                    msgEmptyChat.visibility = View.VISIBLE
+                                }
+                            }
+                        }
+                    } else {
+                        processedCallbacks++
+                        if (processedCallbacks.toLong() == pendingCallbacks) {
+                            adapter.notifyDataSetChanged()
+                            if(userList.isEmpty()) {
+                                msgEmptyChat.visibility = View.VISIBLE
+                            }
+                        }
                     }
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
+                error.toException()
             }
         })
 
