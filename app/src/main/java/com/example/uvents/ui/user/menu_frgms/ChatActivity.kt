@@ -45,7 +45,6 @@ class ChatActivity() : AppCompatActivity() {
         enableEdgeToEdge()
         val binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //setContentView(R.layout.activity_chat)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -72,7 +71,7 @@ class ChatActivity() : AppCompatActivity() {
 
             if (keypadHeight > screenHeight * 0.15) {
                 // Keyboard is visible
-                binding.linearLayout.translationY = (-keypadHeight.toFloat() * 0.9).toFloat()
+                binding.linearLayout.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
             } else {
                 // Keyboard is hidden
                 binding.linearLayout.translationY = 0f
@@ -129,31 +128,6 @@ class ChatActivity() : AppCompatActivity() {
 
             messageBox.setText("")
         }
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            mDbRef.child("chat").child(senderRoom!!).child("messages").addValueEventListener(object:
-//                ValueEventListener {
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    messageList.clear()
-//                    for (postSnapshot in snapshot.children) {
-//                        val message = postSnapshot.getValue(Message::class.java)
-//                        messageList.add(message!!)
-//                    }
-//                    messageAdapter.notifyDataSetChanged()
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    println("Database error: ${error.message}")
-//                }
-//
-//            })
-//
-//            withContext(Dispatchers.Main) {
-//                messageAdapter = MessageAdapter(this@ChatActivity, messageList)
-//                chatRecyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
-//                chatRecyclerView.adapter = messageAdapter
-//            }
-//        }
 
     }
 
