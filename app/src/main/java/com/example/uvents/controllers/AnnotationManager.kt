@@ -26,6 +26,7 @@ import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.geometry
@@ -186,25 +187,6 @@ class AnnotationManager(
                         false
                     }
                 )
-            }
-        }
-    }
-
-
-    /**
-     * Given an event remove the annotation from the map
-     */
-    fun removeSingleAnnotation(eid: String) {
-        // recover event from eid
-        val e = eventFetcher.getEvent(eid)
-
-        if (e!=null) {
-            val annotationApi = mapView.annotations
-            val pointAnnotationManager = annotationApi.createPointAnnotationManager()
-
-            eventAnnotations[e]?.let { annotation ->
-                pointAnnotationManager.delete(annotation)
-                eventAnnotations.remove(e)  // Remove the reference from the map
             }
         }
     }

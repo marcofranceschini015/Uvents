@@ -2,13 +2,15 @@ package com.example.uvents.controllers
 
 
 import android.net.Uri
-import android.text.Editable
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.uvents.model.Event
 import com.example.uvents.model.EventFetcher
+import com.example.uvents.model.EventSearcher
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.MapActivity
 import com.example.uvents.ui.user.menu_frgms.PersonalPageFragment
@@ -57,6 +59,16 @@ class MapController(val mapActivity: MapActivity) {
         annotationManager = AnnotationManager(mapView, mapActivity, this, eventFetcher)
         annotationManager.addEventAnnotation()
         annotationManager.getCurrentLocation(fusedLocationProviderClient)
+    }
+
+
+    /**
+     * Reset all the events by simply clear the db and
+     * fetching again the db
+     */
+    fun resetView() {
+        eventFetcher.clearEvents()
+        eventFetcher.fetchEvents()
     }
 
 
@@ -193,7 +205,7 @@ class MapController(val mapActivity: MapActivity) {
             // remove from database given an eid
             eventsRef.child(eid.toString()).removeValue().addOnCompleteListener {}
             // remove from view annotation
-            annotationManager.removeSingleAnnotation(eid!!)
+            //annotationManager.removeSingleAnnotation(eid!!)
         }
     }
 
@@ -329,35 +341,44 @@ class MapController(val mapActivity: MapActivity) {
 
     /**
      * Events not passed but recovered from firebase, this method apply all the filters chosen by the user
-     * end return only the arraList<String> of the filtered events
+     * end return only the arrayList<String> of the filtered events
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun applyFilteredSearch(
-        events: ArrayList<Event>,
-        organizerName: Editable?,
-        fromDate: CharSequence,
-        toDate: CharSequence,
-        fromTime: Editable?,
-        toTime: Editable?,
+        organizerName: String?,
+        fromDate: String?,
+        toDate: String?,
+        fromTime: String?,
         checkedCategories: List<String>
-    ): ArrayList<Event> {
+    ) {
+        val fullEvents = eventFetcher.eventsData.value ?: listOf()
+        val eventSearcher = eventFetcher.eventsData.value?.let { EventSearcher(it.toMutableList()) }
+        val filteredEvent =
+            eventSearcher?.filteredSearch(organizerName,fromDate,toDate,fromTime, checkedCategories)
+        val eventsToRemove = getEventsToRemove(fullEvents, filteredEvent!!)
 
-        val filteredEvents: ArrayList<Event> = arrayListOf<Event>()
-
-        events.forEach { event ->
-            if (organizerName.toString() == event.organizerName) {
-                filteredEvents.add(event)
-            }
-
-            // todo date filter
-
-            // todo time filter
-
-            if (checkedCategories.contains(event.category)) {
-                filteredEvents.add(event)
-            }
-        }
-        return filteredEvents
+        // Remove from the actual list of events
+        // the events removed
+        eventFetcher.removeEvent(eventsToRemove.toMutableList())
     }
+
+
+    /**
+     * Get a list of eid of Events removed from a
+     * List of Events compared to the local db
+     */
+    private fun getEventsToRemove(
+        fullEvents: List<Event>,
+        filteredEvents: List<Event>
+    ): List<String?> {
+        // Extract the list of IDs from the filtered events
+        val filteredIds = filteredEvents.map { it.eid }.toSet()
+
+        // Find all IDs that are not in the filtered list
+        return fullEvents.filter { it.eid !in filteredIds }.map { it.eid }
+    }
+
+
 
     suspend fun getUidByUsername(username: String): String? {
         return suspendCancellableCoroutine { continuation ->
