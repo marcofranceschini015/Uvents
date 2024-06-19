@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.EventFetcher
 import com.example.uvents.model.EventSearcher
@@ -25,18 +26,15 @@ import com.mapbox.maps.MapView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlin.random.Random
 
 /**
  * Controller of all the activity connected with
  * the map view, all after the sign-in/up
  */
-class MapController(val mapActivity: MapActivity) {
+class MenuController(val mapActivity: MapActivity) {
 
     // manage the reading of events from db
     private var eventFetcher: EventFetcher = EventFetcher()
@@ -48,7 +46,6 @@ class MapController(val mapActivity: MapActivity) {
     private lateinit var user: User
 
     // variables for the database connection
-    private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
     private lateinit var mDbRef: DatabaseReference
 
 
@@ -89,7 +86,7 @@ class MapController(val mapActivity: MapActivity) {
      * Recover in the database the user from its uid
      */
     fun setUser(uid: String?) {
-        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
         mDbRef.child("user").child(uid!!).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -199,7 +196,7 @@ class MapController(val mapActivity: MapActivity) {
         eventFetcher.removeEvent(listEidToDelete)
 
         // remove into db
-        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
         val eventsRef = mDbRef.child("event")
         listEidToDelete.forEach { eid ->
             // remove from database given an eid
@@ -215,7 +212,7 @@ class MapController(val mapActivity: MapActivity) {
      */
     private fun updateDatabase(categories: List<String>, followed: List<String>) {
         // Reference to the specific user's node
-        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
         val userRef = mDbRef.child("user").child(user.uid)
 
 
@@ -319,7 +316,7 @@ class MapController(val mapActivity: MapActivity) {
      * Store the event into the db under event node
      */
     private fun storeEvent(event: Event) {
-        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
+        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
         mDbRef.child("event").child(event.eid!!).setValue(event)
     }
 
@@ -377,60 +374,5 @@ class MapController(val mapActivity: MapActivity) {
         // Find all IDs that are not in the filtered list
         return fullEvents.filter { it.eid !in filteredIds }.map { it.eid }
     }
-
-
-
-    suspend fun getUidByUsername(username: String): String? {
-        return suspendCancellableCoroutine { continuation ->
-            val database = FirebaseDatabase.getInstance(dbUrl).getReference()
-            val query = database.child("user").orderByChild("name").equalTo(username)
-
-            val listener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (userSnapshot in dataSnapshot.children) {
-                            val user = userSnapshot.getValue(User::class.java)
-                            if (user != null) {
-                                continuation.resume(user.uid)
-                                return
-                            }
-                        }
-                    }
-                    continuation.resume(null)
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    continuation.resumeWithException(databaseError.toException())
-                }
-            }
-
-            query.addListenerForSingleValueEvent(listener)
-
-            continuation.invokeOnCancellation {
-                query.removeEventListener(listener)
-            }
-        }
-    }
-
-    fun chatExists(chatId: String, callback: (Boolean, Exception?) -> Unit) {
-        val database = FirebaseDatabase.getInstance(dbUrl).getReference()
-        val chatRef = database.child("chat").child(chatId)
-
-        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    callback(true, null)
-                } else {
-                    callback(false, null)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                callback(false, databaseError.toException())
-            }
-        })
-    }
-
-
 
 }

@@ -15,18 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapplication.MessageAdapter
 import com.example.uvents.R
+import com.example.uvents.controllers.ChatManager
 import com.example.uvents.databinding.ActivityChatBinding
 import com.example.uvents.model.Message
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class ChatActivity() : AppCompatActivity() {
 
-    private lateinit var eventName: TextView
+    private lateinit var customBack: ImageView
+    private lateinit var userName: TextView
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var linearLayout: LinearLayout
     private lateinit var messageBox: EditText
@@ -35,8 +32,6 @@ class ChatActivity() : AppCompatActivity() {
     private lateinit var messageList: MutableList<Message>
     var receiverRoom: String? = null
     var senderRoom: String? = null
-    private lateinit var mDbRef: DatabaseReference
-    private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +54,10 @@ class ChatActivity() : AppCompatActivity() {
             }
         })
 
-
+        customBack = findViewById(R.id.ivCustomBack)
+        customBack.setOnClickListener {
+            finish()
+        }
 
 //        setContentView(R.layout.activity_chat)
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
@@ -104,46 +102,23 @@ class ChatActivity() : AppCompatActivity() {
         val receiverUid = intent.getStringExtra("uid")
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid!!
 
-        eventName = findViewById(R.id.tvOrganizerName)
-        eventName.text = name
+        userName = findViewById(R.id.tvOrganizerName)
+        userName.text = name
 
         senderRoom = receiverUid + senderUid
         receiverRoom = senderUid + receiverUid
-
-        mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
 
         messageList = mutableListOf()
         messageAdapter = MessageAdapter(this, messageList)
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
 
-        mDbRef.child("chat").child(senderRoom!!).child("messages").addValueEventListener(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                messageList.clear()
-                for (postSnapshot in snapshot.children) {
-                    val message = postSnapshot.getValue(Message::class.java)
-                    messageList.add(message!!)
-                }
-                messageAdapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println("Database error: ${error.message}")
-            }
-
-        })
+        val chatManager = ChatManager(getString(R.string.firebase_url))
+        chatManager.updateMessageList(senderRoom!!, messageList, messageAdapter)
 
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
-            val messageObject = Message(message, senderUid)
-
-            mDbRef.child("chat").child(senderRoom!!).child("messages").push()
-                .setValue(messageObject).addOnSuccessListener {
-                mDbRef.child("chat").child(receiverRoom!!).child("messages").push()
-                    .setValue(messageObject)
-            }
-
+            chatManager.addMessageOnDb(message, senderUid, senderRoom!!, receiverRoom!!)
             messageBox.setText("")
         }
 

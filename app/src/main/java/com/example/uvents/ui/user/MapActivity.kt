@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
-import com.example.uvents.controllers.MapController
+import com.example.uvents.controllers.MenuController
 import com.example.uvents.ui.user.menu_frgms.ChatsFragment
 import com.example.uvents.ui.user.menu_frgms.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,7 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
  */
 class MapActivity : AppCompatActivity() {
 
-    private lateinit var mapController: MapController
+    private lateinit var menuController: MenuController
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var mapFragment: MapFragment
 
@@ -52,11 +52,11 @@ class MapActivity : AppCompatActivity() {
 
         // create the controller and set the user
         // relative to the uid of the login
-        mapController = MapController(this)
-        mapController.setUser(intent.getStringExtra("uid"))
+        menuController = MenuController(this)
+        menuController.setUser(intent.getStringExtra("uid"))
 
         // create the mapFragment and set it
-        mapFragment = MapFragment(mapController)
+        mapFragment = MapFragment(menuController)
         replaceFragment(mapFragment)
 
         // set up the listener for every
@@ -75,12 +75,12 @@ class MapActivity : AppCompatActivity() {
                 }
 
                 R.id.chat -> {
-                    replaceFragment(ChatsFragment(mapController))
+                    replaceFragment(ChatsFragment(menuController))
                     true
                 }
 
                 R.id.profile -> {
-                    mapController.setPersonalPage()
+                    menuController.setPersonalPage()
                     true
                 }
 

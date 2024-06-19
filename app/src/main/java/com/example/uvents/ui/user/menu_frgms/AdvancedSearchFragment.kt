@@ -16,17 +16,16 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
-import com.example.uvents.controllers.MapController
+import com.example.uvents.controllers.MenuController
 import com.example.uvents.controllers.adapter.AdvSearchCategoryAdapter
 import com.example.uvents.model.CategorySource
-import com.example.uvents.model.Event
 import java.util.Calendar
 import java.util.Locale
 
 /**
  * Fragment that contains all the utilities for the advanced research
  */
-class AdvancedSearchFragment(private val mapController: MapController) : Fragment() {
+class AdvancedSearchFragment(private val menuController: MenuController) : Fragment() {
 
     private lateinit var ivClose: ImageView
     private lateinit var rvCategory: RecyclerView
@@ -44,7 +43,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController))
+                menuController.switchFragment(MapFragment(menuController))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -70,10 +69,10 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
         }
 
         ivClose.setOnClickListener {
-            mapController.switchFragment(MapFragment(mapController))
+            menuController.switchFragment(MapFragment(menuController))
         }
 
-        val categoryList = CategorySource(mapController.mapActivity).getCategoryList()
+        val categoryList = CategorySource(menuController.mapActivity).getCategoryList()
         val adapter = AdvSearchCategoryAdapter(categoryList)
         rvCategory.adapter = adapter
 
@@ -95,23 +94,23 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
             if(etOrganizer.text.isEmpty() && tvDateFrom.text.isEmpty() && tvDateTo.text.isEmpty() &&
             etTimeFrom.text.isEmpty() && adapter.getCheckedItems().isEmpty() ) {
 
-                mapController.printToast("At least one filter must be applied")
+                menuController.printToast("At least one filter must be applied")
 
             } else {
 
-                mapController.applyFilteredSearch(etOrganizer.text.toString(), tvDateFrom.text.toString(), tvDateTo.text.toString(),
+                menuController.applyFilteredSearch(etOrganizer.text.toString(), tvDateFrom.text.toString(), tvDateTo.text.toString(),
                 etTimeFrom.text.toString(), adapter.getCheckedItems())
 
-                mapController.printToast("Filter successfully applied")
-                mapController.mapActivity.backHome()
+                menuController.printToast("Filter successfully applied")
+                menuController.mapActivity.backHome()
             }
         }
 
         // When click All Events reset all the events
         btnReset.setOnClickListener {
-            mapController.resetView()
-            mapController.printToast("Restore all events")
-            mapController.mapActivity.backHome()
+            menuController.resetView()
+            menuController.printToast("Restore all events")
+            menuController.mapActivity.backHome()
         }
 
         return v
@@ -127,7 +126,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(mapController.mapActivity, { _, selectedHour, selectedMinute ->
+        val timePickerDialog = TimePickerDialog(menuController.mapActivity, { _, selectedHour, selectedMinute ->
             val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
             editText.setText(formattedTime)  // Set the time to the EditText that was passed in
         }, hour, minute, true)
@@ -145,7 +144,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
         val month = myCalendar.get(Calendar.MONTH)
         val day = myCalendar.get(Calendar.DAY_OF_MONTH)
 
-        DatePickerDialog(mapController.mapActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        DatePickerDialog(menuController.mapActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             if(startingDate) {
                 tvDateFrom.text = "${month + 1}/$dayOfMonth/$year"
             } else {

@@ -26,7 +26,6 @@ import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.geometry
@@ -42,7 +41,7 @@ import java.util.Locale
 class AnnotationManager(
     private val mapView: MapView,
     private val mapActivity: MapActivity,
-    private val mapController: MapController,
+    private val menuController: MenuController,
     private val eventFetcher: EventFetcher) {
 
     // Save a connection between event an annotation on the map
@@ -170,7 +169,7 @@ class AnnotationManager(
                             // that show an events
                             mapActivity.replaceFragment(
                                 EventFragment(
-                                    mapController,
+                                    menuController,
                                     e.name!!,
                                     e.organizerName!!,
                                     e.category!!,
@@ -178,7 +177,7 @@ class AnnotationManager(
                                     e.time!!,
                                     e.description!!,
                                     e.address!!,
-                                    e.eid!!,
+                                    e.uid!!,
                                     e.imageUrl!!
                                 )
                             )

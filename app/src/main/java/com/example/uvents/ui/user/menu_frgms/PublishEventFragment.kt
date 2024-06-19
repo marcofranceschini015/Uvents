@@ -2,7 +2,6 @@ package com.example.uvents.ui.user.menu_frgms
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,21 +13,18 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
-import com.example.uvents.controllers.MapController
+import com.example.uvents.controllers.MenuController
 import com.example.uvents.controllers.adapter.CategoryAdapter
 import com.example.uvents.model.CategorySource
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import java.util.Calendar
 import java.util.Locale
 
 /**
  * Fragment with all the elements to create an publish an event
  */
-class PublishEventFragment(private var mapController: MapController) : Fragment() {
+class PublishEventFragment(private var menuController: MenuController) : Fragment() {
 
     // Elements in the view
     private lateinit var etInputName: EditText
@@ -74,7 +70,7 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
         }
 
         // get the category of the event
-        val categoryList = CategorySource(mapController.mapActivity).getCategoryList()
+        val categoryList = CategorySource(menuController.mapActivity).getCategoryList()
         val adapter = CategoryAdapter(categoryList)
         recyclerViewCat.adapter = adapter
 
@@ -94,9 +90,9 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
             val checkedTextsArray = checkedItems.toList()
 
             if (validateForms()) {
-                if (mapController.nameExists(etInputName.text.toString())) {
+                if (menuController.nameExists(etInputName.text.toString())) {
                     showToast("Name already taken")
-                } else if (!mapController.locationExist(etInputLocation.text.toString())) {
+                } else if (!menuController.locationExist(etInputLocation.text.toString())) {
                     showToast("Location doesn't exist")
                 } else {
                     handleCategoryAndPublish(checkedTextsArray, fileUri)
@@ -120,7 +116,7 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(mapController.mapActivity, { _, selectedHour, selectedMinute ->
+        val timePickerDialog = TimePickerDialog(menuController.mapActivity, { _, selectedHour, selectedMinute ->
             val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
             editText.setText(formattedTime)  // Set the time to the EditText that was passed in
         }, hour, minute, true)
@@ -141,7 +137,7 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
 
         // DatePickerDialog to pick the date
         val datePickerDialog = DatePickerDialog(
-            mapController.mapActivity, { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+            menuController.mapActivity, { _, selectedYear, selectedMonth, selectedDayOfMonth ->
                 // Format the date selected
                 val selectedDate = "${selectedMonth + 1}/$selectedDayOfMonth/$selectedYear"
                 editText.setText(selectedDate)  // Set date in EditText
@@ -189,7 +185,7 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
      * Publish event if everything it's ok
      */
     private fun publishEvent(category: String, fileUri: Uri) {
-        mapController.publishEvent(
+        menuController.publishEvent(
             etInputName.text.toString(),
             etInputDate.text.toString(),
             etInputTime.text.toString(),
@@ -207,7 +203,7 @@ class PublishEventFragment(private var mapController: MapController) : Fragment(
      */
     private fun showToast(message: String) {
         Toast.makeText(
-            mapController.mapActivity,
+            menuController.mapActivity,
             message,
             Toast.LENGTH_SHORT
         ).show()

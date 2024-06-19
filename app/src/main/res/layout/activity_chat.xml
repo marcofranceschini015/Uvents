@@ -8,19 +8,44 @@
     tools:context=".ui.user.menu_frgms.ChatActivity"
     android:background="#86BBD8">
 
-    <TextView
-        android:id="@+id/tvOrganizerName"
+    <LinearLayout
+        android:id="@+id/llChatBar"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:text="Organizer name"
-        android:background="@color/dark_blue"
-        android:textColor="@color/white"
-        android:textSize="26dp"
-        android:paddingStart="10dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/dark_blue">
+
+        <ImageView
+            android:id="@+id/ivCustomBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/custom_chat_back"
+            android:layout_gravity="center_vertical"
+            />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/user_single_chat"
+            android:layout_gravity="center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/tvOrganizerName"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:text="Organizer name"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:paddingStart="5dp"
+
+            />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
@@ -28,7 +53,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvOrganizerName"
+        app:layout_constraintTop_toBottomOf="@id/llChatBar"
         app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
