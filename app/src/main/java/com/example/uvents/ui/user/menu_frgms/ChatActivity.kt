@@ -102,14 +102,13 @@ class ChatActivity() : AppCompatActivity() {
 
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
-        val eventEid = intent.getStringExtra("eid")
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid!!
 
         eventName = findViewById(R.id.tvOrganizerName)
         eventName.text = name
 
-        senderRoom = receiverUid + senderUid + eventEid
-        receiverRoom = senderUid + receiverUid + eventEid
+        senderRoom = receiverUid + senderUid
+        receiverRoom = senderUid + receiverUid
 
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
 

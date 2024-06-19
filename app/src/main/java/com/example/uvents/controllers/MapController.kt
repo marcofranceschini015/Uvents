@@ -391,48 +391,16 @@ class MapController(val mapActivity: MapActivity) {
         }
     }
 
-//    fun chatExists(chatId: String, callback: (Boolean, Exception?) -> Unit) {
-//        val database = FirebaseDatabase.getInstance(dbUrl).getReference()
-//        val chatRef = database.child("chat").child(chatId)
-//
-//        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    callback(true, null)
-//                } else {
-//                    callback(false, null)
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                callback(false, databaseError.toException())
-//            }
-//        })
-//    }
-
-    fun chatExists(chatId1: String, chatId2: String, callback: (Boolean, Exception?) -> Unit) {
+    fun chatExists(chatId: String, callback: (Boolean, Exception?) -> Unit) {
         val database = FirebaseDatabase.getInstance(dbUrl).getReference()
-        val chatRef1 = database.child("chat").child(chatId1)
-        val chatRef2 = database.child("chat").child(chatId2)
+        val chatRef = database.child("chat").child(chatId)
 
-        chatRef1.addListenerForSingleValueEvent(object : ValueEventListener {
+        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     callback(true, null)
                 } else {
-                    chatRef2.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                callback(true, null)
-                            } else {
-                                callback(false, null)
-                            }
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {
-                            callback(false, databaseError.toException())
-                        }
-                    })
+                    callback(false, null)
                 }
             }
 

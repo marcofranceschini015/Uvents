@@ -177,7 +177,6 @@ class AnnotationManager(
                                     e.time!!,
                                     e.description!!,
                                     e.address!!,
-                                    e.uid!!,
                                     e.eid!!,
                                     e.imageUrl!!
                                 )

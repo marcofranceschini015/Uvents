@@ -32,7 +32,6 @@ class EventFragment(
     private val description: String,
     private val address: String,
     private val uid: String,
-    private val eid: String,
     private val imageUrl: String) : Fragment() {
 
     // view elements
@@ -156,7 +155,6 @@ class EventFragment(
             intent.putExtra("name", name)
             CoroutineScope(Dispatchers.IO).launch {
                 intent.putExtra("uid", mapController.getUidByUsername(nameOrganizer.text.toString()))
-                intent.putExtra("eid", eid)
 
                 withContext(Dispatchers.Main) {
                     startActivity(intent)
