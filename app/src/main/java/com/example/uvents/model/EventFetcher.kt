@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener
  * into a database
  */
 class EventFetcher {
-    val eventsData = MutableLiveData<MutableList<Event>>()
+    var eventsData = MutableLiveData<MutableList<Event>>()
     private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
 
 
@@ -26,7 +26,7 @@ class EventFetcher {
      * Fetch all the events the first time that the map is open
      * by reading from the database
      */
-    private fun fetchEvents() {
+    fun fetchEvents() {
         val dbRef = FirebaseDatabase.getInstance(dbUrl).getReference("event")
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -62,6 +62,14 @@ class EventFetcher {
         eventsToRemove.forEach { e ->
             eventsData.value?.remove(e)
         }
+    }
+
+
+    /**
+     * Clear all the events in the local db
+     */
+    fun clearEvents() {
+        eventsData = MutableLiveData<MutableList<Event>>()
     }
 
 

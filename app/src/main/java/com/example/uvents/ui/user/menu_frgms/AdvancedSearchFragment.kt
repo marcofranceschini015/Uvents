@@ -1,6 +1,8 @@
 package com.example.uvents.ui.user.menu_frgms
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
@@ -18,7 +21,11 @@ import com.example.uvents.controllers.adapter.AdvSearchCategoryAdapter
 import com.example.uvents.model.CategorySource
 import com.example.uvents.model.Event
 import java.util.Calendar
+import java.util.Locale
 
+/**
+ * Fragment that contains all the utilities for the advanced research
+ */
 class AdvancedSearchFragment(private val mapController: MapController) : Fragment() {
 
     private lateinit var ivClose: ImageView
@@ -26,9 +33,9 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
     private lateinit var tvDateFrom: TextView
     private lateinit var tvDateTo: TextView
     private lateinit var etTimeFrom: EditText
-    private lateinit var etTimeTo: EditText
     private lateinit var etOrganizer: EditText
     private lateinit var btnApply: Button
+    private lateinit var btnReset: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +50,7 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,9 +64,9 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
             tvDateFrom = v.findViewById(R.id.fromDate)
             tvDateTo = v.findViewById(R.id.toDate)
             etTimeFrom = v.findViewById(R.id.fromTime)
-            etTimeTo = v.findViewById(R.id.toTime)
             etOrganizer = v.findViewById(R.id.organizerName)
             btnApply = v.findViewById(R.id.btnApply)
+            btnReset = v.findViewById(R.id.btnReset)
         }
 
         ivClose.setOnClickListener {
@@ -77,84 +85,75 @@ class AdvancedSearchFragment(private val mapController: MapController) : Fragmen
             clickDatePicker(false)
         }
 
-        val events = getDummyEvents()
+        etTimeFrom.setOnClickListener {
+            openTimePickerDialog(etTimeFrom)
+        }
 
+        // When apply a filtered search
+        // at least do 1 research
         btnApply.setOnClickListener {
-//            val debugOrganizer = etOrganizer.text.isNotEmpty()
             if(etOrganizer.text.isEmpty() && tvDateFrom.text.isEmpty() && tvDateTo.text.isEmpty() &&
-            etTimeFrom.text.isEmpty() && etTimeTo.text.isEmpty() && adapter.getCheckedItems().isEmpty() ) {
+            etTimeFrom.text.isEmpty() && adapter.getCheckedItems().isEmpty() ) {
 
                 mapController.printToast("At least one filter must be applied")
 
             } else {
 
-                val filteredEvents = mapController.applyFilteredSearch(events, etOrganizer.text, tvDateFrom.text, tvDateTo.text,
-                etTimeFrom.text, etTimeTo.text, adapter.getCheckedItems())
+                mapController.applyFilteredSearch(etOrganizer.text.toString(), tvDateFrom.text.toString(), tvDateTo.text.toString(),
+                etTimeFrom.text.toString(), adapter.getCheckedItems())
 
                 mapController.printToast("Filter successfully applied")
-                mapController.switchFragment(MapFragment(mapController)) // todo filter in controller logic
+                mapController.mapActivity.backHome()
             }
+        }
+
+        // When click All Events reset all the events
+        btnReset.setOnClickListener {
+            mapController.resetView()
+            mapController.printToast("Restore all events")
+            mapController.mapActivity.backHome()
         }
 
         return v
     }
 
+
+    /**
+     * Open the time picker dialog when click on the
+     * edit text time
+     */
+    private fun openTimePickerDialog(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(mapController.mapActivity, { _, selectedHour, selectedMinute ->
+            val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
+            editText.setText(formattedTime)  // Set the time to the EditText that was passed in
+        }, hour, minute, true)
+
+        timePickerDialog.show()
+    }
+
+
+    /**
+     * Open the date picker and select a date
+     */
     private fun clickDatePicker(startingDate: Boolean) {
         val myCalendar = Calendar.getInstance()
         val year = myCalendar.get(Calendar.YEAR)
         val month = myCalendar.get(Calendar.MONTH)
         val day = myCalendar.get(Calendar.DAY_OF_MONTH)
 
-        DatePickerDialog(mapController.mapActivity, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        DatePickerDialog(mapController.mapActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             if(startingDate) {
-                tvDateFrom.text = "$dayOfMonth/${month + 1}/$year"
+                tvDateFrom.text = "${month + 1}/$dayOfMonth/$year"
             } else {
-                tvDateTo.text = "$dayOfMonth/${month + 1}/$year"
+                tvDateTo.text = "${month + 1}/$dayOfMonth/$year"
             }
-
-//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ITALY)
-//
-//            val theDate = sdf.parse(selectedDate)
-//            val selectedDateInDays = theDate.time / 86_400_000
-//
-//            val currentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
-//            val currentDateInDays = currentDate.time / 86_400_000
-//
-//            val diffDates = currentDateInDays - selectedDateInDays
-//
-//            tvResults?.text = "${diffDates.toString()} days have passed"
 
         }, year, month, day).show()
 
-    }
-
-    // Dummy data for events, consider retrieving this from a ViewModel or similar component
-    private fun getDummyEvents(): ArrayList<Event> {
-        return arrayListOf(
-            Event(
-                "Festa universitaria",
-                "Unibs",
-                "Party",
-                "20/06/2024",
-                "Festa di Primavera per staccare dallo stress dello studio e degli esami",
-                "Via Branze, 38, Brescia"),
-            Event(
-                "Mostra di Picasso",
-                "Belle Arti Brescia",
-                "Charity",
-                "28/06/2024",
-                "Vengono esposti i quadri più particolari dell'autore",
-                "Piazza della Vittoria, Brescia"
-            ),
-            Event(
-                "Eras Tour Taylor Swift",
-                "San Siro Concerts",
-                "Concert",
-                "14/07/2024",
-                "Concerto di 3 ore con 40 canzoni dell'artista. Occasione unica per vedere Taylor Swift in Italia.",
-                "Stadio San Siro, Milano"
-            )
-        )
     }
 
 

@@ -139,23 +139,17 @@
                 android:id="@+id/fromTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="5"
                 android:inputType="time"
-                android:hint="From 24h format"
+                android:hint="From hh:min"
                 android:textSize="18dp"
                 android:textColor="@color/writings_dark_blue"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:clickable="true"
                 />
 
-            <EditText
-                android:id="@+id/toTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:inputType="time"
-                android:hint="To 24h format"
-                android:textSize="18dp"
-                android:textColor="@color/writings_dark_blue"
-                />
+
+
 
         </LinearLayout>
 
@@ -192,20 +186,44 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnApply"
-            android:layout_width="150dp"
-            android:layout_height="35dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/llCategory"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="225dp"
-            android:text="Apply"
-            android:textAllCaps="false"
-            android:fontFamily="@font/lato"
-            android:textSize="19sp"
-            android:textColor="#DAF7DC"
-            android:background="@drawable/button_sign_bg"
-            />
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <Button
+                android:id="@+id/btnReset"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="35dp"
+                android:text="All Events"
+                android:layout_marginEnd="50dp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/lato"
+                android:textSize="19sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/button_sign_bg"
+                />
+
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="0.5"
+                android:text="Apply"
+                android:textAllCaps="false"
+                android:fontFamily="@font/lato"
+                android:textSize="19sp"
+                android:textColor="#DAF7DC"
+                android:background="@drawable/button_sign_bg"
+                />
+
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 
