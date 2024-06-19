@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
-import com.example.uvents.controllers.MapController
+import com.example.uvents.controllers.MenuController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.mapbox.android.gestures.Utils.dpToPx
@@ -50,7 +50,7 @@ import com.mapbox.search.ui.view.SearchResultsView
  * the events on it
  * todo da riordinare
  */
-class MapFragment(private val mapController: MapController) : Fragment() {
+class MapFragment(private val menuController: MenuController) : Fragment() {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationProvider: LocationProvider
@@ -102,7 +102,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
 
         btnAdvancedSearch = v.findViewById(R.id.advancedSearch)
         btnAdvancedSearch.setOnClickListener {
-            mapController.switchFragment(AdvancedSearchFragment(mapController))
+            menuController.switchFragment(AdvancedSearchFragment(menuController))
         }
 
         mapMarkersManager = MapMarkersManager(mapView)
@@ -111,7 +111,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
         toolbar.apply {
             title = getString(R.string.search_here)
             setTitleTextColor(R.color.light_blue)
-            mapController.setToolBar(this)
+            menuController.setToolBar(this)
         }
 
         searchResultsView = v.findViewById<SearchResultsView>(R.id.search_results_view).apply {
@@ -174,7 +174,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
             }
 
             override fun onError(e: Exception) {
-                mapController.printToast("Error happened: $e")
+                menuController.printToast("Error happened: $e")
             }
 
             override fun onHistoryItemClick(historyRecord: HistoryRecord) {
@@ -207,7 +207,7 @@ class MapFragment(private val mapController: MapController) : Fragment() {
 
         // Set up location services and event handling
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        mapController.setView(mapView, fusedLocationProviderClient)
+        menuController.setView(mapView, fusedLocationProviderClient)
     }
 
 

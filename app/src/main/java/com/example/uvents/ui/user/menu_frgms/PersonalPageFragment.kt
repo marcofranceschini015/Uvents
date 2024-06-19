@@ -10,16 +10,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
-import com.example.uvents.controllers.MapController
+import com.example.uvents.controllers.MenuController
 import com.example.uvents.controllers.adapter.PersonalPageAdapter
-import com.example.uvents.ui.user.menu_frgms.PublishEventFragment
 
 /**
  * Fragment that show the Personal Page content
  * with all the user's info
  */
 class PersonalPageFragment(
-    private val mapController: MapController,
+    private val menuController: MenuController,
     private val username: String,
     private val email: String,
     private val categories: List<String>,
@@ -59,7 +58,7 @@ class PersonalPageFragment(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController))
+                menuController.switchFragment(MapFragment(menuController))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -139,12 +138,12 @@ class PersonalPageFragment(
         // the personal page
         btnSave.setOnClickListener {
             // update the user changes
-            mapController.updateUser(
+            menuController.updateUser(
                 copyCategories.toList(),
                 copyEvents.toList(),
                 copyFollowed.toList()
             )
-            mapController.setPersonalPage()
+            menuController.setPersonalPage()
         }
 
         // logout the user, go the main page
@@ -154,7 +153,7 @@ class PersonalPageFragment(
 
         // go to publish an event page
         btnPublish.setOnClickListener {
-            mapController.switchFragment(PublishEventFragment(mapController))
+            menuController.switchFragment(PublishEventFragment(menuController))
         }
 
         return v

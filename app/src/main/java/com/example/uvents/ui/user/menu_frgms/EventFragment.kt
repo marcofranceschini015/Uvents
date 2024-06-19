@@ -12,18 +12,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.uvents.R
-import com.example.uvents.controllers.MapController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.uvents.controllers.MenuController
 
 /**
  * Show every single event with the
  * info of it
  */
 class EventFragment(
-    private val mapController: MapController,
+    private val menuController: MenuController,
     private val name: String,
     private val organizerName: String,
     private val category: String,
@@ -60,7 +56,7 @@ class EventFragment(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
-                mapController.switchFragment(MapFragment(mapController))
+                menuController.switchFragment(MapFragment(menuController))
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -105,7 +101,8 @@ class EventFragment(
         location.text = address
         loadImage(imageUrl)
 
-        if(mapController.ImtheOrganizer(uid)) {
+        // remove interactivity if I'm the organizer
+        if(menuController.ImtheOrganizer(uid)) {
             ivFollow.visibility = View.GONE
             ivChat.visibility = View.GONE
             btnBook.visibility = View.GONE
@@ -114,7 +111,7 @@ class EventFragment(
         // if the category of the event is already in the liked one
         // show the remove category button
         // otherwise the add
-        if(mapController.isFavouriteCategory(category)) {
+        if(menuController.isFavouriteCategory(category)) {
             ivAddCategory.visibility = View.GONE
         } else {
             ivRemoveCategory.visibility = View.GONE
@@ -139,28 +136,23 @@ class EventFragment(
 
         // listener for the add/remove category
         ivAddCategory.setOnClickListener {
-            mapController.addCategory(category)
+            menuController.addCategory(category)
             ivAddCategory.visibility = View.GONE
             ivRemoveCategory.visibility = View.VISIBLE
         }
 
         ivRemoveCategory.setOnClickListener {
-            mapController.removeCategory(category)
+            menuController.removeCategory(category)
             ivAddCategory.visibility = View.VISIBLE
             ivRemoveCategory.visibility = View.GONE
         }
 
         ivChat.setOnClickListener {
-            val intent = Intent(mapController.mapActivity, ChatActivity::class.java)
-            intent.putExtra("name", name)
-            CoroutineScope(Dispatchers.IO).launch {
-                intent.putExtra("uid", mapController.getUidByUsername(nameOrganizer.text.toString()))
-
-                withContext(Dispatchers.Main) {
-                    startActivity(intent)
-//                    mapController.mapActivity.finish()
-                }
-            }
+            val intent = Intent(menuController.mapActivity, ChatActivity::class.java)
+            intent.putExtra("name", organizerName)
+            intent.putExtra("uid", uid)
+//          mapController.mapActivity.finish()
+            startActivity(intent)
         }
 
         return v
