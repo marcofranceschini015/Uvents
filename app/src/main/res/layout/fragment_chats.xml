@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.user.menu_frgms.ChatsFragment"
+    android:background="#86BBD8">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvYourChats"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rvOrganizerNames"
+            android:gravity="center_vertical"
+            android:text="Your chats"
+            android:background="@color/dark_blue"
+            android:textColor="@color/white"
+            android:textSize="26dp"
+            android:paddingStart="10dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOrganizerNames"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvYourChats"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/organizer_chat_name"
+            />
+
+        <TextView
+            android:id="@+id/tvNoChat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="You haven't started any chat yet" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

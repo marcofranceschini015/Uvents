@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -12,6 +13,10 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.uvents.R
 import com.example.uvents.controllers.MapController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Show every single event with the
@@ -26,6 +31,7 @@ class EventFragment(
     private val time: String,
     private val description: String,
     private val address: String,
+    private val uid: String,
     private val imageUrl: String) : Fragment() {
 
     // view elements
@@ -42,6 +48,7 @@ class EventFragment(
     private lateinit var ivAddCategory: ImageView
     private lateinit var ivRemoveCategory: ImageView
     private lateinit var imageEvent: ImageView
+    private lateinit var btnBook: Button
 
 
     /**
@@ -85,6 +92,7 @@ class EventFragment(
             ivAddCategory = v.findViewById(R.id.addCategory)
             ivRemoveCategory = v.findViewById(R.id.removeCategory)
             imageEvent = v.findViewById(R.id.imageEvent)
+            btnBook = v.findViewById(R.id.btnBook)
         }
 
         // set every value of the view
@@ -96,6 +104,12 @@ class EventFragment(
         tvDescription.text = description
         location.text = address
         loadImage(imageUrl)
+
+        if(mapController.ImtheOrganizer(uid)) {
+            ivFollow.visibility = View.GONE
+            ivChat.visibility = View.GONE
+            btnBook.visibility = View.GONE
+        }
 
         // if the category of the event is already in the liked one
         // show the remove category button
@@ -134,6 +148,19 @@ class EventFragment(
             mapController.removeCategory(category)
             ivAddCategory.visibility = View.VISIBLE
             ivRemoveCategory.visibility = View.GONE
+        }
+
+        ivChat.setOnClickListener {
+            val intent = Intent(mapController.mapActivity, ChatActivity::class.java)
+            intent.putExtra("name", name)
+            CoroutineScope(Dispatchers.IO).launch {
+                intent.putExtra("uid", mapController.getUidByUsername(nameOrganizer.text.toString()))
+
+                withContext(Dispatchers.Main) {
+                    startActivity(intent)
+//                    mapController.mapActivity.finish()
+                }
+            }
         }
 
         return v

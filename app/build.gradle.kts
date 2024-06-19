@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
     id("kotlin-kapt")
+
 }
 
 android {
@@ -28,6 +29,11 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -35,6 +41,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
 
 dependencies {
@@ -45,6 +52,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.storage.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

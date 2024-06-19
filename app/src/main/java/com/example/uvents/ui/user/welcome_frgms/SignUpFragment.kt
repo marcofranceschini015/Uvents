@@ -20,6 +20,7 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
     private lateinit var etInputUsername: EditText
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
+    private lateinit var etConfirmPassword: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             btnSignUp = v.findViewById(R.id.btnSignUp)
             etEmail = v.findViewById(R.id.etInputEmail)
             etPassword = v.findViewById(R.id.etInputPassword)
+            etConfirmPassword = v.findViewById(R.id.etConfirmPassword)
         }
 
         ctrl.showBackArrow()
@@ -53,10 +55,18 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             val name = etInputUsername.text.toString()
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
-            if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty())
-                ctrl.signUp(name, email, password)
-            else
+            val confirmPassword = etConfirmPassword.text.toString()
+            if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
+                if(password == confirmPassword) {
+                    ctrl.signUp(name, email, password)
+                } else {
+                    Toast.makeText(context, "Password and Confirm Password fields don't match", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
                 Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         return v

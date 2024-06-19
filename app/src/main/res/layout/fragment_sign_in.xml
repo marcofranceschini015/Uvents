@@ -28,7 +28,7 @@
                 android:layout_height="48dp"
                 android:gravity="bottom"
                 android:fontFamily="@font/lato"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textColor="#DAF7DC"
                 android:text="Email"/>
 
@@ -46,7 +46,8 @@
                 android:paddingStart="20dp"
                 android:textColor="#DAF7DC"
                 android:textColorHint="#DAF7DC"
-                android:textSize="20sp" />
+                android:textSize="18sp"
+                android:inputType="textEmailAddress"/>
 
 
             <TextView
@@ -57,7 +58,7 @@
                 android:layout_height="48dp"
                 android:gravity="bottom"
                 android:fontFamily="@font/lato"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textColor="#DAF7DC"
                 android:text="Password"/>
 
@@ -71,10 +72,11 @@
                 android:textColorHint="#DAF7DC"
                 android:paddingStart="20dp"
                 android:fontFamily="@font/inter"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="#DAF7DC"
                 android:background="@drawable/insert_city_et_bg"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:inputType="textPassword"/>
             
         </LinearLayout>
 
@@ -86,7 +88,7 @@
             android:layout_below="@id/linearLayoutSignInEt"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="120dp">
 
             <Button
                 android:id="@+id/btnSignIn"
