@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
+import com.example.uvents.controllers.adapter.FollowerAdapter
 import com.example.uvents.controllers.adapter.PersonalPageAdapter
 
 /**
@@ -23,7 +24,7 @@ class PersonalPageFragment(
     private val email: String,
     private val categories: List<String>,
     private val events: List<String>,
-    private val followed: List<String>
+    private val followed: Map<String, String>
 ) : Fragment() {
 
     // View elements
@@ -48,8 +49,8 @@ class PersonalPageFragment(
     private lateinit var copyEvents: MutableList<String>
 
     // followed organizers recycler view variables
-    private lateinit var adapterFollowed: PersonalPageAdapter
-    private lateinit var copyFollowed: MutableList<String>
+    private lateinit var adapterFollowed: FollowerAdapter
+    private lateinit var copyFollowed: MutableMap<String, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,9 +105,9 @@ class PersonalPageFragment(
             rvEvents.adapter = adapterEvents
 
             // recycler view followed organizers
-            copyFollowed = followed.toMutableList()
-            adapterFollowed = PersonalPageAdapter(copyFollowed) { position ->
-                adapterFollowed.removeItem(position)
+            copyFollowed = followed.toMutableMap()
+            adapterFollowed = FollowerAdapter(copyFollowed) {key ->
+                adapterFollowed.removeItem(key)
             }
             rvFollowed.adapter = adapterFollowed
 
@@ -141,7 +142,7 @@ class PersonalPageFragment(
             menuController.updateUser(
                 copyCategories.toList(),
                 copyEvents.toList(),
-                copyFollowed.toList()
+                copyFollowed.toMap()
             )
             menuController.setPersonalPage()
         }

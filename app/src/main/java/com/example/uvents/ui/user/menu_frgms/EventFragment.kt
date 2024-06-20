@@ -169,10 +169,14 @@ class EventFragment(
 
         ivFollow.setOnClickListener {
             menuController.follow(uid, organizerName)
+            ivFollow.visibility = View.GONE
+            ivUnfollow.visibility = View.VISIBLE
         }
 
         ivUnfollow.setOnClickListener {
             menuController.removeFollow(uid)
+            ivFollow.visibility = View.VISIBLE
+            ivUnfollow.visibility = View.GONE
         }
 
         return v

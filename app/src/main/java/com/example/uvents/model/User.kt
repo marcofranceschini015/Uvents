@@ -38,12 +38,13 @@ class User {
      * Return the list of followed users in string format
      * in a way to be used in the view
      */
-    fun getFollowed(): List<String> {
-        val list: MutableList<String> = mutableListOf()
-        followed.forEach { user ->
-            list.add(user.value)
-        }
-        return list.toList()
+    fun getFollowed(): Map<String, String> {
+        return followed
+    }
+
+
+    fun setFollowed(map: Map<String, String>){
+        followed = map.toMutableMap()
     }
 
 

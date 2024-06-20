@@ -123,10 +123,14 @@ class MenuController(val mapActivity: MapActivity) {
 
     fun follow(uid: String, organizerName: String) {
         user.addFollow(uid, organizerName)
+        printToast("Organizer followed")
+        updateDatabase(user.categories, user.getFollowed())
     }
 
     fun removeFollow(uid: String) {
         user.removeFollow(uid)
+        printToast("Follow removed")
+        updateDatabase(user.categories, user.getFollowed())
     }
 
     fun isFollowed(uid: String): Boolean {
@@ -173,11 +177,12 @@ class MenuController(val mapActivity: MapActivity) {
      * Update a user when modifying the personal page
      * with all the lists recovered from the page
      */
-    fun updateUser(categories: List<String>, events: List<String>, followed: List<String>) {
-        // todo organizer not followed -> modify view
+    fun updateUser(categories: List<String>, events: List<String>, followed: Map<String, String>) {
         user.categories = categories
+        user.setFollowed(followed)
         removeEvent(events) // todo send notification
-        updateDatabase(categories, user.getFollowed())
+        // recover the map
+        updateDatabase(categories, followed)
     }
 
 
@@ -243,15 +248,16 @@ class MenuController(val mapActivity: MapActivity) {
     /**
      * Update the database with the passed information
      */
-    private fun updateDatabase(categories: List<String>, followed: List<String>) {
+    private fun updateDatabase(categories: List<String>, followed: Map<String, String>) {
         // Reference to the specific user's node
         mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
         val userRef = mDbRef.child("user").child(user.uid)
 
 
         // Map of data to update
-        val updates = hashMapOf<String, Any>(
-            "categories" to categories
+        val updates = hashMapOf(
+            "categories" to categories,
+            "followed" to followed
         )
 
         // Update children of the user node
