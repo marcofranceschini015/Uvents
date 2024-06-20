@@ -148,7 +148,7 @@ class PersonalPageFragment(
 
         // logout the user, go the main page
         btnLogout.setOnClickListener {
-            // todo
+            menuController.logout()
         }
 
         // go to publish an event page

@@ -1,19 +1,24 @@
 package com.example.uvents.controllers
 
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.Telephony.Sms.Intents
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.EventFetcher
 import com.example.uvents.model.EventSearcher
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.MapActivity
+import com.example.uvents.ui.user.WelcomeActivity
 import com.example.uvents.ui.user.menu_frgms.PersonalPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.database.DataSnapshot
@@ -66,6 +71,17 @@ class MenuController(val mapActivity: MapActivity) {
     fun resetView() {
         eventFetcher.clearEvents()
         eventFetcher.fetchEvents()
+    }
+
+
+    /**
+     * Come to the WelcomeActivity as a logout
+     */
+    fun logout() {
+        Toast.makeText(mapActivity, "Logout...", Toast.LENGTH_SHORT).show()
+        val intent = Intent(mapActivity, WelcomeActivity::class.java)
+        mapActivity.startActivity(intent)
+        mapActivity.finish()
     }
 
 
