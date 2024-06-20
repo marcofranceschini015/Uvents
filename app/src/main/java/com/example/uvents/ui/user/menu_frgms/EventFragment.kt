@@ -40,6 +40,7 @@ class EventFragment(
     private lateinit var location: TextView
     private lateinit var ivShare: ImageView
     private lateinit var ivFollow: ImageView
+    private lateinit var ivUnfollow: ImageView
     private lateinit var ivChat: ImageView
     private lateinit var ivAddCategory: ImageView
     private lateinit var ivRemoveCategory: ImageView
@@ -84,6 +85,7 @@ class EventFragment(
             location = v.findViewById(R.id.location)
             ivShare = v.findViewById(R.id.shareEvent)
             ivFollow = v.findViewById(R.id.follow)
+            ivUnfollow = v.findViewById(R.id.unfollow)
             ivChat = v.findViewById(R.id.chat)
             ivAddCategory = v.findViewById(R.id.addCategory)
             ivRemoveCategory = v.findViewById(R.id.removeCategory)
@@ -104,8 +106,18 @@ class EventFragment(
         // remove interactivity if I'm the organizer
         if(menuController.ImtheOrganizer(uid)) {
             ivFollow.visibility = View.GONE
+            ivUnfollow.visibility = View.GONE
             ivChat.visibility = View.GONE
             btnBook.visibility = View.GONE
+        } else {
+            // check if already followed change the follow in unfollow
+            if(menuController.isFollowed(uid)) {
+                ivFollow.visibility = View.GONE
+                ivUnfollow.visibility = View.VISIBLE
+            } else {
+                ivFollow.visibility = View.VISIBLE
+                ivUnfollow.visibility = View.GONE
+            }
         }
 
         // if the category of the event is already in the liked one
@@ -116,6 +128,7 @@ class EventFragment(
         } else {
             ivRemoveCategory.visibility = View.GONE
         }
+
 
         // set the text for the sharing
         // of the event
@@ -151,8 +164,15 @@ class EventFragment(
             val intent = Intent(menuController.mapActivity, ChatActivity::class.java)
             intent.putExtra("name", organizerName)
             intent.putExtra("uid", uid)
-//          mapController.mapActivity.finish()
             startActivity(intent)
+        }
+
+        ivFollow.setOnClickListener {
+            menuController.follow(uid, organizerName)
+        }
+
+        ivUnfollow.setOnClickListener {
+            menuController.removeFollow(uid)
         }
 
         return v

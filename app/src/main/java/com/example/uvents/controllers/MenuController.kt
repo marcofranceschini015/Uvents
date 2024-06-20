@@ -93,6 +93,10 @@ class MenuController(val mapActivity: MapActivity) {
         mapActivity.replaceFragment(f)
     }
 
+
+    /**
+     * Check if I am the organizer of the event
+     */
     fun ImtheOrganizer(organizerUid: String): Boolean {
         return organizerUid == user.uid
     }
@@ -114,6 +118,19 @@ class MenuController(val mapActivity: MapActivity) {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+
+    fun follow(uid: String, organizerName: String) {
+        user.addFollow(uid, organizerName)
+    }
+
+    fun removeFollow(uid: String) {
+        user.removeFollow(uid)
+    }
+
+    fun isFollowed(uid: String): Boolean {
+        return user.isFollowed(uid)
     }
 
 
