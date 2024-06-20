@@ -11,7 +11,7 @@ class User {
     lateinit var uid: String
     var categories: List<String> = listOf()
     var eventsPublished: List<Event> = listOf()
-    private var followed: List<User> = listOf()
+    private var followed: MutableMap<String, String> = mutableMapOf()
 
     constructor() {}
 
@@ -38,13 +38,15 @@ class User {
      * Return the list of followed users in string format
      * in a way to be used in the view
      */
-    fun getFollowed(): List<String> {
-        val list: MutableList<String> = mutableListOf()
-        followed.forEach { user ->
-            list.add(user.name)
-        }
-        return list.toList()
+    fun getFollowed(): Map<String, String> {
+        return followed
     }
+
+
+    fun setFollowed(map: Map<String, String>){
+        followed = map.toMutableMap()
+    }
+
 
     /**
      * Add an event to the list
@@ -54,6 +56,7 @@ class User {
         eventList.add(e)
         eventsPublished = eventList.toList()
     }
+
 
     /**
      * Function to add a category to
@@ -65,6 +68,31 @@ class User {
         categories = categoryList.toList()
     }
 
+
+    /**
+     * Add a user followed adding to the map
+     * with uid and name
+     */
+    fun addFollow(uid: String, name: String) {
+        followed[uid] = name
+    }
+
+
+    /**
+     * Removed a followed user having the uid
+     */
+    fun removeFollow(uid: String) {
+        followed.remove(uid)
+    }
+
+
+    /**
+     * Check if a particular User is already followed
+     */
+    fun isFollowed(uid: String): Boolean {
+        return followed.containsKey(uid)
+    }
+
     /**
      * Remove a category from the liked
      * categories
@@ -74,6 +102,7 @@ class User {
         categoryList.remove(category)
         categories = categoryList.toList()
     }
+
 
     /**
      * Get if a category is liked or not

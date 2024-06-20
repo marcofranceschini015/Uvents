@@ -78,7 +78,17 @@
                 android:layout_height="32dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/follow_organizer" />
+                app:srcCompat="@drawable/follow_organizer"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/unfollow"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/baseline_person_remove_24"
+                />
 
             <ImageView
                 android:id="@+id/chat"

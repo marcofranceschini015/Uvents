@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -35,6 +36,7 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
     private lateinit var etOrganizer: EditText
     private lateinit var btnApply: Button
     private lateinit var btnReset: Button
+    private lateinit var checkFollowed: CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +68,7 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
             etOrganizer = v.findViewById(R.id.organizerName)
             btnApply = v.findViewById(R.id.btnApply)
             btnReset = v.findViewById(R.id.btnReset)
+            checkFollowed = v.findViewById(R.id.checkFollowed)
         }
 
         ivClose.setOnClickListener {
@@ -91,16 +94,14 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
         // When apply a filtered search
         // at least do 1 research
         btnApply.setOnClickListener {
-            if(etOrganizer.text.isEmpty() && tvDateFrom.text.isEmpty() && tvDateTo.text.isEmpty() &&
+            if(!checkFollowed.isChecked && etOrganizer.text.isEmpty() && tvDateFrom.text.isEmpty() && tvDateTo.text.isEmpty() &&
             etTimeFrom.text.isEmpty() && adapter.getCheckedItems().isEmpty() ) {
 
                 menuController.printToast("At least one filter must be applied")
 
             } else {
-
-                menuController.applyFilteredSearch(etOrganizer.text.toString(), tvDateFrom.text.toString(), tvDateTo.text.toString(),
+                menuController.applyFilteredSearch(checkFollowed.isChecked, etOrganizer.text.toString(), tvDateFrom.text.toString(), tvDateTo.text.toString(),
                 etTimeFrom.text.toString(), adapter.getCheckedItems())
-
                 menuController.printToast("Filter successfully applied")
                 menuController.mapActivity.backHome()
             }
