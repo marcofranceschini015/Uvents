@@ -21,6 +21,7 @@ class EventSearcher(private val events: List<Event>) {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun filteredSearch(
+        followed: Map<String, String>,
         organizerName: String?,
         fromDate: String?,
         toDate: String?,
@@ -30,6 +31,7 @@ class EventSearcher(private val events: List<Event>) {
         val filteredEvents: MutableList<Event> = mutableListOf()
 
         // Get which check I have to do, based on empty or null statement
+        val checkFollowed = followed.isNotEmpty()
         val checkOrganizer = !organizerName.isNullOrEmpty()
         val checkInitDate = !fromDate.isNullOrEmpty()
         val checkEndDate = !toDate.isNullOrEmpty()
@@ -38,7 +40,8 @@ class EventSearcher(private val events: List<Event>) {
 
         // for each events in the list filter
         events.forEach{e ->
-            if (checkOrganizer(e, organizerName, checkOrganizer) &&
+            if (checkFollowed(e, followed, checkFollowed) &&
+                checkOrganizer(e, organizerName, checkOrganizer) &&
                 checkDate(e, checkInitDate, checkEndDate, fromDate, toDate) &&
                 checkTime(e, checkInitTime, fromTime) &&
                 checkCategory(e, checkCategory, checkedCategories))
@@ -46,6 +49,17 @@ class EventSearcher(private val events: List<Event>) {
         }
 
         return filteredEvents.toList()
+    }
+
+
+    /**
+     * Check if an organizer of an Event is followed by the user
+     */
+    private fun checkFollowed(event: Event, followed: Map<String, String>, check: Boolean) : Boolean{
+        return when {
+            check && !followed.containsKey(event.uid) -> false
+            else -> true
+        }
     }
 
 

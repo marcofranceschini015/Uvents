@@ -381,17 +381,22 @@ class MenuController(val mapActivity: MapActivity) {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun applyFilteredSearch(
+        followed: Boolean,
         organizerName: String?,
         fromDate: String?,
         toDate: String?,
         fromTime: String?,
         checkedCategories: List<String>
     ) {
+        val filteredEvent: List<Event>
         val fullEvents = eventFetcher.eventsData.value ?: listOf()
         val eventSearcher = eventFetcher.eventsData.value?.let { EventSearcher(it.toMutableList()) }
-        val filteredEvent =
-            eventSearcher?.filteredSearch(organizerName,fromDate,toDate,fromTime, checkedCategories)
-        val eventsToRemove = getEventsToRemove(fullEvents, filteredEvent!!)
+        filteredEvent = if (followed)
+            eventSearcher!!.filteredSearch(user.getFollowed(), organizerName,fromDate,toDate,fromTime, checkedCategories)
+        else
+            eventSearcher!!.filteredSearch(emptyMap(), organizerName,fromDate,toDate,fromTime, checkedCategories)
+
+        val eventsToRemove = getEventsToRemove(fullEvents, filteredEvent)
 
         // Remove from the actual list of events
         // the events removed
