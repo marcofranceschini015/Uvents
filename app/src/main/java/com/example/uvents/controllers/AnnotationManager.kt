@@ -179,7 +179,8 @@ class AnnotationManager(
                                     e.address!!,
                                     e.uid!!,
                                     e.imageUrl!!,
-                                    e.eid!!
+                                    e.eid!!,
+                                    e.getUidBooked().size
                                 )
                             )
                         } else

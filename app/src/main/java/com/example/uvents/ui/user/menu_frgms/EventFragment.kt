@@ -30,7 +30,8 @@ class EventFragment(
     private val address: String,
     private val uid: String,
     private val imageUrl: String,
-    private val eid: String) : Fragment() {
+    private val eid: String,
+    private val numBooking: Int) : Fragment() {
 
     // view elements
     private lateinit var nameEvent: TextView
@@ -49,6 +50,7 @@ class EventFragment(
     private lateinit var imageEvent: ImageView
     private lateinit var btnBook: Button
     private lateinit var btnRemoveBook: Button
+    private lateinit var tvBooked: TextView
 
 
     /**
@@ -95,6 +97,7 @@ class EventFragment(
             imageEvent = v.findViewById(R.id.imageEvent)
             btnBook = v.findViewById(R.id.btnBook)
             btnRemoveBook = v.findViewById(R.id.btnRemoveBook)
+            tvBooked = v.findViewById(R.id.tvBooked)
         }
 
         // set every value of the view
@@ -198,8 +201,10 @@ class EventFragment(
             ivUnfollow.visibility = View.GONE
             ivChat.visibility = View.GONE
             btnBook.visibility = View.GONE
+            tvBooked.visibility = View.VISIBLE
 
             // Show number of participants to the event
+            tvBooked.text = "Booking: ${numBooking}"
         } else {
             // Check if event already booked
             if (menuController.isBooked(eid)){
