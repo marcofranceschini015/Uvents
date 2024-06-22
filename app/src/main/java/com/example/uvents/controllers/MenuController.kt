@@ -265,13 +265,7 @@ class MenuController(val mapActivity: MapActivity) {
         )
 
         // Update children of the user node
-        userRef.updateChildren(updates).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                printToast("Updated")
-            } else {
-                printToast("Some problems occurred")
-            }
-        }
+        userRef.updateChildren(updates).addOnCompleteListener {}
     }
 
 
@@ -445,6 +439,20 @@ class MenuController(val mapActivity: MapActivity) {
      */
     fun isBooked(eid: String): Boolean {
         return user.isBooked(eid)
+    }
+
+
+    /**
+     * Remove the booking for the user for
+     * the event eid
+     */
+    fun removeBook(eid: String) {
+        user.removeBooking(eid)
+        eventFetcher.removeBooking(eid, user.uid)
+
+        // Update db
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
+        eventFetcher.updateEvent(eid)
     }
 
 }

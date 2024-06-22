@@ -44,6 +44,9 @@ class User {
     }
 
 
+    /**
+     * Get all the booked events map <eid, event name>
+     */
     fun getEventsBooked(): Map<String, String> {
         return eventsBooked
     }
@@ -69,6 +72,14 @@ class User {
      */
     fun addBooking(eid: String, name: String) {
         eventsBooked[eid] = name
+    }
+
+
+    /**
+     * Remove a booked events
+     */
+    fun removeBooking(eid: String) {
+        eventsBooked.remove(eid)
     }
 
 

@@ -86,6 +86,17 @@ class EventFetcher {
 
 
     /**
+     * Remove the uid booked for the event with eid
+     */
+    fun removeBooking(eid: String, uid: String) {
+        eventsData.value?.forEach { e ->
+            if (e.eid == eid)
+                e.removeBooking(uid)
+        }
+    }
+
+
+    /**
      * Get the booking of an event by eid
      */
     private fun getBooking(eid: String): List<String> {

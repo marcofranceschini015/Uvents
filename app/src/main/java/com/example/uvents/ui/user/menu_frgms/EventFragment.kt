@@ -48,6 +48,7 @@ class EventFragment(
     private lateinit var ivRemoveCategory: ImageView
     private lateinit var imageEvent: ImageView
     private lateinit var btnBook: Button
+    private lateinit var btnRemoveBook: Button
 
 
     /**
@@ -93,6 +94,7 @@ class EventFragment(
             ivRemoveCategory = v.findViewById(R.id.removeCategory)
             imageEvent = v.findViewById(R.id.imageEvent)
             btnBook = v.findViewById(R.id.btnBook)
+            btnRemoveBook = v.findViewById(R.id.btnRemoveBook)
         }
 
         // set every value of the view
@@ -105,39 +107,8 @@ class EventFragment(
         location.text = address
         loadImage(imageUrl)
 
-        // remove interactivity if I'm the organizer
-        if(menuController.ImtheOrganizer(uid)) {
-            ivFollow.visibility = View.GONE
-            ivUnfollow.visibility = View.GONE
-            ivChat.visibility = View.GONE
-            btnBook.visibility = View.GONE
 
-            // Show number of participants to the event
-        } else {
-            // Check if event already booked
-            if (menuController.isBooked(eid)){
-                btnBook.visibility = View.GONE
-            }
-
-            // check if already followed change the follow in unfollow
-            if(menuController.isFollowed(uid)) {
-                ivFollow.visibility = View.GONE
-                ivUnfollow.visibility = View.VISIBLE
-            } else {
-                ivFollow.visibility = View.VISIBLE
-                ivUnfollow.visibility = View.GONE
-            }
-        }
-
-        // if the category of the event is already in the liked one
-        // show the remove category button
-        // otherwise the add
-        if(menuController.isFavouriteCategory(category)) {
-            ivAddCategory.visibility = View.GONE
-        } else {
-            ivRemoveCategory.visibility = View.GONE
-        }
-
+        setView()
 
         // set the text for the sharing
         // of the event
@@ -191,6 +162,16 @@ class EventFragment(
         btnBook.setOnClickListener {
             menuController.bookEvent(eid, name)
             btnBook.visibility = View.GONE
+            btnRemoveBook.visibility = View.VISIBLE
+            menuController.printToast("Event Booked")
+        }
+
+        btnRemoveBook.setOnClickListener {
+            menuController.removeBook(eid)
+            btnBook.visibility = View.VISIBLE
+            btnRemoveBook.visibility = View.GONE
+            menuController.printToast("Booking removed")
+
         }
 
         return v
@@ -204,6 +185,46 @@ class EventFragment(
         Glide.with(this)
             .load(imageUrl)
             .into(imageEvent)
+    }
+
+
+    /**
+     * Set up the view, with visibility
+     */
+    private fun setView() {
+        // remove interactivity if I'm the organizer
+        if(menuController.ImtheOrganizer(uid)) {
+            ivFollow.visibility = View.GONE
+            ivUnfollow.visibility = View.GONE
+            ivChat.visibility = View.GONE
+            btnBook.visibility = View.GONE
+
+            // Show number of participants to the event
+        } else {
+            // Check if event already booked
+            if (menuController.isBooked(eid)){
+                btnBook.visibility = View.GONE
+                btnRemoveBook.visibility = View.VISIBLE
+            }
+
+            // check if already followed change the follow in unfollow
+            if(menuController.isFollowed(uid)) {
+                ivFollow.visibility = View.GONE
+                ivUnfollow.visibility = View.VISIBLE
+            } else {
+                ivFollow.visibility = View.VISIBLE
+                ivUnfollow.visibility = View.GONE
+            }
+        }
+
+        // if the category of the event is already in the liked one
+        // show the remove category button
+        // otherwise the add
+        if(menuController.isFavouriteCategory(category)) {
+            ivAddCategory.visibility = View.GONE
+        } else {
+            ivRemoveCategory.visibility = View.GONE
+        }
     }
 
 }
