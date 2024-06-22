@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
+import java.security.PrivateKey
 
 /**
  * Show every single event with the
@@ -28,7 +29,8 @@ class EventFragment(
     private val description: String,
     private val address: String,
     private val uid: String,
-    private val imageUrl: String) : Fragment() {
+    private val imageUrl: String,
+    private val eid: String) : Fragment() {
 
     // view elements
     private lateinit var nameEvent: TextView
@@ -109,7 +111,14 @@ class EventFragment(
             ivUnfollow.visibility = View.GONE
             ivChat.visibility = View.GONE
             btnBook.visibility = View.GONE
+
+            // Show number of participants to the event
         } else {
+            // Check if event already booked
+            if (menuController.isBooked(eid)){
+                btnBook.visibility = View.GONE
+            }
+
             // check if already followed change the follow in unfollow
             if(menuController.isFollowed(uid)) {
                 ivFollow.visibility = View.GONE
@@ -177,6 +186,11 @@ class EventFragment(
             menuController.removeFollow(uid)
             ivFollow.visibility = View.VISIBLE
             ivUnfollow.visibility = View.GONE
+        }
+
+        btnBook.setOnClickListener {
+            menuController.bookEvent(eid, name)
+            btnBook.visibility = View.GONE
         }
 
         return v
