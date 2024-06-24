@@ -12,6 +12,7 @@ class User {
     var categories: List<String> = listOf()
     var eventsPublished: List<Event> = listOf()
     private var followed: MutableMap<String, String> = mutableMapOf()
+    private var eventsBooked: MutableMap<String, String> = mutableMapOf()
 
     constructor() {}
 
@@ -43,6 +44,14 @@ class User {
     }
 
 
+    /**
+     * Get all the booked events map <eid, event name>
+     */
+    fun getEventsBooked(): Map<String, String> {
+        return eventsBooked
+    }
+
+
     fun setFollowed(map: Map<String, String>){
         followed = map.toMutableMap()
     }
@@ -55,6 +64,30 @@ class User {
         val eventList = eventsPublished.toMutableList()
         eventList.add(e)
         eventsPublished = eventList.toList()
+    }
+
+
+    /**
+     * Add a new events booking by name
+     */
+    fun addBooking(eid: String, name: String) {
+        eventsBooked[eid] = name
+    }
+
+
+    /**
+     * Remove a booked events
+     */
+    fun removeBooking(eid: String) {
+        eventsBooked.remove(eid)
+    }
+
+
+    /**
+     * Get if an event is already booked or not
+     */
+    fun isBooked(eid: String): Boolean {
+        return eventsBooked.containsKey(eid)
     }
 
 

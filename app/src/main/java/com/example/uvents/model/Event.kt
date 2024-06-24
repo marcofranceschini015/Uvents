@@ -15,6 +15,7 @@ class Event {
     var time: String? = null
     var eid: String? = null
     var imageUrl: String? = null
+    private var uidBooked: List<String> = listOf()
 
     constructor() {}
 
@@ -37,5 +38,30 @@ class Event {
         this.description = description
         this.address = address
         this.date = date
+    }
+
+
+    /**
+     * Add a new booked user by uid
+     */
+    fun addBooking(uid: String) {
+        val booking = uidBooked.toMutableList()
+        booking.add(uid)
+        uidBooked = booking.toList()
+    }
+
+
+    /**
+     * Remove an user booked to this event
+     */
+    fun removeBooking(uid: String) {
+        val booking = uidBooked.toMutableList()
+        booking.remove(uid)
+        uidBooked = booking.toList()
+    }
+
+
+    fun getUidBooked(): List<String> {
+        return uidBooked
     }
 }

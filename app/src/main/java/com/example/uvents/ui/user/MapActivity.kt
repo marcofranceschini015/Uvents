@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
+import com.example.uvents.ui.user.menu_frgms.BookFragment
 import com.example.uvents.ui.user.menu_frgms.ChatsFragment
 import com.example.uvents.ui.user.menu_frgms.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -70,7 +71,7 @@ class MapActivity : AppCompatActivity() {
                 }
 
                 R.id.ticket -> {
-                    // Handle "Booked" action
+                    replaceFragment(BookFragment(menuController, menuController.getEventsBooked()))
                     true
                 }
 

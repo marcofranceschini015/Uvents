@@ -124,13 +124,13 @@ class MenuController(val mapActivity: MapActivity) {
     fun follow(uid: String, organizerName: String) {
         user.addFollow(uid, organizerName)
         printToast("Organizer followed")
-        updateDatabase(user.categories, user.getFollowed())
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
     }
 
     fun removeFollow(uid: String) {
         user.removeFollow(uid)
         printToast("Follow removed")
-        updateDatabase(user.categories, user.getFollowed())
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
     }
 
     fun isFollowed(uid: String): Boolean {
@@ -182,7 +182,7 @@ class MenuController(val mapActivity: MapActivity) {
         user.setFollowed(followed)
         removeEvent(events) // todo send notification
         // recover the map
-        updateDatabase(categories, followed)
+        updateDatabase(categories, followed, user.getEventsBooked())
     }
 
 
@@ -191,7 +191,7 @@ class MenuController(val mapActivity: MapActivity) {
      */
     fun addCategory(category: String) {
         user.addCategory(category)
-        updateDatabase(user.categories, user.getFollowed())
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
     }
 
 
@@ -201,7 +201,7 @@ class MenuController(val mapActivity: MapActivity) {
      */
     fun removeCategory(category: String) {
         user.removeCategory(category)
-        updateDatabase(user.categories, user.getFollowed())
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
     }
 
 
@@ -248,7 +248,10 @@ class MenuController(val mapActivity: MapActivity) {
     /**
      * Update the database with the passed information
      */
-    private fun updateDatabase(categories: List<String>, followed: Map<String, String>) {
+    private fun updateDatabase(
+        categories: List<String>,
+        followed: Map<String, String>,
+        eventsBooked: Map<String, String>) {
         // Reference to the specific user's node
         mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
         val userRef = mDbRef.child("user").child(user.uid)
@@ -257,17 +260,12 @@ class MenuController(val mapActivity: MapActivity) {
         // Map of data to update
         val updates = hashMapOf(
             "categories" to categories,
-            "followed" to followed
+            "followed" to followed,
+            "eventsBooked" to eventsBooked
         )
 
         // Update children of the user node
-        userRef.updateChildren(updates).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                printToast("Updated")
-            } else {
-                printToast("Some problems occurred")
-            }
-        }
+        userRef.updateChildren(updates).addOnCompleteListener {}
     }
 
 
@@ -417,6 +415,49 @@ class MenuController(val mapActivity: MapActivity) {
 
         // Find all IDs that are not in the filtered list
         return fullEvents.filter { it.eid !in filteredIds }.map { it.eid }
+    }
+
+
+    /**
+     * Book an event for the actual user
+     */
+    fun bookEvent(eid: String, name: String) {
+        // Add to user
+        user.addBooking(eid, name)
+
+        // Add booking to the events
+        eventFetcher.addBooking(eid, user.uid)
+
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
+        eventFetcher.updateEvent(eid)
+    }
+
+
+    /**
+     * Get if an event by name is already booked
+     * for the actual user
+     */
+    fun isBooked(eid: String): Boolean {
+        return user.isBooked(eid)
+    }
+
+
+    /**
+     * Remove the booking for the user for
+     * the event eid
+     */
+    fun removeBook(eid: String) {
+        user.removeBooking(eid)
+        eventFetcher.removeBooking(eid, user.uid)
+
+        // Update db
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
+        eventFetcher.updateEvent(eid)
+    }
+
+
+    fun getEventsBooked(): Map<String, String> {
+        return user.getEventsBooked()
     }
 
 }
