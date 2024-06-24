@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#86BBD8">
+
+    <LinearLayout
+        android:id="@+id/llEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/ticket"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            />
+
+        <TextView
+            android:id="@+id/eventBookedName"
+            android:layout_width="230dp"
+            android:layout_height="50dp"
+            android:text="Event name"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            />
+
+        <ImageView
+            android:id="@+id/removeBookedEvent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/baseline_remove_circle_outline_24"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/llEvent" />
+
+</RelativeLayout>

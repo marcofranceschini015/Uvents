@@ -455,4 +455,9 @@ class MenuController(val mapActivity: MapActivity) {
         eventFetcher.updateEvent(eid)
     }
 
+
+    fun getEventsBooked(): Map<String, String> {
+        return user.getEventsBooked()
+    }
+
 }
