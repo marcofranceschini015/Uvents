@@ -178,4 +178,13 @@ class EventFetcher {
         userRef.updateChildren(updates as Map<String, Any>).addOnCompleteListener {}
     }
 
+
+    fun getEids(): List<String> {
+        val list = mutableListOf<String>()
+        eventsData.value?.forEach { e->
+            list.add(e.eid!!)
+        }
+        return list
+    }
+
 }

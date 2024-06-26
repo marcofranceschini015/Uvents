@@ -33,6 +33,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Date
+import java.util.Locale
 import kotlin.random.Random
 
 /**
@@ -117,6 +122,7 @@ class MenuController(val mapActivity: MapActivity) {
                 // recover the User by uid passed
                 user = dataSnapshot.getValue(User::class.java)!!
                 fetchEventsForUser()
+                removeOldBooking()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -150,14 +156,30 @@ class MenuController(val mapActivity: MapActivity) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchEventsForUser() {
         val userEvents = mutableListOf<Event>()
-        eventFetcher.eventsData.observe(mapActivity, Observer { listevent->
-            listevent.forEach{ e->
+        eventFetcher.eventsData.observe(mapActivity, Observer { listEvent->
+            listEvent.forEach{ e->
                 if (e.uid == user.uid){
                     userEvents.add(e)
                 }
             }
             user.eventsPublished = userEvents.toList()
         })
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun removeOldBooking() {
+        val listOfEids = eventFetcher.getEids()
+        val toRemove = mutableListOf<String>()
+        user.getEventsBooked().forEach { e->
+            if (!listOfEids.contains(e.key)){
+                toRemove.add(e.key)
+            }
+        }
+        toRemove.forEach { eid ->
+            user.removeBooking(eid)
+        }
+        updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
     }
 
 
