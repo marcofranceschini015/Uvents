@@ -198,6 +198,7 @@ class MenuController(val mapActivity: MapActivity) {
     fun addCategory(category: String) {
         user.addCategory(category)
         updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
+        printToast("Cateogry added")
     }
 
 
@@ -208,6 +209,7 @@ class MenuController(val mapActivity: MapActivity) {
     fun removeCategory(category: String) {
         user.removeCategory(category)
         updateDatabase(user.categories, user.getFollowed(), user.getEventsBooked())
+        printToast("Category removed")
     }
 
 
