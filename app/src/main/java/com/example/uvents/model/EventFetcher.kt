@@ -1,18 +1,26 @@
 package com.example.uvents.model
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
-import com.example.uvents.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 
 /**
  * Class that is useful to manage all the saved events
  * into a database
  */
+@RequiresApi(Build.VERSION_CODES.O)
 class EventFetcher {
     var eventsData = MutableLiveData<MutableList<Event>>()
     private val dbUrl: String = "https://uvents-d3c3a-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -24,15 +32,46 @@ class EventFetcher {
 
 
     /**
+     * clear past events from a given list
+     */
+    private fun clearEventList(pastEvent: List<Event>) {
+        val database = FirebaseDatabase.getInstance(dbUrl)
+        val eventsReference = database.getReference("event")
+
+        pastEvent.forEach { e ->
+            if (e.eid != null) {
+                eventsReference.child(e.eid!!).removeValue()
+            }
+        }
+    }
+
+
+    /**
      * Fetch all the events the first time that the map is open
      * by reading from the database
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun fetchEvents() {
+        val localDate: LocalDate = LocalDate.now()
+        val date: Date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        val format = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val dbRef = FirebaseDatabase.getInstance(dbUrl).getReference("event")
+
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val events = snapshot.children.mapNotNull { it.getValue(Event::class.java) }
-                eventsData.postValue(events.toMutableList())
+                val eventsRead = snapshot.children.mapNotNull { it.getValue(Event::class.java) }
+                val eventsToSave: MutableList<Event> = mutableListOf()
+                val eventsToRemove: MutableList<Event> = mutableListOf()
+                eventsRead.forEach {e->
+                    val eventDate = format.parse(e.date!!)
+                    if (eventDate!! >= date) {
+                        eventsToSave.add(e)
+                    } else {
+                        eventsToRemove.add(e)
+                    }
+                }
+                eventsData.postValue(eventsToSave)
+                clearEventList(eventsToRemove)
             }
 
             override fun onCancelled(error: DatabaseError) {

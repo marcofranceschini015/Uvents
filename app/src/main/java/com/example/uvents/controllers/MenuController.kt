@@ -42,6 +42,7 @@ import kotlin.random.Random
 class MenuController(val mapActivity: MapActivity) {
 
     // manage the reading of events from db
+    @RequiresApi(Build.VERSION_CODES.O)
     private var eventFetcher: EventFetcher = EventFetcher()
 
     // manage the annotations on the map
@@ -57,6 +58,7 @@ class MenuController(val mapActivity: MapActivity) {
     /**
      * Set view the first time
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun setView(mapView: MapView, fusedLocationProviderClient: FusedLocationProviderClient) {
         annotationManager = AnnotationManager(mapView, mapActivity, this, eventFetcher)
         annotationManager.addEventAnnotation()
@@ -68,6 +70,7 @@ class MenuController(val mapActivity: MapActivity) {
      * Reset all the events by simply clear the db and
      * fetching again the db
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun resetView() {
         eventFetcher.clearEvents()
         eventFetcher.fetchEvents()
@@ -109,6 +112,7 @@ class MenuController(val mapActivity: MapActivity) {
         mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
         mDbRef.child("user").child(uid!!).addListenerForSingleValueEvent(object :
             ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // recover the User by uid passed
                 user = dataSnapshot.getValue(User::class.java)!!
@@ -143,6 +147,7 @@ class MenuController(val mapActivity: MapActivity) {
      * if the uid of the publisher is the same as the
      * actual user.uid
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchEventsForUser() {
         val userEvents = mutableListOf<Event>()
         eventFetcher.eventsData.observe(mapActivity, Observer { listevent->
@@ -177,6 +182,7 @@ class MenuController(val mapActivity: MapActivity) {
      * Update a user when modifying the personal page
      * with all the lists recovered from the page
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateUser(categories: List<String>, events: List<String>, followed: Map<String, String>) {
         user.categories = categories
         user.setFollowed(followed)
@@ -218,6 +224,7 @@ class MenuController(val mapActivity: MapActivity) {
      * From a list of events' name remove the event
      * in the User db and in the event db
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun removeEvent(events: List<String>) {
         // got the eid to delete
         val listEidToDelete = mutableListOf<String?>()
@@ -272,6 +279,7 @@ class MenuController(val mapActivity: MapActivity) {
     /**
      * Get if a name of an event is already taken
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun nameExists(name: String): Boolean{
         return eventFetcher.nameExists(name)
     }
@@ -289,6 +297,7 @@ class MenuController(val mapActivity: MapActivity) {
     /**
      * Publish an event in the database and add to the user
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun publishEvent(
         name: String,
         date: String,
@@ -421,6 +430,7 @@ class MenuController(val mapActivity: MapActivity) {
     /**
      * Book an event for the actual user
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun bookEvent(eid: String, name: String) {
         // Add to user
         user.addBooking(eid, name)
@@ -446,6 +456,7 @@ class MenuController(val mapActivity: MapActivity) {
      * Remove the booking for the user for
      * the event eid
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun removeBook(eid: String) {
         user.removeBooking(eid)
         eventFetcher.removeBooking(eid, user.uid)
