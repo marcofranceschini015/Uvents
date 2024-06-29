@@ -37,11 +37,34 @@
                 android:textColor="#2F4858"
                 android:gravity="center"/>
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:src="@drawable/baseline_notifications_active_24"/>
+                android:orientation="horizontal"
+                android:layout_weight="0.2">
+
+                <ImageView
+                    android:id="@+id/eventsNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_notifications_active_24"/>
+
+                <TextView
+                    android:id="@+id/badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-20dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/notification_event_bg"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:paddingStart="8dp"
+                    android:paddingTop="4dp"
+                    android:text="0" />
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

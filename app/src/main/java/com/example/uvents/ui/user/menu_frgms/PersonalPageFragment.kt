@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
 import com.example.uvents.controllers.adapter.FollowerAdapter
 import com.example.uvents.controllers.adapter.PersonalPageAdapter
+import kotlinx.coroutines.runBlocking
 
 /**
  * Fragment that show the Personal Page content
@@ -39,6 +41,8 @@ class PersonalPageFragment(
     private lateinit var tvEvents: TextView
     private lateinit var tvFollowed: TextView
     private lateinit var tvCategory: TextView
+    private lateinit var ivEventsNotification: ImageView
+    private lateinit var tvbadge: TextView
 
     // liked categories recycler view variables
     private lateinit var adapterCategories: PersonalPageAdapter
@@ -89,6 +93,8 @@ class PersonalPageFragment(
             btnPublish = v.findViewById(R.id.btnPublish)
             btnSave = v.findViewById(R.id.btnSave)
             btnLogout = v.findViewById(R.id.btnLogout)
+            ivEventsNotification = v.findViewById(R.id.eventsNotification)
+            tvbadge = v.findViewById(R.id.badge)
 
             // recycler view categories
             copyCategories = categories.toMutableList()
@@ -157,7 +163,31 @@ class PersonalPageFragment(
             menuController.switchFragment(PublishEventFragment(menuController))
         }
 
+        runBlocking {
+            val numDeletedEvents: Int? = menuController.readUserNumDeletedEvents(menuController.getUid())
+            if(numDeletedEvents != null) {
+                updateBadgeCount(numDeletedEvents)
+            } else {
+                updateBadgeCount(0)
+            }
+        }
+
+        ivEventsNotification.setOnClickListener {
+            updateBadgeCount(0)
+            menuController.updateUserNumDeletedEvents(menuController.getUid(), false)
+        }
+
         return v
+    }
+
+    // Update badge count dynamically
+    private fun updateBadgeCount(count: Int) {
+        if (count > 0) {
+            tvbadge.text = count.toString()
+            tvbadge.visibility = View.VISIBLE
+        } else {
+            tvbadge.visibility = View.GONE
+        }
     }
 
 

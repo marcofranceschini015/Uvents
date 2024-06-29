@@ -51,6 +51,10 @@ class MenuController(val menuActivity: MenuActivity) {
     private lateinit var mDbRef: DatabaseReference
 
 
+    fun getUid(): String {
+        return user.uid
+    }
+
     /**
      * Set view the first time
      */
@@ -222,6 +226,9 @@ class MenuController(val menuActivity: MenuActivity) {
         user.eventsPublished.forEach { event ->
             if (!events.contains(event.name)) {
                 listEidToDelete.add(event.eid)
+                event.getUidBooked().forEach {
+                    updateUserNumDeletedEvents(it, true)
+                }
             }
         }
 
@@ -468,6 +475,42 @@ class MenuController(val menuActivity: MenuActivity) {
             println("Failed to read value: ${e.message}")
             null
         }
+    }
+
+    suspend fun readUserNumDeletedEvents(uid: String): Int? {
+        val newsRef = mDbRef.child("user").child(uid).child("NumEventsDeleted")
+
+        return try {
+            val snapshot = newsRef.get().await()
+            snapshot.getValue(Int::class.java)
+        } catch (e: Exception) {
+            println("Failed to read value: ${e.message}")
+            null
+        }
+    }
+
+    fun updateUserNumDeletedEvents(uid: String, increase: Boolean) {
+        val totalRef = mDbRef.child("user").child(uid).child("NumEventsDeleted")
+
+        totalRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentValue = dataSnapshot.getValue(Int::class.java)
+                if (currentValue != null) {
+                    // Update the value
+                    var newValue = 0
+                    if(increase) {
+                        newValue = currentValue + 1
+                    }
+                    totalRef.setValue(newValue)
+                } else {
+                    totalRef.setValue(1)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("Failed to read value: ${databaseError.message}")
+            }
+        })
     }
 
 }

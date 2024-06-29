@@ -200,18 +200,6 @@ class ChatManager(dbUrl: String) {
         }
     }
 
-    suspend fun readUserTotalNewMessages(): Int? {
-        val newsRef = mDbRef.child("user").child(mAuth.currentUser?.uid!!).child("totalNewMsg")
-
-        return try {
-            val snapshot = newsRef.get().await()
-            snapshot.getValue(Int::class.java)
-        } catch (e: Exception) {
-            println("Failed to read value: ${e.message}")
-            null
-        }
-    }
-
     fun updateUserTotalNewMessages(receiverUid: String, increase: Boolean) {
         val totalRef = mDbRef.child("user").child(receiverUid).child("totalNewMsg")
 
