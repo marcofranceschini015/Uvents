@@ -27,7 +27,6 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
         welcomeActivity.replaceFragment(f)
     }
 
-
     /**
      * Function to signUp and create the User then added to a db
      */
@@ -86,6 +85,7 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             user = dataSnapshot.getValue(User::class.java)!! // set user
+                            welcomeActivity.saveCredentials(email, password)
                             welcomeActivity.goToYourLocalizationMap(user.uid)
                         }
                         override fun onCancelled(error: DatabaseError) {

@@ -77,6 +77,7 @@ class MenuController(val menuActivity: MenuActivity) {
     fun logout() {
         Toast.makeText(menuActivity, "Logout...", Toast.LENGTH_SHORT).show()
         val intent = Intent(menuActivity, WelcomeActivity::class.java)
+        intent.putExtra("logout", true)
         menuActivity.startActivity(intent)
         menuActivity.finish()
     }

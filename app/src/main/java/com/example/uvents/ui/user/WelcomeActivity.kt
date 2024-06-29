@@ -1,5 +1,6 @@
 package com.example.uvents.ui.user
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -39,9 +40,24 @@ class WelcomeActivity : AppCompatActivity() {
         // controller to access the view and be between the model and the view
         welcomeController = WelcomeController(this)
 
-        // put welcome fragment as first fragment
-        // no possibility to come back
-        replaceFragment(WelcomeFragment(welcomeController))
+        if(intent.getBooleanExtra("logout", false)) {
+            deleteCredentials()
+        }
+
+        //check if user is previously logged
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
+
+        if (isLoggedIn) {
+            val email = sharedPref.getString("email", "")
+            val password = sharedPref.getString("password", "")
+            // User automatically log-in and navigate to menu activity
+            welcomeController.signIn(email!!, password!!)
+        } else {
+            // put welcome fragment as first fragment
+            // no possibility to come back
+            replaceFragment(WelcomeFragment(welcomeController))
+        }
     }
 
 
@@ -65,6 +81,34 @@ class WelcomeActivity : AppCompatActivity() {
         intent.putExtra("uid", uid)
         startActivity(intent)
         finish()
+    }
+
+    fun saveCredentials(email: String, password: String) {
+        // If login is successful, save login state
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
+        if(!isLoggedIn) {
+            with(sharedPref.edit()) {
+                putBoolean("is_logged_in", true)
+                putString("email", email)
+                putString("password", password)
+                apply()
+            }
+        }
+    }
+
+    private fun deleteCredentials() {
+        // If user logout, destroy credentials
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
+        if(isLoggedIn) {
+            with(sharedPref.edit()) {
+                putBoolean("is_logged_in", false)
+                putString("email", "")
+                putString("password", "")
+                apply()
+            }
+        }
     }
 
 
