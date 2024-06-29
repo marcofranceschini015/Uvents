@@ -75,7 +75,7 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
             menuController.switchFragment(MapFragment(menuController))
         }
 
-        val categoryList = CategorySource(menuController.mapActivity).getCategoryList()
+        val categoryList = CategorySource(menuController.menuActivity).getCategoryList()
         val adapter = AdvSearchCategoryAdapter(categoryList)
         rvCategory.adapter = adapter
 
@@ -103,7 +103,7 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
                 menuController.applyFilteredSearch(checkFollowed.isChecked, etOrganizer.text.toString(), tvDateFrom.text.toString(), tvDateTo.text.toString(),
                 etTimeFrom.text.toString(), adapter.getCheckedItems())
                 menuController.printToast("Filter successfully applied")
-                menuController.mapActivity.backHome()
+                menuController.menuActivity.backHome()
             }
         }
 
@@ -111,7 +111,7 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
         btnReset.setOnClickListener {
             menuController.resetView()
             menuController.printToast("Restore all events")
-            menuController.mapActivity.backHome()
+            menuController.menuActivity.backHome()
         }
 
         return v
@@ -127,7 +127,7 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(menuController.mapActivity, { _, selectedHour, selectedMinute ->
+        val timePickerDialog = TimePickerDialog(menuController.menuActivity, { _, selectedHour, selectedMinute ->
             val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
             editText.setText(formattedTime)  // Set the time to the EditText that was passed in
         }, hour, minute, true)
@@ -145,7 +145,7 @@ class AdvancedSearchFragment(private val menuController: MenuController) : Fragm
         val month = myCalendar.get(Calendar.MONTH)
         val day = myCalendar.get(Calendar.DAY_OF_MONTH)
 
-        DatePickerDialog(menuController.mapActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        DatePickerDialog(menuController.menuActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             if(startingDate) {
                 tvDateFrom.text = "${month + 1}/$dayOfMonth/$year"
             } else {

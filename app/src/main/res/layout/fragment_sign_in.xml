@@ -62,24 +62,34 @@
                 android:textColor="#DAF7DC"
                 android:text="Password"/>
 
-            <EditText
-                android:id="@+id/etInputPasswordSi"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etPasswordLayout"
                 android:layout_width="match_parent"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_height="48dp"
-                android:hint="Password"
-                android:textColorHint="#DAF7DC"
-                android:paddingStart="20dp"
-                android:fontFamily="@font/inter"
-                android:textSize="18sp"
-                android:textColor="#DAF7DC"
-                android:background="@drawable/insert_city_et_bg"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:inputType="textPassword"/>
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="@color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etInputPasswordSi"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_height="48dp"
+                    android:hint="Password"
+                    android:textColorHint="#DAF7DC"
+                    android:paddingStart="20dp"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"
+                    android:textColor="#DAF7DC"
+                    android:background="@drawable/insert_city_et_bg"
+                    android:layout_marginTop="10dp"
+                    android:ems="8"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
             
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/linearLayoutSignButton"

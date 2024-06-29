@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+
 class WelcomeController(val welcomeActivity: WelcomeActivity) {
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()

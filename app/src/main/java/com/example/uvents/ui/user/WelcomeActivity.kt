@@ -6,13 +6,13 @@ import android.view.View
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.ui.user.welcome_frgms.WelcomeFragment
+
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -61,7 +61,7 @@ class WelcomeActivity : AppCompatActivity() {
      * Function that from WelcomeActivity go to MapActivity
      */
     fun goToYourLocalizationMap(uid: String) {
-        val intent = Intent(this, MapActivity::class.java)
+        val intent = Intent(this, MenuActivity::class.java)
         intent.putExtra("uid", uid)
         startActivity(intent)
         finish()

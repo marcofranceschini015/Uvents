@@ -1,7 +1,10 @@
 package com.example.uvents.ui.user.menu_frgms
 
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +16,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
-import java.security.PrivateKey
+
 
 /**
  * Show every single event with the
@@ -113,21 +116,25 @@ class EventFragment(
 
         setView()
 
-        // set the text for the sharing
+        // set the text and converting image in a bitMapDrawable for the sharing
         // of the event
         ivShare.setOnClickListener {
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                val sharedText = "Name: " + name + "\n" +
-                                 "Organizer: " + organizerName + "\n" +
-                                 "Category: " + category + "\n" +
-                                 "Description: " + description + "\n" +
-                                 "Location: " + address
-                putExtra(Intent.EXTRA_TEXT, sharedText)
-                type = "text/plain"
-            }
-            val shareIntent = Intent.createChooser(sendIntent, "Share via")
-            startActivity(shareIntent)
+            val bitmapDrawable = imageEvent.getDrawable() as BitmapDrawable
+
+            val bitmap1 = bitmapDrawable.getBitmap()
+            val imgBitmapPath: String =
+                MediaStore.Images.Media.insertImage(menuController.menuActivity.getContentResolver(), bitmap1, "title", null)
+            val imgBitmapUri = Uri.parse(imgBitmapPath)
+            val sharedText = "Name: " + name + "\n" +
+                 "Organizer: " + organizerName + "\n" +
+                 "Category: " + category + "\n" +
+                 "Description: " + description + "\n" +
+                 "Location: " + address
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.setType("image/*")
+            shareIntent.putExtra(Intent.EXTRA_STREAM, imgBitmapUri)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, sharedText)
+            startActivity(Intent.createChooser(shareIntent, "Share via"))
         }
 
         // listener for the add/remove category
@@ -144,7 +151,7 @@ class EventFragment(
         }
 
         ivChat.setOnClickListener {
-            val intent = Intent(menuController.mapActivity, ChatActivity::class.java)
+            val intent = Intent(menuController.menuActivity, ChatActivity::class.java)
             intent.putExtra("name", organizerName)
             intent.putExtra("uid", uid)
             startActivity(intent)
