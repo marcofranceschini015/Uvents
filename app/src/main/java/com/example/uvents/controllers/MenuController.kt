@@ -48,6 +48,9 @@ class MenuController(val menuActivity: MenuActivity) {
     // instance of the actual User for ever app running
     private lateinit var user: User
 
+    // list to manage the deleted events notification
+    var deletedBookedEvents: ArrayList<String> = ArrayList()
+
     // variables for the database connection
     private lateinit var mDbRef: DatabaseReference
 
@@ -171,6 +174,8 @@ class MenuController(val menuActivity: MenuActivity) {
         user.getEventsBooked().forEach { e->
             if (!listOfEids.contains(e.key)){
                 toRemove.add(e.key)
+                val eventName = getEventsBooked()[e.key]
+                deletedBookedEvents.add(eventName!!)
             }
         }
         toRemove.forEach { eid ->

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.user.menu_frgms.DeletedEventNotificationFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#86BBD8">
+
+    <TextView
+        android:id="@+id/tvNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:text="Notifications"
+        android:background="@color/dark_blue"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        android:paddingStart="10dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_deleted_events"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        tools:listitem="@layout/deleted_event_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+
+</FrameLayout>
