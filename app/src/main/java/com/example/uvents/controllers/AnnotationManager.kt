@@ -7,9 +7,12 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
+import android.os.Build
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
@@ -82,13 +85,15 @@ class AnnotationManager(
                 // set personal position
                 // and add all the annotation
                 addAnnotationToMap(latitude, longitude)
-            } else {
+            }
+            else {
                 // otherwise set the camera to a default value (Milan)
                 val cameraPosition =
                     CameraOptions.Builder().center(Point.fromLngLat(9.188120, 45.463619)).zoom(14.0)
                         .build()
                 mapView.mapboxMap.setCamera(cameraPosition)
                 addAnnotationToMap(null, null)
+                Toast.makeText(menuActivity, "Localization off. Centering map on Milan", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -190,6 +195,7 @@ class AnnotationManager(
     /**
      * Add an annotation for every events published
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addEventAnnotation() {
         eventFetcher.eventsData.observe(menuActivity, Observer { listevent ->
             listevent.forEach { event ->

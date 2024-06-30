@@ -39,4 +39,7 @@
 <!--        android:paddingBottom="36dp"-->
 <!--    app:itemPaddingBottom="6dp"-->
 
+<!--    Configurazione Dario-->
+<!--    app:itemPaddingBottom="8dp"-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,8 @@
 package com.example.uvents.ui.user.menu_frgms
 
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,9 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
@@ -85,6 +85,7 @@ class MapFragment(private val menuController: MenuController) : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ResourceAsColor")
     /**
      * When the map is created do all this things
@@ -202,17 +203,13 @@ class MapFragment(private val menuController: MenuController) : Fragment() {
     /**
      * Load the map and also all the annotations
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setUpMap() {
         mapView.mapboxMap.also { mapboxMap ->
             mapboxMap.loadStyle(getMapStyleUri())
         }
 
         // Set up location services and event handling
-//        requireActivity()
-        if (ActivityCompat.checkSelfPermission(menuController.menuActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(menuController.menuActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(menuController.menuActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
-        }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(menuController.menuActivity)
         menuController.setView(mapView, fusedLocationProviderClient)
     }
