@@ -22,6 +22,7 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var ivArrow: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_welcome)

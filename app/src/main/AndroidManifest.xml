@@ -23,13 +23,16 @@
         <activity
             android:name=".ui.user.menu_frgms.ChatActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.user.MenuActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.user.WelcomeActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
