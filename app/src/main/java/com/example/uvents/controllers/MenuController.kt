@@ -31,11 +31,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.Date
-import java.util.Locale
 import kotlin.random.Random
 
 /**
@@ -504,16 +499,19 @@ class MenuController(val menuActivity: MenuActivity) {
         return user.getEventsBooked()
     }
 
-    suspend fun readUserTotalNewMessages(uid: String): Int? {
+    fun readUserTotalNewMessages(uid: String, onSuccess: (Int?) -> Unit, onError: (Exception) -> Unit) {
         val totalRef = mDbRef.child("user").child(uid).child("totalNewMsg")
 
-        return try {
-            val snapshot = totalRef.get().await()
-            snapshot.getValue(Int::class.java)
-        } catch (e: Exception) {
-            println("Failed to read value: ${e.message}")
-            null
-        }
+        totalRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val totalNewMessages = snapshot.getValue(Int::class.java)
+                onSuccess(totalNewMessages)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onError(Exception(error.message))
+            }
+        })
     }
 
     suspend fun readUserNumDeletedEvents(uid: String): Int? {

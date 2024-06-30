@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -77,20 +76,11 @@ class ChatActivity() : AppCompatActivity() {
             val screenHeight = binding.main.rootView.height
             val keypadHeight = screenHeight - r.bottom
 
-            val mainView: ConstraintLayout = findViewById(R.id.main)
-
             if (keypadHeight > screenHeight * 0.15) {
                 // Keyboard is visible
-//                rlKeyboard.updateLayoutParams<RelativeLayout.LayoutParams> {
-//                    bottomMargin = (-keypadHeight.toFloat() * 0.87).toInt() // Set the bottom margin in pixels
-//                }
-//                binding.chatRecyclerView.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
-//                binding.linearLayout.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
                 rlKeyboard.visibility = View.VISIBLE
             } else {
                 // Keyboard is hidden
-//                binding.chatRecyclerView.translationY = 0f 4
-//                binding.linearLayout.translationY = 0f
                 rlKeyboard.visibility = View.GONE
             }
         }
@@ -112,11 +102,16 @@ class ChatActivity() : AppCompatActivity() {
         chatRecyclerView.adapter = messageAdapter
 
         runBlocking {
-            if(chatManager.readNewMessageSenderUid(receiverRoom!!) != senderUid) {
-                chatManager.updateNewMessageNumber(receiverRoom!!, false)
-                chatManager.updateNewMessageNumber(senderRoom!!, false)
+            val numNewMsg = chatManager.readNewMessageNumber(receiverRoom!!)
+            if(numNewMsg != null && numNewMsg != 0) {
+                chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
+
+
+                if(chatManager.readNewMessageSenderUid(receiverRoom!!) != senderUid) {
+                    chatManager.updateNewMessageNumber(receiverRoom!!, false)
+                    chatManager.updateNewMessageNumber(senderRoom!!, false)
+                }
             }
-            chatManager.updateUserTotalNewMessages(senderUid, false)
         }
         chatManager.updateMessageList(senderRoom!!, messageList, messageAdapter)
 
