@@ -1,18 +1,20 @@
 package com.example.uvents.ui.user
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
 import com.example.uvents.controllers.WelcomeController
 import com.example.uvents.ui.user.welcome_frgms.WelcomeFragment
+
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -39,10 +41,24 @@ class WelcomeActivity : AppCompatActivity() {
 
         // controller to access the view and be between the model and the view
         welcomeController = WelcomeController(this)
-
-        // put welcome fragment as first fragment
-        // no possibility to come back
         replaceFragment(WelcomeFragment(welcomeController))
+
+        if(intent.getBooleanExtra("logout", false)) {
+            deleteCredentials()
+            Toast.makeText(this, "Your credential have been deleted", Toast.LENGTH_SHORT).show()
+        }
+
+        //check if user is previously logged
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
+
+        if (isLoggedIn) {
+            val email = sharedPref.getString("email", "")
+            val password = sharedPref.getString("password", "")
+            // User automatically log-in and navigate to menu activity
+            welcomeController.signIn(email!!, password!!)
+        }
+
     }
 
 
@@ -62,10 +78,39 @@ class WelcomeActivity : AppCompatActivity() {
      * Function that from WelcomeActivity go to MapActivity
      */
     fun goToYourLocalizationMap(uid: String) {
-        val intent = Intent(this, MapActivity::class.java)
+        val intent = Intent(this, MenuActivity::class.java)
         intent.putExtra("uid", uid)
         startActivity(intent)
         finish()
+    }
+
+    fun saveCredentials(email: String, password: String) {
+        // If login is successful, save login state
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
+        if(!isLoggedIn) {
+            with(sharedPref.edit()) {
+                putBoolean("is_logged_in", true)
+                putString("email", email)
+                putString("password", password)
+                apply()
+            }
+            Toast.makeText(this, "Your credential have been saved", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun deleteCredentials() {
+        // If user logout, destroy credentials
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
+        if(isLoggedIn) {
+            with(sharedPref.edit()) {
+                putBoolean("is_logged_in", false)
+                putString("email", "")
+                putString("password", "")
+                apply()
+            }
+        }
     }
 
 

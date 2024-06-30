@@ -11,9 +11,11 @@ import com.example.uvents.R
 import com.example.uvents.model.User
 import com.example.uvents.ui.user.menu_frgms.ChatActivity
 
-class OrganizerChatsAdapter(val context: Context, private val userList: MutableList<User>): RecyclerView.Adapter<OrganizerChatsAdapter.UserViewHolder>() {
+class OrganizerChatsAdapter(val context: Context, private val userList: MutableList<User>,
+                            private val newsList: MutableList<Int>): RecyclerView.Adapter<OrganizerChatsAdapter.UserViewHolder>() {
     class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val username: TextView = itemView.findViewById(R.id.organizerName)
+        val newMessages: TextView = itemView.findViewById(R.id.notification)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -27,12 +29,19 @@ class OrganizerChatsAdapter(val context: Context, private val userList: MutableL
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currentUser = userList[position]
+        val currentNewMessages = newsList[position]
         holder.username.text = currentUser.name
+        if(currentNewMessages == 0) {
+            holder.newMessages.visibility = View.GONE
+        } else {
+            holder.newMessages.text = currentNewMessages.toString()
+        }
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("name", currentUser.name)
             intent.putExtra("uid", currentUser.uid)
             context.startActivity(intent)
+            holder.newMessages.visibility = View.GONE
         }
     }
 }

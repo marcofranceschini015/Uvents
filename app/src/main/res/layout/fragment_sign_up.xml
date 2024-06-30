@@ -87,30 +87,14 @@
                 android:textColor="#DAF7DC"
                 android:text="Password"/>
 
-<!--            <EditText-->
-<!--                android:id="@+id/etInputPassword"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_marginStart="40dp"-->
-<!--                android:layout_marginEnd="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:hint="Password"-->
-<!--                android:textColorHint="#DAF7DC"-->
-<!--                android:paddingStart="20dp"-->
-<!--                android:fontFamily="@font/inter"-->
-<!--                android:textSize="18sp"-->
-<!--                android:textColor="#DAF7DC"-->
-<!--                android:background="@drawable/insert_city_et_bg"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:ems="8"-->
-<!--                android:inputType="textPassword"-->
-<!--                app:passwordToggleEnabled="true"/>-->
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true"
-                app:hintTextColor="@color/sign_fields">
+                app:hintEnabled="false"
+                app:passwordToggleTint="#DAF7DC">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etInputPassword"
@@ -119,6 +103,7 @@
                     android:layout_marginEnd="40dp"
                     android:layout_height="40dp"
                     android:hint="Password"
+                    android:textColorHint="#DAF7DC"
                     android:paddingStart="20dp"
                     android:fontFamily="@font/inter"
                     android:textSize="18sp"
@@ -140,22 +125,32 @@
                 android:textColor="#DAF7DC"
                 android:text="Confirm Password"/>
 
-            <EditText
-                android:id="@+id/etConfirmPassword"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etConfirmPasswordLayout"
                 android:layout_width="match_parent"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_height="40dp"
-                android:hint="Confirm Password"
-                android:textColorHint="#DAF7DC"
-                android:paddingStart="20dp"
-                android:fontFamily="@font/inter"
-                android:textSize="18sp"
-                android:textColor="#DAF7DC"
-                android:background="@drawable/insert_city_et_bg"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:ems="8"
-                android:inputType="textPassword"/>
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="#DAF7DC">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_height="40dp"
+                    android:hint="Confirm Password"
+                    android:textColorHint="#DAF7DC"
+                    android:paddingStart="20dp"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"
+                    android:textColor="#DAF7DC"
+                    android:background="@drawable/insert_city_et_bg"
+                    android:layout_marginTop="10dp"
+                    android:ems="8"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 

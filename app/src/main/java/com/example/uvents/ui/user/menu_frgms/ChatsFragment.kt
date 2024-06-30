@@ -20,7 +20,9 @@ class ChatsFragment(private val menuController: MenuController) : Fragment() {
     private lateinit var msgEmptyChat: TextView
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var userList: MutableList<User>
+    private lateinit var newsList: MutableList<Int>
     private lateinit var adapter: OrganizerChatsAdapter
+    private lateinit var chatManager: ChatManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +45,24 @@ class ChatsFragment(private val menuController: MenuController) : Fragment() {
 
         if(v != null) {
             msgEmptyChat = v.findViewById(R.id.tvNoChat)
+            chatManager = ChatManager(getString(R.string.firebase_url))
+//            runBlocking {
+//                if(chatManager.readUserTotalNewMessages() != 0) {
+//                    val userUid = chatManager.getCurrentUid()
+//                    chatManager.updateUserTotalNewMessages(userUid, false)
+//                }
+//            }
             userList = mutableListOf()
-            adapter = OrganizerChatsAdapter(menuController.mapActivity, userList)
+            newsList = mutableListOf()
+            adapter = OrganizerChatsAdapter(menuController.menuActivity, userList, newsList)
             userRecyclerView = v.findViewById(R.id.rvOrganizerNames)
         }
 
         msgEmptyChat.visibility = View.GONE
-        userRecyclerView.layoutManager = LinearLayoutManager(menuController.mapActivity)
+        userRecyclerView.layoutManager = LinearLayoutManager(menuController.menuActivity)
         userRecyclerView.adapter = adapter
 
-        val chatManager = ChatManager(getString(R.string.firebase_url))
-        chatManager.updateUserListChats(userList, adapter, msgEmptyChat)
+        chatManager.updateUserListChats(userList, newsList, adapter, msgEmptyChat)
 
         return v
     }

@@ -2,13 +2,16 @@ package com.example.uvents.ui.user.menu_frgms
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,10 +21,11 @@ import com.example.uvents.R
 import com.example.uvents.controllers.ChatManager
 import com.example.uvents.databinding.ActivityChatBinding
 import com.example.uvents.model.Message
-import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.runBlocking
 
 class ChatActivity() : AppCompatActivity() {
 
+    private lateinit var rlKeyboard: RelativeLayout
     private lateinit var customBack: ImageView
     private lateinit var userName: TextView
     private lateinit var chatRecyclerView: RecyclerView
@@ -59,22 +63,8 @@ class ChatActivity() : AppCompatActivity() {
             finish()
         }
 
-//        setContentView(R.layout.activity_chat)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
-//            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
-//            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-//
-//            if (imeVisible) {
-//                chatRecyclerView.updatePadding(bottom = -(imeHeight*0.87).toInt())
-//                linearLayout.updatePadding(bottom = imeHeight)
-//            } else {
-//                chatRecyclerView.updatePadding(bottom = 0)
-//                linearLayout.updatePadding(bottom = 0)
-//            }
-//
-//            insets
-//        }
-
+        rlKeyboard = findViewById(R.id.rlKeyboard)
+        rlKeyboard.visibility = View.GONE
         chatRecyclerView = findViewById(R.id.chatRecyclerView)
         linearLayout = findViewById(R.id.linearLayout)
         messageBox = findViewById(R.id.messageBox)
@@ -87,20 +77,28 @@ class ChatActivity() : AppCompatActivity() {
             val screenHeight = binding.main.rootView.height
             val keypadHeight = screenHeight - r.bottom
 
+            val mainView: ConstraintLayout = findViewById(R.id.main)
+
             if (keypadHeight > screenHeight * 0.15) {
                 // Keyboard is visible
-                binding.chatRecyclerView.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
-                binding.linearLayout.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
+//                rlKeyboard.updateLayoutParams<RelativeLayout.LayoutParams> {
+//                    bottomMargin = (-keypadHeight.toFloat() * 0.87).toInt() // Set the bottom margin in pixels
+//                }
+//                binding.chatRecyclerView.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
+//                binding.linearLayout.translationY = (-keypadHeight.toFloat() * 0.87).toFloat()
+                rlKeyboard.visibility = View.VISIBLE
             } else {
                 // Keyboard is hidden
-                binding.chatRecyclerView.translationY = 0f
-                binding.linearLayout.translationY = 0f
+//                binding.chatRecyclerView.translationY = 0f 4
+//                binding.linearLayout.translationY = 0f
+                rlKeyboard.visibility = View.GONE
             }
         }
 
+        val chatManager = ChatManager(getString(R.string.firebase_url))
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
-        val senderUid = FirebaseAuth.getInstance().currentUser?.uid!!
+        val senderUid = chatManager.getCurrentUid()
 
         userName = findViewById(R.id.tvOrganizerName)
         userName.text = name
@@ -113,12 +111,20 @@ class ChatActivity() : AppCompatActivity() {
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
 
-        val chatManager = ChatManager(getString(R.string.firebase_url))
+        runBlocking {
+            if(chatManager.readNewMessageSenderUid(receiverRoom!!) != senderUid) {
+                chatManager.updateNewMessageNumber(receiverRoom!!, false)
+                chatManager.updateNewMessageNumber(senderRoom!!, false)
+            }
+            chatManager.updateUserTotalNewMessages(senderUid, false)
+        }
         chatManager.updateMessageList(senderRoom!!, messageList, messageAdapter)
 
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
-            chatManager.addMessageOnDb(message, senderUid, senderRoom!!, receiverRoom!!)
+            runBlocking {
+                chatManager.addMessageOnDb(message, senderUid, receiverUid!!, senderRoom!!, receiverRoom!!)
+            }
             messageBox.setText("")
         }
 

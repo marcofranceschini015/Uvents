@@ -57,6 +57,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation("com.google.android.material:material:1.13.0-alpha03")
     implementation("com.google.firebase:firebase-database")
     implementation("androidx.fragment:fragment-ktx:1.4.1")
     implementation("com.google.firebase:firebase-storage:20.0.1")

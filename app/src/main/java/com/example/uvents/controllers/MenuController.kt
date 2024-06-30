@@ -4,20 +4,17 @@ package com.example.uvents.controllers
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.provider.Telephony.Sms.Intents
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.EventFetcher
 import com.example.uvents.model.EventSearcher
 import com.example.uvents.model.User
-import com.example.uvents.ui.user.MapActivity
+import com.example.uvents.ui.user.MenuActivity
 import com.example.uvents.ui.user.WelcomeActivity
 import com.example.uvents.ui.user.menu_frgms.PersonalPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -44,7 +41,7 @@ import kotlin.random.Random
  * Controller of all the activity connected with
  * the map view, all after the sign-in/up
  */
-class MenuController(val mapActivity: MapActivity) {
+class MenuController(val menuActivity: MenuActivity) {
 
     // manage the reading of events from db
     @RequiresApi(Build.VERSION_CODES.O)
@@ -60,12 +57,16 @@ class MenuController(val mapActivity: MapActivity) {
     private lateinit var mDbRef: DatabaseReference
 
 
+    fun getUid(): String {
+        return user.uid
+    }
+
     /**
      * Set view the first time
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun setView(mapView: MapView, fusedLocationProviderClient: FusedLocationProviderClient) {
-        annotationManager = AnnotationManager(mapView, mapActivity, this, eventFetcher)
+        annotationManager = AnnotationManager(mapView, menuActivity, this, eventFetcher)
         annotationManager.addEventAnnotation()
         annotationManager.getCurrentLocation(fusedLocationProviderClient)
     }
@@ -86,10 +87,11 @@ class MenuController(val mapActivity: MapActivity) {
      * Come to the WelcomeActivity as a logout
      */
     fun logout() {
-        Toast.makeText(mapActivity, "Logout...", Toast.LENGTH_SHORT).show()
-        val intent = Intent(mapActivity, WelcomeActivity::class.java)
-        mapActivity.startActivity(intent)
-        mapActivity.finish()
+        Toast.makeText(menuActivity, "Logout...", Toast.LENGTH_SHORT).show()
+        val intent = Intent(menuActivity, WelcomeActivity::class.java)
+        intent.putExtra("logout", true)
+        menuActivity.startActivity(intent)
+        menuActivity.finish()
     }
 
 
@@ -98,7 +100,7 @@ class MenuController(val mapActivity: MapActivity) {
      * (the one with the navbar)
      */
     fun switchFragment(f: Fragment) {
-        mapActivity.replaceFragment(f)
+        menuActivity.replaceFragment(f)
     }
 
 
@@ -114,7 +116,7 @@ class MenuController(val mapActivity: MapActivity) {
      * Recover in the database the user from its uid
      */
     fun setUser(uid: String?) {
-        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
+        mDbRef = FirebaseDatabase.getInstance(menuActivity.getString(R.string.firebase_url)).getReference()
         mDbRef.child("user").child(uid!!).addListenerForSingleValueEvent(object :
             ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -156,8 +158,8 @@ class MenuController(val mapActivity: MapActivity) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchEventsForUser() {
         val userEvents = mutableListOf<Event>()
-        eventFetcher.eventsData.observe(mapActivity, Observer { listEvent->
-            listEvent.forEach{ e->
+        eventFetcher.eventsData.observe(menuActivity, Observer { listevent->
+            listevent.forEach{ e->
                 if (e.uid == user.uid){
                     userEvents.add(e)
                 }
@@ -187,7 +189,7 @@ class MenuController(val mapActivity: MapActivity) {
      * Set up the personal page with all information in the view
      */
     fun setPersonalPage() {
-        mapActivity.replaceFragment(
+        menuActivity.replaceFragment(
             PersonalPageFragment(
                 this,
                 user.name,
@@ -255,6 +257,9 @@ class MenuController(val mapActivity: MapActivity) {
         user.eventsPublished.forEach { event ->
             if (!events.contains(event.name)) {
                 listEidToDelete.add(event.eid)
+                event.getUidBooked().forEach {
+                    updateUserNumDeletedEvents(it, true)
+                }
             }
         }
 
@@ -265,7 +270,7 @@ class MenuController(val mapActivity: MapActivity) {
         eventFetcher.removeEvent(listEidToDelete)
 
         // remove into db
-        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
+        mDbRef = FirebaseDatabase.getInstance(menuActivity.getString(R.string.firebase_url)).getReference()
         val eventsRef = mDbRef.child("event")
         listEidToDelete.forEach { eid ->
             // remove from database given an eid
@@ -284,7 +289,7 @@ class MenuController(val mapActivity: MapActivity) {
         followed: Map<String, String>,
         eventsBooked: Map<String, String>) {
         // Reference to the specific user's node
-        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
+        mDbRef = FirebaseDatabase.getInstance(menuActivity.getString(R.string.firebase_url)).getReference()
         val userRef = mDbRef.child("user").child(user.uid)
 
 
@@ -386,7 +391,7 @@ class MenuController(val mapActivity: MapActivity) {
      * Store the event into the db under event node
      */
     private fun storeEvent(event: Event) {
-        mDbRef = FirebaseDatabase.getInstance(mapActivity.getString(R.string.firebase_url)).getReference()
+        mDbRef = FirebaseDatabase.getInstance(menuActivity.getString(R.string.firebase_url)).getReference()
         mDbRef.child("event").child(event.eid!!).setValue(event)
     }
 
@@ -395,7 +400,7 @@ class MenuController(val mapActivity: MapActivity) {
      * Set the tool bar in the map activity
      */
     fun setToolBar(toolBar: Toolbar) {
-        mapActivity.setSupportActionBar(toolBar)
+        menuActivity.setSupportActionBar(toolBar)
     }
 
 
@@ -403,7 +408,7 @@ class MenuController(val mapActivity: MapActivity) {
      * useful to print toast messages
      */
     fun printToast(msg: String) {
-        Toast.makeText(mapActivity, msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(menuActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -493,6 +498,54 @@ class MenuController(val mapActivity: MapActivity) {
 
     fun getEventsBooked(): Map<String, String> {
         return user.getEventsBooked()
+    }
+
+    suspend fun readUserTotalNewMessages(uid: String): Int? {
+        val totalRef = mDbRef.child("user").child(uid).child("totalNewMsg")
+
+        return try {
+            val snapshot = totalRef.get().await()
+            snapshot.getValue(Int::class.java)
+        } catch (e: Exception) {
+            println("Failed to read value: ${e.message}")
+            null
+        }
+    }
+
+    suspend fun readUserNumDeletedEvents(uid: String): Int? {
+        val newsRef = mDbRef.child("user").child(uid).child("NumEventsDeleted")
+
+        return try {
+            val snapshot = newsRef.get().await()
+            snapshot.getValue(Int::class.java)
+        } catch (e: Exception) {
+            println("Failed to read value: ${e.message}")
+            null
+        }
+    }
+
+    fun updateUserNumDeletedEvents(uid: String, increase: Boolean) {
+        val totalRef = mDbRef.child("user").child(uid).child("NumEventsDeleted")
+
+        totalRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentValue = dataSnapshot.getValue(Int::class.java)
+                if (currentValue != null) {
+                    // Update the value
+                    var newValue = 0
+                    if(increase) {
+                        newValue = currentValue + 1
+                    }
+                    totalRef.setValue(newValue)
+                } else {
+                    totalRef.setValue(1)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("Failed to read value: ${databaseError.message}")
+            }
+        })
     }
 
 }

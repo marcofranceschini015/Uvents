@@ -5,14 +5,13 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
+    </style>
+
     <style name="Theme.Uvents" parent="Base.Theme.Uvents" />
 
     <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/light_blue</item>
-    </style>
-
-    <style name="hintText" parent="Widget.Material3.TextInputLayout.OutlinedBox">
-        <item name="android:textColor">@color/sign_fields</item>
     </style>
 
 </resources>

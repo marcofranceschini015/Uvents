@@ -2,17 +2,20 @@ package com.example.uvents.ui.user.menu_frgms
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
@@ -27,6 +30,7 @@ import java.util.Locale
 class PublishEventFragment(private var menuController: MenuController) : Fragment() {
 
     // Elements in the view
+    private lateinit var scrollView: ScrollView
     private lateinit var etInputName: EditText
     private lateinit var etInputDate: EditText
     private lateinit var etInputLocation: EditText
@@ -37,6 +41,18 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
     private lateinit var etInputTime: EditText
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // This callback will only be called when the Fragment is at least Started.
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle the back button event
+                menuController.setPersonalPage()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     /**
      * When the view is created set up everything
@@ -50,6 +66,7 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
 
         if (v != null) {
             // link with the view
+            scrollView = v.findViewById(R.id.scrollview)
             etInputName = v.findViewById(R.id.etInputName)
             etInputDate = v.findViewById(R.id.etInputDate)
             etInputLocation = v.findViewById(R.id.etInputLocation)
@@ -69,8 +86,28 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
             openTimePickerDialog(etInputTime)
         }
 
+        etInputDescription.setOnClickListener {
+            it.viewTreeObserver.addOnGlobalLayoutListener {
+                val rect = Rect()
+                it.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = it.rootView.height
+
+                // Calculate the keyboard height
+                val keypadHeight = screenHeight - rect.bottom
+
+                // Check if the keyboard is shown or hidden
+                if (keypadHeight > screenHeight * 0.15) {
+                    // Keyboard is shown
+                    scrollView.translationY = (-keypadHeight.toFloat() * 0.22).toFloat()
+                } else {
+                    // Keyboard is hidden
+                    scrollView.translationY = 0f
+                }
+            }
+        }
+
         // get the category of the event
-        val categoryList = CategorySource(menuController.mapActivity).getCategoryList()
+        val categoryList = CategorySource(menuController.menuActivity).getCategoryList()
         val adapter = CategoryAdapter(categoryList)
         recyclerViewCat.adapter = adapter
 
@@ -116,7 +153,7 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
-        val timePickerDialog = TimePickerDialog(menuController.mapActivity, { _, selectedHour, selectedMinute ->
+        val timePickerDialog = TimePickerDialog(menuController.menuActivity, { _, selectedHour, selectedMinute ->
             val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
             editText.setText(formattedTime)  // Set the time to the EditText that was passed in
         }, hour, minute, true)
@@ -137,7 +174,7 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
 
         // DatePickerDialog to pick the date
         val datePickerDialog = DatePickerDialog(
-            menuController.mapActivity, { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+            menuController.menuActivity, { _, selectedYear, selectedMonth, selectedDayOfMonth ->
                 // Format the date selected
                 val selectedDate = "${selectedMonth + 1}/$selectedDayOfMonth/$selectedYear"
                 editText.setText(selectedDate)  // Set date in EditText
@@ -203,7 +240,7 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
      */
     private fun showToast(message: String) {
         Toast.makeText(
-            menuController.mapActivity,
+            menuController.menuActivity,
             message,
             Toast.LENGTH_SHORT
         ).show()

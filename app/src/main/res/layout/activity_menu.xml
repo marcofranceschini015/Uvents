@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.user.MapActivity"
+    tools:context=".ui.user.MenuActivity"
     android:background="#336699">
 
         <androidx.fragment.app.FragmentContainerView
@@ -28,13 +28,15 @@
             app:itemBackground="@color/dark_blue"
             app:itemTextColor="@color/white"
             app:layout_constraintTop_toBottomOf="@id/frgMapContainer"
-            app:itemPaddingBottom="6dp"
+            app:itemPaddingBottom="8dp"
             app:itemIconTint="@color/white"
             app:labelVisibilityMode="labeled"
             app:itemActiveIndicatorStyle="@style/Theme.BottomNavigationView.ActiveIndicator"
             app:menu="@menu/bottom_menu"
-            android:paddingBottom="36dp"/>
+            />
 
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    Configurazione Marco-->
+<!--        android:paddingBottom="36dp"-->
+<!--    app:itemPaddingBottom="6dp"-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

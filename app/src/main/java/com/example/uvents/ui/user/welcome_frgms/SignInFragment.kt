@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.uvents.R
@@ -49,7 +50,11 @@ class SignInFragment(private val ctrl: WelcomeController) : Fragment(R.layout.fr
         btnSignIn.setOnClickListener {
             val email = etInputEmailSi.text.toString()
             val password = etInputPasswordSi.text.toString()
-            ctrl.signIn(email, password)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                ctrl.signIn(email, password)
+            } else {
+                Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return v

@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import com.example.uvents.R
 import com.example.uvents.model.Event
 import com.example.uvents.model.EventFetcher
-import com.example.uvents.ui.user.MapActivity
+import com.example.uvents.ui.user.MenuActivity
 import com.example.uvents.ui.user.menu_frgms.EventFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.mapbox.geojson.Point
@@ -31,6 +31,7 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
+import kotlin.random.Random
 
 
 /**
@@ -40,7 +41,7 @@ import java.util.Locale
  */
 class AnnotationManager(
     private val mapView: MapView,
-    private val mapActivity: MapActivity,
+    private val menuActivity: MenuActivity,
     private val menuController: MenuController,
     private val eventFetcher: EventFetcher) {
 
@@ -52,23 +53,15 @@ class AnnotationManager(
      * Get the current location, set the pointer on the
      * position, and locate the camera around the position
      */
-    fun getCurrentLocation(
-        fusedLocationProviderClient: FusedLocationProviderClient
-    ) {
-        if (ActivityCompat.checkSelfPermission(
-                mapActivity,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                mapActivity,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                mapActivity,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                100
-            )
+    fun getCurrentLocation(fusedLocationProviderClient: FusedLocationProviderClient) {
+        if (ActivityCompat.checkSelfPermission(menuActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(menuActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(menuActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
+            val cameraPosition =
+                CameraOptions.Builder().center(Point.fromLngLat(9.188120, 45.463619)).zoom(14.0)
+                    .build()
+            mapView.mapboxMap.setCamera(cameraPosition)
+            addAnnotationToMap(null, null)
             return
         }
 
@@ -106,7 +99,7 @@ class AnnotationManager(
      * to add an event to the map
      */
     fun locationExist(address: String): Boolean {
-        val geocoder = Geocoder(mapActivity, Locale.getDefault())
+        val geocoder = Geocoder(menuActivity, Locale.getDefault())
         val addresses = address.let {
             geocoder.getFromLocationName(address, 1)
         }
@@ -121,21 +114,22 @@ class AnnotationManager(
      * to the mutable map
      */
     fun addSingleAnnotation(e: Event) {
-        val geocoder = Geocoder(mapActivity, Locale.getDefault())
+        val geocoder = Geocoder(menuActivity, Locale.getDefault())
         val addresses = e.address
             .let {
                 geocoder.getFromLocationName(e.address!!, 1)
             }
+        val randomOffset = 0.0005 + Random.nextFloat() * (0.0005 - 0.0015)
         var longitude = 0.0
         var latitude = 0.0
         val address = addresses?.get(0) // not empty, check before add
-        longitude = address!!.longitude
-        latitude = address.latitude
+        longitude = address!!.longitude + randomOffset
+        latitude = address.latitude + randomOffset
 
 
         // set the red marker for every event at long and lat
         bitmapFromDrawableRes(
-            mapActivity,
+            menuActivity,
             R.drawable.red_marker
         )?.let {
 
@@ -167,7 +161,7 @@ class AnnotationManager(
                         if (pointAnnotation == clickedAnnotation) {
                             // when click on an annotation go to event fragment
                             // that show an events
-                            mapActivity.replaceFragment(
+                            menuActivity.replaceFragment(
                                 EventFragment(
                                     menuController,
                                     e.name!!,
@@ -197,7 +191,7 @@ class AnnotationManager(
      * Add an annotation for every events published
      */
     fun addEventAnnotation() {
-        eventFetcher.eventsData.observe(mapActivity, Observer { listevent ->
+        eventFetcher.eventsData.observe(menuActivity, Observer { listevent ->
             listevent.forEach { event ->
                 addSingleAnnotation(event)
             }
@@ -219,7 +213,7 @@ class AnnotationManager(
         // Set up the personal position annotation
         if (myLatitude != null) {
             bitmapFromDrawableRes(
-                mapActivity,
+                menuActivity,
                 R.drawable.your_position
             )?.let {
                 val annotationApi = mapView.annotations

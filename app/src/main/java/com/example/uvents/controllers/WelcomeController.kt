@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+
 class WelcomeController(val welcomeActivity: WelcomeActivity) {
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -25,7 +26,6 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
     fun switchFragment(f: Fragment){
         welcomeActivity.replaceFragment(f)
     }
-
 
     /**
      * Function to signUp and create the User then added to a db
@@ -85,6 +85,7 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             user = dataSnapshot.getValue(User::class.java)!! // set user
+                            welcomeActivity.saveCredentials(email, password)
                             welcomeActivity.goToYourLocalizationMap(user.uid)
                         }
                         override fun onCancelled(error: DatabaseError) {
