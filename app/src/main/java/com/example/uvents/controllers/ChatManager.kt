@@ -128,7 +128,7 @@ class ChatManager(dbUrl: String) {
         updateNewMessageSenderUid(senderRoom, senderUid)
         updateNewMessageNumber(senderRoom, true)
 
-        updateUserTotalNewMessages(receiverUid, true)
+        updateUserTotalNewMessages(receiverUid, true, 0)
     }
 
     fun updateNewMessageNumber(room: String, increase: Boolean) {
@@ -145,7 +145,7 @@ class ChatManager(dbUrl: String) {
                     }
                     newsRef.setValue(newValue)
                 } else {
-                    newsRef.setValue(0)
+                    newsRef.setValue(1)
                 }
             }
 
@@ -176,7 +176,7 @@ class ChatManager(dbUrl: String) {
         })
     }
 
-    private suspend fun readNewMessageNumber(receiverRoom: String): Int? {
+    suspend fun readNewMessageNumber(receiverRoom: String): Int? {
         val newsRef = mDbRef.child("chat").child(receiverRoom).child("notification").child("numberNewMsg")
 
         return try {
@@ -200,7 +200,7 @@ class ChatManager(dbUrl: String) {
         }
     }
 
-    fun updateUserTotalNewMessages(receiverUid: String, increase: Boolean) {
+    fun updateUserTotalNewMessages(receiverUid: String, increase: Boolean, numMsgRead: Int) {
         val totalRef = mDbRef.child("user").child(receiverUid).child("totalNewMsg")
 
         totalRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -208,7 +208,7 @@ class ChatManager(dbUrl: String) {
                 val currentValue = dataSnapshot.getValue(Int::class.java)
                 if (currentValue != null) {
                     // Update the value
-                    var newValue = 0
+                    var newValue = currentValue - numMsgRead
                     if(increase) {
                         newValue = currentValue + 1
                     }

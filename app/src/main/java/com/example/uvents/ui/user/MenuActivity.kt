@@ -45,11 +45,6 @@ class MenuActivity : AppCompatActivity() {
             insets
         }
 
-//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//            ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
-//        }
-
         // set up the navigation menu
         bottomNavigation = findViewById(R.id.bottomNav)
 
@@ -64,8 +59,15 @@ class MenuActivity : AppCompatActivity() {
 
         addBadgeToChatIcon()
         runBlocking {
-            menuController.readUserTotalNewMessages(intent.getStringExtra("uid")!!)
-                ?.let { updateBadgeCount(it) }
+            menuController.readUserTotalNewMessages(
+                intent.getStringExtra("uid")!!,
+                onSuccess = {
+                    updateBadgeCount(it!!)
+                },
+                onError = { exception ->
+                    println("Failed to read value: ${exception.message}")
+                }
+            )
         }
 
         // set up the listener for every
@@ -84,10 +86,6 @@ class MenuActivity : AppCompatActivity() {
                 }
 
                 R.id.chat -> {
-                    updateBadgeCount(0)
-//                    val chatManager = ChatManager(getString(R.string.firebase_url))
-//                    val userUid = chatManager.getCurrentUid()
-//                    chatManager.updateUserTotalNewMessages(userUid, false)
                     replaceFragment(ChatsFragment(menuController))
                     true
                 }
@@ -100,14 +98,6 @@ class MenuActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-//        if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
-//            ActivityCompat.requestPermissions(
-//                this,
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-//                PERMISSIONS_REQUEST_LOCATION
-//            )
-//        }
     }
 
     fun backHome() {
@@ -124,31 +114,6 @@ class MenuActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frgMapContainer, fragment)
         fragmentTransaction.commit()
     }
-
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == 100) {
-//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Il permesso è stato concesso, avvia gli aggiornamenti della posizione
-////                replaceFragment(mapFragment)
-//            } else {
-//                // Il permesso è stato negato, gestisci il caso di negazione
-////                replaceFragment(mapFragment)
-//            }
-//        }
-//    }
-
-
-//    private companion object {
-//
-//        private const val PERMISSIONS_REQUEST_LOCATION = 0
-//
-//        fun Context.isPermissionGranted(permission: String): Boolean {
-//            return ContextCompat.checkSelfPermission(
-//                this, permission
-//            ) == PackageManager.PERMISSION_GRANTED
-//        }
-//    }
 
     private fun addBadgeToChatIcon() {
         val badge = BadgeDrawable.create(this).apply {

@@ -46,12 +46,6 @@ class ChatsFragment(private val menuController: MenuController) : Fragment() {
         if(v != null) {
             msgEmptyChat = v.findViewById(R.id.tvNoChat)
             chatManager = ChatManager(getString(R.string.firebase_url))
-//            runBlocking {
-//                if(chatManager.readUserTotalNewMessages() != 0) {
-//                    val userUid = chatManager.getCurrentUid()
-//                    chatManager.updateUserTotalNewMessages(userUid, false)
-//                }
-//            }
             userList = mutableListOf()
             newsList = mutableListOf()
             adapter = OrganizerChatsAdapter(menuController.menuActivity, userList, newsList)
