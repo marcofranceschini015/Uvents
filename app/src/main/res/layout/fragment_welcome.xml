@@ -15,7 +15,30 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_marginTop="220dp">
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/home_uvents"
+            android:scaleType="fitXY"
+            android:layout_marginTop="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="casual"
+            android:gravity="center"
+            android:text="Enjoy all kinds of events and have fun to create your own once to meet always new people"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
 
         <Button
             android:id="@+id/btnSignIn"
@@ -29,7 +52,7 @@
             android:textSize="24sp"
             android:textColor="#DAF7DC"
             android:background="@drawable/button_sign_bg"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="60dp"
             android:translationZ="5dp"/>
 
         <Button
