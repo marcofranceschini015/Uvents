@@ -28,6 +28,7 @@ import com.mapbox.maps.MapView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -79,7 +80,9 @@ class MenuController(val menuActivity: MenuActivity) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun resetView() {
         eventFetcher.clearEvents()
-        eventFetcher.fetchEvents()
+        runBlocking {
+            eventFetcher.fetchEvents()
+        }
     }
 
 
@@ -115,6 +118,7 @@ class MenuController(val menuActivity: MenuActivity) {
     /**
      * Recover in the database the user from its uid
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun setUser(uid: String?) {
         mDbRef = FirebaseDatabase.getInstance(menuActivity.getString(R.string.firebase_url)).getReference()
         mDbRef.child("user").child(uid!!).addListenerForSingleValueEvent(object :
@@ -124,7 +128,7 @@ class MenuController(val menuActivity: MenuActivity) {
                 // recover the User by uid passed
                 user = dataSnapshot.getValue(User::class.java)!!
                 fetchEventsForUser()
-                removeOldBooking()
+                //removeOldBooking()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -170,7 +174,7 @@ class MenuController(val menuActivity: MenuActivity) {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun removeOldBooking() {
+    fun removeOldBooking() {
         val listOfEids = eventFetcher.getEids()
         val toRemove = mutableListOf<String>()
         user.getEventsBooked().forEach { e->

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
 import com.example.uvents.ui.user.menu_frgms.BookFragment
@@ -15,6 +16,7 @@ import com.example.uvents.ui.user.menu_frgms.ChatsFragment
 import com.example.uvents.ui.user.menu_frgms.MapFragment
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -55,7 +57,7 @@ class MenuActivity : AppCompatActivity() {
 
         // create the controller and set the user
         // relative to the uid of the login
-        menuController = MenuController(this)
+        menuController = MenuController(this@MenuActivity)
         menuController.setUser(intent.getStringExtra("uid"))
 
         // create the mapFragment and set it
@@ -67,7 +69,6 @@ class MenuActivity : AppCompatActivity() {
             menuController.readUserTotalNewMessages(intent.getStringExtra("uid")!!)
                 ?.let { updateBadgeCount(it) }
         }
-
         // set up the listener for every
         // icon in the menu, in a way to manage
         // the switch between every fragment
@@ -79,6 +80,7 @@ class MenuActivity : AppCompatActivity() {
                 }
 
                 R.id.ticket -> {
+                    menuController.removeOldBooking()
                     replaceFragment(BookFragment(menuController, menuController.getEventsBooked()))
                     true
                 }

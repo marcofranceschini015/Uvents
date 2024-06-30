@@ -23,14 +23,15 @@
         <TextView
             android:id="@+id/eventBookedName"
             android:layout_width="230dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:text="Event name"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+
             android:gravity="center_vertical"
+            android:layout_gravity="center"
             />
 
         <ImageView
