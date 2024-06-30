@@ -31,6 +31,7 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import java.util.Locale
+import kotlin.random.Random
 
 
 /**
@@ -118,11 +119,12 @@ class AnnotationManager(
             .let {
                 geocoder.getFromLocationName(e.address!!, 1)
             }
+        val randomOffset = 0.0005 + Random.nextFloat() * (0.0005 - 0.0015)
         var longitude = 0.0
         var latitude = 0.0
         val address = addresses?.get(0) // not empty, check before add
-        longitude = address!!.longitude
-        latitude = address.latitude
+        longitude = address!!.longitude + randomOffset
+        latitude = address.latitude + randomOffset
 
 
         // set the red marker for every event at long and lat

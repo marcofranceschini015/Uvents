@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -39,9 +40,11 @@ class WelcomeActivity : AppCompatActivity() {
 
         // controller to access the view and be between the model and the view
         welcomeController = WelcomeController(this)
+        replaceFragment(WelcomeFragment(welcomeController))
 
         if(intent.getBooleanExtra("logout", false)) {
             deleteCredentials()
+            Toast.makeText(this, "Your credential have been deleted", Toast.LENGTH_SHORT).show()
         }
 
         //check if user is previously logged
@@ -53,11 +56,8 @@ class WelcomeActivity : AppCompatActivity() {
             val password = sharedPref.getString("password", "")
             // User automatically log-in and navigate to menu activity
             welcomeController.signIn(email!!, password!!)
-        } else {
-            // put welcome fragment as first fragment
-            // no possibility to come back
-            replaceFragment(WelcomeFragment(welcomeController))
         }
+
     }
 
 
@@ -94,6 +94,7 @@ class WelcomeActivity : AppCompatActivity() {
                 putString("password", password)
                 apply()
             }
+            Toast.makeText(this, "Your credential have been saved", Toast.LENGTH_SHORT).show()
         }
     }
 
