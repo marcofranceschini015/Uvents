@@ -129,6 +129,8 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
             if (validateForms()) {
                 if (menuController.nameExists(etInputName.text.toString())) {
                     showToast("Name already taken")
+                } else if(etInputName.text.toString().length >= 15) {
+                    showToast("Name too long")
                 } else if (!menuController.locationExist(etInputLocation.text.toString())) {
                     showToast("Location doesn't exist")
                 } else {
