@@ -161,7 +161,7 @@
             android:layout_below="@id/linearLayoutSignInEt"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="30dp">
 
             <Button
                 android:id="@+id/btnSignUp"
@@ -174,8 +174,7 @@
                 android:fontFamily="@font/lato"
                 android:textSize="22sp"
                 android:textColor="#DAF7DC"
-                android:background="@drawable/button_sign_bg"
-                android:layout_marginTop="15dp" />
+                android:background="@drawable/button_sign_bg" />
 
         </LinearLayout>
     </RelativeLayout>

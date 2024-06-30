@@ -69,6 +69,7 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
     private fun addUserToDatabase() {
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("user").child(user.uid).setValue(user)
+        mDbRef.child("user").child(user.uid).child("totalNewMsg").setValue(0)
     }
 
 
