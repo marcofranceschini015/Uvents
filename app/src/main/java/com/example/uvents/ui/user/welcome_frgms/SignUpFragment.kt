@@ -22,6 +22,7 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
     private lateinit var etPassword: EditText
     private lateinit var etConfirmPassword: EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +35,7 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +75,6 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
                     Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
 
         return v

@@ -21,6 +21,7 @@ class BookFragment(
     private lateinit var eventsRecyclerView: RecyclerView
     private lateinit var tvNoBook: TextView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // This callback will only be called when the Fragment is at least Started.

@@ -54,6 +54,7 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+
     /**
      * When the view is created set up everything
      */
