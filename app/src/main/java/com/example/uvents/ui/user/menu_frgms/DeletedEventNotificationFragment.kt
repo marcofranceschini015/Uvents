@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -11,14 +12,11 @@ import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
 import com.example.uvents.controllers.adapter.DeletedEventNotificationAdapter
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DeletedEventNotificationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class DeletedEventNotificationFragment(private val menuController: MenuController,) : Fragment() {
 
     private lateinit var rvNotifications: RecyclerView
+    private lateinit var ivClose: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +26,7 @@ class DeletedEventNotificationFragment(private val menuController: MenuControlle
             override fun handleOnBackPressed() {
                 // Handle the back button event
                 menuController.setPersonalPage()
+                menuController.clearDeletedBookedEvents()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -41,6 +40,12 @@ class DeletedEventNotificationFragment(private val menuController: MenuControlle
         val v: View? = inflater.inflate(R.layout.fragment_deleted_event_notification, container, false)
         if(v != null) {
             rvNotifications = v.findViewById(R.id.rv_deleted_events)
+            ivClose = v.findViewById(R.id.close)
+        }
+
+        ivClose.setOnClickListener {
+            menuController.setPersonalPage()
+            menuController.clearDeletedBookedEvents()
         }
 
         val deletedEventNotificationAdapter: DeletedEventNotificationAdapter =

@@ -7,17 +7,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#86BBD8">
 
-    <TextView
-        android:id="@+id/tvNotifications"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:gravity="center_vertical"
-        android:text="Notifications"
+        android:orientation="horizontal"
         android:background="@color/dark_blue"
-        android:textColor="@color/white"
-        android:textSize="26dp"
-        android:paddingStart="10dp"
-        />
+        >
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_gravity="center_vertical"
+            app:srcCompat="@drawable/close_notifications"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:id="@+id/tvNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center_vertical"
+            android:text="Notifications"
+            android:textColor="@color/sign_fields"
+            android:textSize="26dp"
+            android:paddingStart="5dp"
+            />
+
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_deleted_events"

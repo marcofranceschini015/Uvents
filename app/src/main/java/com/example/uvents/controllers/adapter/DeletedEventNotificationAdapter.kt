@@ -24,7 +24,7 @@ class DeletedEventNotificationAdapter(private val eventsNames: ArrayList<String>
     override fun getItemCount() = eventsNames.size
 
     override fun onBindViewHolder(holder: DeletedEventNotificationViewHolder, position: Int) {
-        holder.notificationTextView.text = "Event " + eventsNames[position] + "that you booked has been removed"
+        holder.notificationTextView.text = "Event " + eventsNames[position] + " that you booked has been deleted"
     }
 
 }

@@ -9,23 +9,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvDeletedEventNotification"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llDeletedEventItem"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:fontFamily="@font/lato"
-            android:text="Deleted booked event by organizer"
-            android:textSize="20sp"
-            android:textColor="#2F4858"
-            android:gravity=""/>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/deleted_event"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"/>
+
+            <TextView
+                android:id="@+id/tvDeletedEventNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/lato"
+                android:text="Deleted booked event by organizer"
+                android:textSize="20sp"
+                android:textColor="@color/writings_dark_blue"
+                android:gravity=""/>
+
+        </LinearLayout>
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tvDeletedEventNotification"
-        android:background="#2F4858" />
+        android:layout_below="@+id/llDeletedEventItem"
+        android:background="@color/writings_dark_blue" />
     </RelativeLayout>
 
 </FrameLayout>

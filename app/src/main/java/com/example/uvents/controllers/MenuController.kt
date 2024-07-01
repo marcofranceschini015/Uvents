@@ -59,6 +59,10 @@ class MenuController(val menuActivity: MenuActivity) {
         return user.uid
     }
 
+    fun clearDeletedBookedEvents() {
+        deletedBookedEvents.clear()
+    }
+
     /**
      * Set view the first time
      */
@@ -86,6 +90,7 @@ class MenuController(val menuActivity: MenuActivity) {
      */
     fun logout() {
         Toast.makeText(menuActivity, "Logout...", Toast.LENGTH_SHORT).show()
+        updateUserNumDeletedEvents(user.uid, false)
         val intent = Intent(menuActivity, WelcomeActivity::class.java)
         intent.putExtra("logout", true)
         menuActivity.startActivity(intent)
@@ -174,6 +179,7 @@ class MenuController(val menuActivity: MenuActivity) {
         user.getEventsBooked().forEach { e->
             if (!listOfEids.contains(e.key)){
                 toRemove.add(e.key)
+//                updateUserNumDeletedEvents(user.uid, true)
                 val eventName = getEventsBooked()[e.key]
                 deletedBookedEvents.add(eventName!!)
             }
