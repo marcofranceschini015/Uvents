@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
@@ -18,6 +19,8 @@ class BookFragment(
     private lateinit var copyEvents: MutableMap<String, String>
     private lateinit var bookedEventsAdapter: BookedEventsAdapter
     private lateinit var eventsRecyclerView: RecyclerView
+    private lateinit var tvNoBook: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,7 @@ class BookFragment(
 
         if (v != null) {
             eventsRecyclerView = v.findViewById(R.id.rvEvents)
+            tvNoBook = v.findViewById(R.id.tvNoBook)
         }
 
         copyEvents = events.toMutableMap()
@@ -48,8 +52,13 @@ class BookFragment(
             bookedEventsAdapter.removeItem(key)
             menuController.removeBook(key)
             menuController.printToast("Book removed")
+            if (copyEvents.isEmpty())
+                tvNoBook.visibility = View.VISIBLE
         }
         eventsRecyclerView.adapter = bookedEventsAdapter
+
+        if (copyEvents.isEmpty())
+            tvNoBook.visibility = View.VISIBLE
 
         return v
     }

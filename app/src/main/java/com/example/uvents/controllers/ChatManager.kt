@@ -20,9 +20,11 @@ class ChatManager(dbUrl: String) {
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val mDbRef: DatabaseReference = FirebaseDatabase.getInstance(dbUrl).getReference()
 
+
     fun getCurrentUid():String {
         return mAuth.currentUser?.uid!!
     }
+
 
     fun updateUserListChats(userList: MutableList<User>, newsList: MutableList<Int>, adapter: OrganizerChatsAdapter, msgEmptyChat: TextView) {
         mDbRef.child("user").addValueEventListener(object : ValueEventListener {
@@ -76,6 +78,7 @@ class ChatManager(dbUrl: String) {
         })
     }
 
+
     private fun chatExists(chatId: String, callback: (Boolean, Exception?) -> Unit) {
         val chatRef = mDbRef.child("chat").child(chatId)
 
@@ -93,6 +96,7 @@ class ChatManager(dbUrl: String) {
             }
         })
     }
+
 
     fun updateMessageList(senderRoom: String, messageList: MutableList<Message>, adapter: MessageAdapter) {
         mDbRef.child("chat").child(senderRoom).child("messages").addValueEventListener(object :
@@ -113,6 +117,7 @@ class ChatManager(dbUrl: String) {
         })
     }
 
+
     fun addMessageOnDb(message: String, senderUid: String, receiverUid: String, senderRoom: String, receiverRoom: String) {
         val messageObject = Message(message, senderUid)
 
@@ -130,6 +135,7 @@ class ChatManager(dbUrl: String) {
 
         updateUserTotalNewMessages(receiverUid, true, 0)
     }
+
 
     fun updateNewMessageNumber(room: String, increase: Boolean) {
         val newsRef = mDbRef.child("chat").child(room).child("notification").child("numberNewMsg")
@@ -155,6 +161,7 @@ class ChatManager(dbUrl: String) {
         })
     }
 
+
     fun updateNewMessageSenderUid(receiverRoom: String, senderUid: String) {
         val newSenderRef = mDbRef.child("chat").child(receiverRoom).child("notification").child("senderIdNewMsg")
 
@@ -176,6 +183,7 @@ class ChatManager(dbUrl: String) {
         })
     }
 
+
     suspend fun readNewMessageNumber(receiverRoom: String): Int? {
         val newsRef = mDbRef.child("chat").child(receiverRoom).child("notification").child("numberNewMsg")
 
@@ -188,6 +196,7 @@ class ChatManager(dbUrl: String) {
         }
     }
 
+
     suspend fun readNewMessageSenderUid(receiverRoom: String): String? {
         val newSenderRef = mDbRef.child("chat").child(receiverRoom).child("notification").child("senderIdNewMsg")
 
@@ -199,6 +208,7 @@ class ChatManager(dbUrl: String) {
             null
         }
     }
+
 
     fun updateUserTotalNewMessages(receiverUid: String, increase: Boolean, numMsgRead: Int) {
         val totalRef = mDbRef.child("user").child(receiverUid).child("totalNewMsg")

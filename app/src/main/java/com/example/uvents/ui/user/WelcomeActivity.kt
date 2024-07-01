@@ -46,7 +46,6 @@ class WelcomeActivity : AppCompatActivity() {
 
         if(intent.getBooleanExtra("logout", false)) {
             deleteCredentials()
-            Toast.makeText(this, "Your credential have been deleted", Toast.LENGTH_SHORT).show()
         }
 
         //check if user is previously logged
@@ -96,7 +95,6 @@ class WelcomeActivity : AppCompatActivity() {
                 putString("password", password)
                 apply()
             }
-            Toast.makeText(this, "Your credential have been saved", Toast.LENGTH_SHORT).show()
         }
     }
 

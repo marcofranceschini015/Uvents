@@ -22,6 +22,7 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
     private lateinit var etPassword: EditText
     private lateinit var etConfirmPassword: EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +35,7 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,17 +58,23 @@ class SignUpFragment(private val ctrl: WelcomeController) : Fragment() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             val confirmPassword = etConfirmPassword.text.toString()
-            if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
-                if(password == confirmPassword) {
-                    ctrl.signUp(name, email, password)
+            if (etInputUsername.text.toString().length >= 10){
+                Toast.makeText(context, "Username too long", Toast.LENGTH_SHORT).show()
+            } else {
+                if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
+                    if (password == confirmPassword) {
+                        ctrl.signUp(name, email, password)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Password and Confirm Password fields don't match",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
-                    Toast.makeText(context, "Password and Confirm Password fields don't match", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
                 }
             }
-            else {
-                Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
-            }
-
         }
 
         return v

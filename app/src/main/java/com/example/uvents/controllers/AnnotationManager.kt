@@ -93,7 +93,6 @@ class AnnotationManager(
                         .build()
                 mapView.mapboxMap.setCamera(cameraPosition)
                 addAnnotationToMap(null, null)
-                Toast.makeText(menuActivity, "Localization off. Centering map on Milan", Toast.LENGTH_SHORT).show()
             }
         }
     }
