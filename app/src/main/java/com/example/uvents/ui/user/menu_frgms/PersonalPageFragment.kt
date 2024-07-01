@@ -179,6 +179,7 @@ class PersonalPageFragment(
         ivEventsNotification.setOnClickListener {
             updateBadgeCount(0)
             menuController.updateUserNumDeletedEvents(menuController.getUid(), false)
+            menuController.switchFragment(DeletedEventNotificationFragment(menuController))
         }
 
         return v

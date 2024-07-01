@@ -49,12 +49,19 @@ class MenuController(val menuActivity: MenuActivity) {
     // instance of the actual User for ever app running
     private lateinit var user: User
 
+    // list to manage the deleted events notification
+    var deletedBookedEvents: ArrayList<String> = ArrayList()
+
     // variables for the database connection
     private lateinit var mDbRef: DatabaseReference
 
 
     fun getUid(): String {
         return user.uid
+    }
+
+    fun clearDeletedBookedEvents() {
+        deletedBookedEvents.clear()
     }
 
     /**
@@ -86,6 +93,7 @@ class MenuController(val menuActivity: MenuActivity) {
      */
     fun logout() {
         Toast.makeText(menuActivity, "Logout...", Toast.LENGTH_SHORT).show()
+        updateUserNumDeletedEvents(user.uid, false)
         val intent = Intent(menuActivity, WelcomeActivity::class.java)
         intent.putExtra("logout", true)
         menuActivity.startActivity(intent)
@@ -175,6 +183,9 @@ class MenuController(val menuActivity: MenuActivity) {
         user.getEventsBooked().forEach { e->
             if (!listOfEids.contains(e.key)){
                 toRemove.add(e.key)
+//                updateUserNumDeletedEvents(user.uid, true)
+                val eventName = getEventsBooked()[e.key]
+                deletedBookedEvents.add(eventName!!)
             }
         }
         toRemove.forEach { eid ->
