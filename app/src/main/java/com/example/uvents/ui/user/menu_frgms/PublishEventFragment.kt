@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
 import com.example.uvents.controllers.adapter.CategoryAdapter
+import com.example.uvents.databinding.FragmentPublishEventBinding
 import com.example.uvents.model.CategorySource
 import java.util.Calendar
 import java.util.Locale
@@ -40,6 +42,7 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
     private lateinit var btnPublish: Button
     private lateinit var etInputTime: EditText
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+    private lateinit var tvKeyboard: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +79,54 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
             btnUploadImage = v.findViewById(R.id.btnUploadImage)
             btnPublish = v.findViewById(R.id.btnPublish)
             etInputTime = v.findViewById(R.id.etInputTime)
+            tvKeyboard = v.findViewById(R.id.tvKeyboard)
+
+
+        }
+
+        tvKeyboard.visibility = View.GONE
+
+//        val binding = FragmentPublishEventBinding.inflate(inflater, container, false)
+//        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+//            val rect = Rect()
+//            binding.root.getWindowVisibleDisplayFrame(rect)
+//            val screenHeight = binding.root.rootView.height
+//
+//            // Calculate the keyboard height
+//            val keypadHeight = screenHeight - rect.bottom
+//
+//            // Check if the keyboard is shown or hidden
+//            if (keypadHeight > screenHeight * 0.15) {
+//                // Keyboard is shown
+//                tvKeyboard.visibility = View.VISIBLE
+////                    scrollView.translationY = (-keypadHeight.toFloat() * 0.22).toFloat()
+//            } else {
+//                // Keyboard is hidden
+//                tvKeyboard.visibility = View.GONE
+////                    scrollView.translationY = 0f
+//            }
+//        }
+
+        etInputDescription.setOnFocusChangeListener { descView, hasFocus ->
+            if(hasFocus) {
+                descView.viewTreeObserver.addOnGlobalLayoutListener {
+                    val rect = Rect()
+                    descView.getWindowVisibleDisplayFrame(rect)
+                    val screenHeight = descView.rootView.height
+
+                    // Calculate the keyboard height
+                    val keypadHeight = screenHeight - rect.bottom
+
+                    // Check if the keyboard is shown or hidden
+                    if (keypadHeight > screenHeight * 0.15) {
+                        // Keyboard is shown
+                        tvKeyboard.visibility = View.VISIBLE
+                    } else {
+                        // Keyboard is hidden
+                        tvKeyboard.visibility = View.GONE
+                    }
+                }
+            }
         }
 
         // set up date and time
@@ -85,26 +136,6 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
 
         etInputTime.setOnClickListener {
             openTimePickerDialog(etInputTime)
-        }
-
-        etInputDescription.setOnClickListener {
-            it.viewTreeObserver.addOnGlobalLayoutListener {
-                val rect = Rect()
-                it.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = it.rootView.height
-
-                // Calculate the keyboard height
-                val keypadHeight = screenHeight - rect.bottom
-
-                // Check if the keyboard is shown or hidden
-                if (keypadHeight > screenHeight * 0.15) {
-                    // Keyboard is shown
-                    scrollView.translationY = (-keypadHeight.toFloat() * 0.22).toFloat()
-                } else {
-                    // Keyboard is hidden
-                    scrollView.translationY = 0f
-                }
-            }
         }
 
         // get the category of the event
@@ -144,6 +175,7 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
             imagePickerLauncher.launch("image/*")
         }
         return v
+//        return binding.root
     }
 
 
