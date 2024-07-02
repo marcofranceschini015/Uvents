@@ -224,7 +224,7 @@ class ChatManager(dbUrl: String) {
                     }
                     totalRef.setValue(newValue)
                 } else {
-                    totalRef.setValue(1)
+                    totalRef.setValue(0)
                 }
             }
 
