@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.example.uvents.R
 import com.example.uvents.controllers.MenuController
 import com.example.uvents.ui.user.menu_frgms.BookFragment
@@ -16,7 +15,6 @@ import com.example.uvents.ui.user.menu_frgms.ChatsFragment
 import com.example.uvents.ui.user.menu_frgms.MapFragment
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -134,4 +132,9 @@ class MenuActivity : AppCompatActivity() {
         badge.number = count
         badge.isVisible = count > 0
     }
+
+    fun geBottomNavigation(): BottomNavigationView {
+        return bottomNavigation
+    }
+
 }

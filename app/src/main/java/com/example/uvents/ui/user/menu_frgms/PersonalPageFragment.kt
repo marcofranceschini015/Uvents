@@ -65,6 +65,7 @@ class PersonalPageFragment(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle the back button event
+                menuController.menuActivity.geBottomNavigation().selectedItemId = R.id.home
                 menuController.switchFragment(MapFragment(menuController))
             }
         }
