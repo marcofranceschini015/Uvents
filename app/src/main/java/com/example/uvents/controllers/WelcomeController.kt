@@ -70,6 +70,7 @@ class WelcomeController(val welcomeActivity: WelcomeActivity) {
         mDbRef = FirebaseDatabase.getInstance(dbUrl).getReference()
         mDbRef.child("user").child(user.uid).setValue(user)
         mDbRef.child("user").child(user.uid).child("totalNewMsg").setValue(0)
+        mDbRef.child("user").child(user.uid).child("NumEventsDeleted").setValue(0)
     }
 
 
