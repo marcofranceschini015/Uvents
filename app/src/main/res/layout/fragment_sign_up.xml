@@ -74,7 +74,8 @@
                 android:paddingStart="20dp"
                 android:textColor="#DAF7DC"
                 android:textColorHint="#DAF7DC"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:inputType="text"/>
 
             <TextView
                 android:layout_width="match_parent"
