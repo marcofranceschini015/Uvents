@@ -93,6 +93,7 @@ class MenuActivity : AppCompatActivity() {
                 }
 
                 R.id.profile -> {
+                    menuController.removeOldBooking()
                     menuController.setPersonalPage()
                     true
                 }
