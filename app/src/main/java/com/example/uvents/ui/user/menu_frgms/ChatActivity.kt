@@ -106,12 +106,6 @@ class ChatActivity() : AppCompatActivity() {
             val numNewMsg = chatManager.readNewMessageNumber(receiverRoom!!)
             if(numNewMsg != null && numNewMsg != 0) {
                 chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
-
-
-//                if(chatManager.readNewMessageSenderUid(receiverRoom!!) != senderUid) {
-//                    chatManager.updateNewMessageNumber(receiverRoom!!, false)
-//                    chatManager.updateNewMessageNumber(senderRoom!!, false)
-//                }
             }
         }
 

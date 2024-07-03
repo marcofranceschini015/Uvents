@@ -20,19 +20,6 @@ class MessageAdapter(val context: Context, val messageList: List<Message>,
     val ITEM_RECEIVED = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-//        val senderUid = chatManager.getCurrentUid()
-//        runBlocking {
-//            val numNewMsg = chatManager.readNewMessageNumber(receiverRoom)
-//            if(numNewMsg != null && numNewMsg != 0) {
-//                chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
-//
-//
-//                if(chatManager.readNewMessageSenderUid(receiverRoom) != senderUid) {
-//                    chatManager.updateNewMessageNumber(receiverRoom, false)
-//                    chatManager.updateNewMessageNumber(senderRoom, false)
-//                }
-//            }
-//        }
 
         if (viewType == 1) {
             val view: View = LayoutInflater.from(context).inflate(R.layout.message_sent, parent, false)
@@ -58,19 +45,20 @@ class MessageAdapter(val context: Context, val messageList: List<Message>,
         runBlocking {
             val numNewMsg = chatManager.readNewMessageNumber(receiverRoom)
             if(numNewMsg != null && numNewMsg != 0) {
-                chatManager.readUserTotalNewMessages(
-                    onSuccess = {
-                        if(it != null && it > 0) {
-                            chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
-                        }
-
-                    },
-                    onError = { exception ->
-                        println("Failed to read value: ${exception.message}")
-                    }
-                )
-
                 if(chatManager.readNewMessageSenderUid(receiverRoom) != senderUid) {
+
+                    chatManager.readUserTotalNewMessages(
+                        onSuccess = {
+                            if(it != null && it > 0) {
+                                chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
+                            }
+
+                        },
+                        onError = { exception ->
+                            println("Failed to read value: ${exception.message}")
+                        }
+                    )
+
                     chatManager.updateNewMessageNumber(receiverRoom, false)
                     chatManager.updateNewMessageNumber(senderRoom, false)
                 }
