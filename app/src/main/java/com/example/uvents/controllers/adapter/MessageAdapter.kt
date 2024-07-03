@@ -7,15 +7,33 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uvents.R
+import com.example.uvents.controllers.ChatManager
 import com.example.uvents.model.Message
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.runBlocking
 
-class MessageAdapter(val context: Context, val messageList: List<Message>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageAdapter(val context: Context, val messageList: List<Message>,
+    val receiverRoom: String, val senderRoom: String,
+    val chatManager: ChatManager): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val ITEM_SENT = 1
     val ITEM_RECEIVED = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+//        val senderUid = chatManager.getCurrentUid()
+//        runBlocking {
+//            val numNewMsg = chatManager.readNewMessageNumber(receiverRoom)
+//            if(numNewMsg != null && numNewMsg != 0) {
+//                chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
+//
+//
+//                if(chatManager.readNewMessageSenderUid(receiverRoom) != senderUid) {
+//                    chatManager.updateNewMessageNumber(receiverRoom, false)
+//                    chatManager.updateNewMessageNumber(senderRoom, false)
+//                }
+//            }
+//        }
+
         if (viewType == 1) {
             val view: View = LayoutInflater.from(context).inflate(R.layout.message_sent, parent, false)
             return SentViewHolder(view)
@@ -35,6 +53,30 @@ class MessageAdapter(val context: Context, val messageList: List<Message>): Recy
     }
 
     override fun getItemCount(): Int {
+
+        val senderUid = chatManager.getCurrentUid()
+        runBlocking {
+            val numNewMsg = chatManager.readNewMessageNumber(receiverRoom)
+            if(numNewMsg != null && numNewMsg != 0) {
+                chatManager.readUserTotalNewMessages(
+                    onSuccess = {
+                        if(it != null && it > 0) {
+                            chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
+                        }
+
+                    },
+                    onError = { exception ->
+                        println("Failed to read value: ${exception.message}")
+                    }
+                )
+
+                if(chatManager.readNewMessageSenderUid(receiverRoom) != senderUid) {
+                    chatManager.updateNewMessageNumber(receiverRoom, false)
+                    chatManager.updateNewMessageNumber(senderRoom, false)
+                }
+            }
+        }
+
         return messageList.size
     }
 

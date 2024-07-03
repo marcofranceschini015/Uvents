@@ -97,7 +97,8 @@ class ChatActivity() : AppCompatActivity() {
         receiverRoom = senderUid + receiverUid
 
         messageList = mutableListOf()
-        messageAdapter = MessageAdapter(this, messageList)
+        messageAdapter = MessageAdapter(this, messageList,
+            receiverRoom!!, senderRoom!!, chatManager)
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
 
@@ -107,12 +108,13 @@ class ChatActivity() : AppCompatActivity() {
                 chatManager.updateUserTotalNewMessages(senderUid, false, numNewMsg)
 
 
-                if(chatManager.readNewMessageSenderUid(receiverRoom!!) != senderUid) {
-                    chatManager.updateNewMessageNumber(receiverRoom!!, false)
-                    chatManager.updateNewMessageNumber(senderRoom!!, false)
-                }
+//                if(chatManager.readNewMessageSenderUid(receiverRoom!!) != senderUid) {
+//                    chatManager.updateNewMessageNumber(receiverRoom!!, false)
+//                    chatManager.updateNewMessageNumber(senderRoom!!, false)
+//                }
             }
         }
+
         chatManager.updateMessageList(senderRoom!!, messageList, messageAdapter)
 
         sendButton.setOnClickListener {

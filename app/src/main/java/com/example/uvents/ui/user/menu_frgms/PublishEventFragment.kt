@@ -86,27 +86,6 @@ class PublishEventFragment(private var menuController: MenuController) : Fragmen
 
         tvKeyboard.visibility = View.GONE
 
-//        val binding = FragmentPublishEventBinding.inflate(inflater, container, false)
-//        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-//            val rect = Rect()
-//            binding.root.getWindowVisibleDisplayFrame(rect)
-//            val screenHeight = binding.root.rootView.height
-//
-//            // Calculate the keyboard height
-//            val keypadHeight = screenHeight - rect.bottom
-//
-//            // Check if the keyboard is shown or hidden
-//            if (keypadHeight > screenHeight * 0.15) {
-//                // Keyboard is shown
-//                tvKeyboard.visibility = View.VISIBLE
-////                    scrollView.translationY = (-keypadHeight.toFloat() * 0.22).toFloat()
-//            } else {
-//                // Keyboard is hidden
-//                tvKeyboard.visibility = View.GONE
-////                    scrollView.translationY = 0f
-//            }
-//        }
-
         etInputDescription.setOnFocusChangeListener { descView, hasFocus ->
             if(hasFocus) {
                 descView.viewTreeObserver.addOnGlobalLayoutListener {

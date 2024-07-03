@@ -234,4 +234,19 @@ class ChatManager(dbUrl: String) {
         })
     }
 
+    fun readUserTotalNewMessages(onSuccess: (Int?) -> Unit, onError: (Exception) -> Unit) {
+        val totalRef = mDbRef.child("user").child(getCurrentUid()).child("totalNewMsg")
+
+        totalRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val totalNewMessages = snapshot.getValue(Int::class.java)
+                onSuccess(totalNewMessages)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onError(Exception(error.message))
+            }
+        })
+    }
+
 }
